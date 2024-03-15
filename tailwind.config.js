@@ -9,7 +9,10 @@ export default {
       colors: {
         bgColor: "var(--background)",
         textColor: "var(--textColor)"
-      }
+      },
+      // backgroundImage: {
+      //   bgImage: "url('/images/nflix-bg.jpg')",
+      // }
     },
   },
   plugins: [],

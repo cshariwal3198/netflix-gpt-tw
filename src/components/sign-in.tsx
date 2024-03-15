@@ -1,5 +1,15 @@
+import { FormProvider, useForm } from "react-hook-form"
+import { AuthenticationForm } from "./form";
+
 export default function SignIn() {
+
+    const formMethods = useForm();
+
+    const onSubmit = (values: any) => { console.log(values); }
+
     return (
-        <div>sign in</div>
+        <FormProvider {...formMethods}>
+            <AuthenticationForm onSubmit={onSubmit} />
+        </FormProvider>
     )
 }
