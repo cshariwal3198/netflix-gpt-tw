@@ -21,7 +21,7 @@ export const AuthenticationForm = memo(({ onSubmit }: { onSubmit: (values: any) 
 
     const onClick = useCallback(() => setSignedInUser(!signedInUser), [signedInUser]);
 
-    const renderAlternateForm = useCallback(() => (
+    const renderFormFooter = useCallback(() => (
         <div className="my-6 mx-2">
             {signedInUser ? 'New to Netflix? ' : 'Already A User? '}
             <button onClick={onClick}>
@@ -66,7 +66,9 @@ export const AuthenticationForm = memo(({ onSubmit }: { onSubmit: (values: any) 
             <button className="bg-red-600 p-4 text-xl rounded-xl font-semibold" onClick={handleSubmit(onSubmit)}>
                 {signedInUser ? 'Sign In' : 'Sign Up'}
             </button>
-            {renderAlternateForm()}
+            {
+                renderFormFooter()
+            }
         </div>
     )
 });
