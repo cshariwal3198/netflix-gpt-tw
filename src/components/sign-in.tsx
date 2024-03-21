@@ -5,7 +5,10 @@ export default function SignIn() {
 
     const formMethods = useForm();
 
-    const onSubmit = (values: any) => { console.log(values); }
+    const onSubmit = (values: any) => {
+        const { email, password } = values;
+        console.log(email, password);
+    }
 
     return (
         <FormProvider {...formMethods}>

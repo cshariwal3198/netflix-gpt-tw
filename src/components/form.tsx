@@ -23,12 +23,10 @@ export const AuthenticationForm = memo(({ onSubmit }: { onSubmit: (values: any) 
 
     const renderFormFooter = useCallback(() => (
         <div className="my-6 mx-2">
-            {signedInUser ? 'New to Netflix? ' : 'Already A User? '}
-            <button onClick={onClick}>
-                {
-                    signedInUser ? ' Sign up now.' : ' Sign In'
-                }
-            </button>
+            {
+                signedInUser ? 'New to Netflix? ' : 'Already A User? '
+            }
+            <button onClick={onClick}>{signedInUser ? ' Sign up now.' : ' Sign In'}</button>
         </div>
     ), [onClick, signedInUser]);
 
@@ -50,7 +48,7 @@ export const AuthenticationForm = memo(({ onSubmit }: { onSubmit: (values: any) 
                             errors?.userName ? <ErrorMessage errorInfo={errors?.userName as any} fieldName="Username" /> : null
                     }
                 </div>
-                <div className="gap-2 flex flex-col">
+                <div className="gap-2 flex flex-col fill-blue-200">
                     <input className={styledClassString} type="text" placeholder="Enter email" {...register('email', { required: true, validate: validateEmail })} />
                     {
                         errors?.email ? <ErrorMessage errorInfo={errors?.email as any} fieldName="Email" /> : null
