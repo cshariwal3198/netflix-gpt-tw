@@ -20,6 +20,9 @@ body,
 }
 
 @layer base {
+  /* *{
+    @apply bg-bgImage;
+  } */
     body {
       @apply bg-bgColor text-textColor;
     }

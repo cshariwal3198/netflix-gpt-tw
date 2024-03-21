@@ -1,5 +1,6 @@
 import { useTheme } from "../contexts/theme-context";
 import { Navbar } from "./Navbar";
+import SignIn from "./sign-in";
 
 export default function Body() {
 
@@ -10,10 +11,10 @@ export default function Body() {
     );
 
     return (
-        <div className="font-medium">
-            body component
-            <button onClick={onClick}>Toggle theme</button>
+        <div className="font-medium flex flex-col">
             <Navbar />
+            <SignIn />
+            <button onClick={onClick}>Toggle theme</button>
         </div>
     )
 }
