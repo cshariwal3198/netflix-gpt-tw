@@ -1,20 +1,29 @@
-import { useTheme } from "../contexts/theme-context";
+import { useEffect, useState } from "react";
+import { useFecthMovies } from "../hooks/fetch-movies";
 import { Navbar } from "./Navbar";
-import SignIn from "./sign-in";
+import { Loading } from ".";
 
 export default function Body() {
 
-    const { toggleTheme } = useTheme() as any;
+    const { getAllMovies, loading } = useFecthMovies();
 
-    const onClick = () => (
-        toggleTheme()
-    );
+    const [movies, setMovies] = useState<any>(null);
+
+    useEffect(() => {
+        setMovies(getAllMovies());
+    }, [getAllMovies]);
 
     return (
         <div className="font-medium flex flex-col">
             <Navbar />
-            <SignIn />
-            <button onClick={onClick}>Toggle theme</button>
+            {
+                movies ?
+                    <>
+                        {
+                            loading ? <Loading /> : <>Movies screen</>
+                        }
+                    </> : null
+            }
         </div>
     )
 }
