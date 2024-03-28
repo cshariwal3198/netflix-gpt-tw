@@ -1,28 +1,17 @@
-import { useEffect, useState } from "react";
 import { useFecthMovies } from "../hooks/fetch-movies";
 import { Navbar } from "./Navbar";
+// import { ShimmerUI } from "./shimmer";
 import { Loading } from ".";
 
 export default function Body() {
 
-    const { getAllMovies, loading } = useFecthMovies();
-
-    const [movies, setMovies] = useState<any>(null);
-
-    useEffect(() => {
-        setMovies(getAllMovies());
-    }, [getAllMovies]);
+    const { data, loading } = useFecthMovies();
 
     return (
         <div className="font-medium flex flex-col">
             <Navbar />
             {
-                movies ?
-                    <>
-                        {
-                            loading ? <Loading /> : <>Movies screen</>
-                        }
-                    </> : null
+                loading ? <Loading /> : <>movie screen</>
             }
         </div>
     )

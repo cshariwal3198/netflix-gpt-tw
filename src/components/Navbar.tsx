@@ -1,10 +1,10 @@
-import { UserButton } from "@clerk/clerk-react";
 import { createElement, memo } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { LuMoonStar } from "react-icons/lu";
 import { FiSun } from "react-icons/fi";
 import { useTheme } from "../contexts/theme-context";
 import { IconType } from "react-icons";
+import { UserAccount } from "./account";
 
 const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
     const { toggleTheme } = useTheme();
@@ -32,9 +32,8 @@ export const Navbar = memo(() => {
                         theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
                     }
                     <IoIosSearch size='30px' />
-                    {/* <input type="text" placeholder="Enter Here" className="bg-inherit text-xl ml-3" /> */}
                 </div>
-                <UserButton />
+                <UserAccount />
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const useFecthMovies = () => {
 
@@ -14,20 +14,23 @@ export const useFecthMovies = () => {
     }
     ), []);
 
-    const getAllMovies = useCallback(async () => {
-        setLoading(true)
-        try {
-            const result = await fetch('https://api.themoviedb.org/3/discover/movie', options).then(response => response.json());
-            setLoading(false);
-            return result;
-        } catch (err) {
-            setLoading(false);
-            console.log(err);
+    useEffect(() => {
+        async function getAllMovies() {
+            setLoading(true)
+            try {
+                await fetch('https://api.themoviedb.org/3/discover/movie', options).then((res) => (res.json())).then((result) => (
+                    setData(result.results)
+                ));
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                console.log(err);
+            }
         }
+        getAllMovies();
+    }, [options])
 
-    }, [options]);
-
-    return { getAllMovies, loading }
+    return { data, loading }
 
 }
 
