@@ -1,20 +1,18 @@
-import { useTheme } from "../contexts/theme-context";
+import { useFecthMovies } from "../hooks/fetch-movies";
 import { Navbar } from "./Navbar";
-import SignIn from "./sign-in";
+// import { ShimmerUI } from "./shimmer";
+import { Loading } from ".";
 
 export default function Body() {
 
-    const { toggleTheme } = useTheme() as any;
-
-    const onClick = () => (
-        toggleTheme()
-    );
+    const { data, loading } = useFecthMovies();
 
     return (
         <div className="font-medium flex flex-col">
             <Navbar />
-            <SignIn />
-            <button onClick={onClick}>Toggle theme</button>
+            {
+                loading ? <Loading /> : <>movie screen</>
+            }
         </div>
     )
 }

@@ -6,7 +6,6 @@ import {
 import { Loading } from "./components/loading";
 
 const Body = React.lazy(() => import('./components/body'));
-const SignIn = React.lazy(() => import('./components/sign-in'));
 
 export default function App() {
 
@@ -14,10 +13,6 @@ export default function App() {
     {
       path: '/',
       element: <Body />
-    },
-    {
-      path: '/login',
-      element: <SignIn />
     }
   ]);
 
