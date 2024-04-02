@@ -5,14 +5,18 @@ import { Navbar } from "./Navbar";
 import { ShimmerUI } from "./shimmer";
 import { IMovie } from "../types";
 import { Card } from "./movie-card";
+import { CoverMovie } from "./cover-movie";
+import { useSelector } from "react-redux";
 
 const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     column-gap: 20px;
+    row-gap: 20px;
     width: 100%;
     justify-content: center;
     align-items: center;
+    padding: 30px;
 `;
 
 const StyledFlexWrap = styled.div`
@@ -20,24 +24,21 @@ const StyledFlexWrap = styled.div`
     flex-wrap: wrap;
     row-gap: 25px;
     column-gap: 25px;
-`;
-
-const StyledText = styled.h3`
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: x-large;
-    font-weight: 600;
-    margin-bottom: 20px;
+    margin-top: 15px;
 `;
 
 export default function Body() {
 
     const { data, loading } = useFecthMovies();
+    const favourites = useSelector((state: any) => (state.favourites));
 
-    const addToFavourite = () => ('');
+    const getIsFavourite = useCallback((id: number) => (
+        favourites.some(({ id: movieId }: { id: number }) => (movieId === id))
+    ), [favourites]);
 
-    const removeFromFavourite = () => ('');
-
-    const renderMovies = useCallback(() => (data as IMovie[]).map((item) => (<Card {...item} key={item.id} addToFavourite={addToFavourite} removeFromFavourite={removeFromFavourite} />)), [data]);
+    const renderMovies = useCallback(() => (data as IMovie[]).map((item) => (
+        <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id)} />
+    )), [data, getIsFavourite]);
 
     return (
         <div className="font-medium flex flex-col">
@@ -45,7 +46,7 @@ export default function Body() {
             {
                 loading ? <ShimmerUI /> :
                     <StyledWrapper>
-                        <StyledText>All Movies</StyledText>
+                        <CoverMovie movieItem={data[0]} />
                         <StyledFlexWrap>
                             {
                                 renderMovies()

@@ -2,6 +2,8 @@ import { memo, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { IMovie } from "../types";
 import { FaHeart } from 'react-icons/fa';
+import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
+import { useDispatch } from "react-redux";
 
 const StyledMovieCard = styled.div`
     display: flex;
@@ -39,33 +41,29 @@ const StyledOverview = styled(StyledSpan)`
     top: unset;
 `;
 
-const StyledHeart = styled(FaHeart)`
+const StyledHeart = styled(FaHeart) <{ $isFavourite: boolean }>`
     position: absolute;
     bottom: 20px;
     right: 30px;
-    fill: #fffdfd;
+    fill: ${({ $isFavourite }) => ($isFavourite ? 'red' : 'white')};
+    cursor: pointer;
 `;
 
-export const Card = memo(({ original_title, overview, poster_path, release_date, title, backdrop_path, id, addToFavourite, removeFromFavourite }: IMovie & { addToFavourite: (id: number) => void, removeFromFavourite: (id: number) => void }) => {
+export const Card = memo(({ item, isFavourite }: { item: IMovie, isFavourite: boolean }) => {
+
+    const { overview, poster_path, title, id } = item;
 
     const [hover, setHover] = useState<boolean>(false);
+    const dispatch = useDispatch();
 
-    const slicedOverview = useMemo(() => `${overview.slice(1, 100)}...`, [overview]);
+    const slicedOverview = useMemo(() => `${overview.slice(0, 100)}...`, [overview]);
 
     const onMouseOver = useCallback(() => (setHover(true)), []);
-
     const onMouseLeave = useCallback(() => (setHover(false)), []);
 
-    const onClick: React.MouseEventHandler<SVGElement> = useCallback((e) => {
-        let { fill } = e.target.style;
-        if (!fill) {
-            e.target.style.fill = 'red';
-            addToFavourite(id);
-        } else {
-            e.target.style.fill = '';
-            removeFromFavourite(id);
-        }
-    }, [addToFavourite, id, removeFromFavourite]);
+    const onClick = useCallback(() => {
+        isFavourite ? dispatch(removeFromFavourites(id)) : dispatch(addToFavourites(item))
+    }, [dispatch, id, isFavourite, item]);
 
     return (
         <StyledMovieCard onMouseOver={onMouseOver} onMouseOut={onMouseLeave}>
@@ -73,7 +71,7 @@ export const Card = memo(({ original_title, overview, poster_path, release_date,
             <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
             <StyledOverview>{slicedOverview}</StyledOverview>
             {
-                hover ? <StyledHeart size="40px" title="Add to fav" onClick={onClick} /> : null
+                hover ? <StyledHeart size="40px" title="Add to fav" onClick={onClick} $isFavourite={isFavourite} /> : null
             }
         </StyledMovieCard>
     );
