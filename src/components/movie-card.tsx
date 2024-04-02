@@ -9,7 +9,7 @@ const StyledMovieCard = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    max-width: 350px;
+    max-width: 360px;
     position: relative;
     text-align: center;
 
@@ -20,7 +20,7 @@ const StyledMovieCard = styled.div`
 `;
 
 const StyledImage = styled.img`
-    height: 400px;
+    height: 420px;
     opacity: 0.8;
     filter: contrast(0.8);
     -webkit-filter: brightness(0.8);
@@ -36,9 +36,10 @@ const StyledSpan = styled.span`
     transform: none;
 `;
 
-const StyledOverview = styled(StyledSpan)`
+const StyledOverview = styled(StyledSpan) <{ $hover: boolean }>`
     bottom: 30px;
     top: unset;
+    opacity: ${({ $hover }) => ($hover ? '1' : '0.5')};
 `;
 
 const StyledHeart = styled(FaHeart) <{ $isFavourite: boolean }>`
@@ -69,7 +70,7 @@ export const Card = memo(({ item, isFavourite }: { item: IMovie, isFavourite: bo
         <StyledMovieCard onMouseOver={onMouseOver} onMouseOut={onMouseLeave}>
             <StyledSpan>{title}</StyledSpan>
             <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
-            <StyledOverview>{slicedOverview}</StyledOverview>
+            <StyledOverview $hover={hover}>{slicedOverview}</StyledOverview>
             {
                 hover ? <StyledHeart size="40px" title="Add to fav" onClick={onClick} $isFavourite={isFavourite} /> : null
             }

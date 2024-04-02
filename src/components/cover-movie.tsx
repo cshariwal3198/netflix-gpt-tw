@@ -15,6 +15,7 @@ const StyledWrapper = styled.div`
 const StyledImage = styled.img`
     border-radius: 40px;
     height: 50vh;
+    filter: contrast(0.9);
 `;
 
 const StyledPoster = styled.img`
@@ -43,6 +44,7 @@ const TitleWrapper = styled(StyledSpan) <{ $isMD: boolean, $isSM: boolean }>`
     font-size: ${({ $isMD, $isSM }) => ($isMD ? '3rem' : $isSM ? '2rem' : '4rem')};
     font-style: normal;
     top: unset; left: unset;
+    z-index: 2;
 `;
 
 const ReleaseDateWrapper = styled(StyledSpan)`

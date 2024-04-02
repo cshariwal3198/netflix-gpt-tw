@@ -1,12 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useFecthMovies } from "../hooks/fetch-movies";
+import { useFetchMovies } from "../hooks/fetch-movies";
 import { Navbar } from "./Navbar";
 import { ShimmerUI } from "./shimmer";
 import { IMovie } from "../types";
 import { Card } from "./movie-card";
-import { CoverMovie } from "./cover-movie";
 import { useSelector } from "react-redux";
+import { CoverMovie } from "./cover-movie";
+import { useFetchTopRated } from "../hooks";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -22,34 +23,71 @@ const StyledWrapper = styled.div`
 const StyledFlexWrap = styled.div`
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     row-gap: 25px;
     column-gap: 25px;
     margin-top: 15px;
 `;
 
+const StyledSpan = styled.span`
+    font-size: 45px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 600;
+    font-style: italic;
+`;
+
 export default function Body() {
 
-    const { data, loading } = useFecthMovies();
+    const { allMovies: data, loading } = useFetchMovies();
+    const { loading: topRatedLoad, topRatedMovies } = useFetchTopRated();
+    const [allMovies, setAllMovies] = useState<IMovie[]>([]);
     const favourites = useSelector((state: any) => (state.favourites));
+
+    useEffect(() => {
+        if (!loading && data.length) {
+            setAllMovies(data);
+        }
+    }, [data, loading]);
+
+    const onSearch = useCallback((e) => {
+        setAllMovies((preState) => (
+            e.target.value ? [...preState, ...topRatedMovies].filter(({ original_title, title }) => (
+                String(original_title).includes(e.target.value) || String(title).includes(e.target.value)
+            )) : data
+        ))
+    }, [data, topRatedMovies]);
 
     const getIsFavourite = useCallback((id: number) => (
         favourites.some(({ id: movieId }: { id: number }) => (movieId === id))
     ), [favourites]);
 
-    const renderMovies = useCallback(() => (data as IMovie[]).map((item) => (
+    const renderMovies = useCallback(() => allMovies?.map((item) => (
         <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id)} />
-    )), [data, getIsFavourite]);
+    )), [allMovies, getIsFavourite]);
+
+    const renderTopRated = useCallback(() => (
+        topRatedMovies?.map((item) => (
+            <Card item={item} isFavourite={false} key={item.id} />
+        ))
+    ), [topRatedMovies]);
 
     return (
         <div className="font-medium flex flex-col">
-            <Navbar />
+            <Navbar onSearch={onSearch} />
             {
-                loading ? <ShimmerUI /> :
+                loading && topRatedLoad ? <ShimmerUI /> :
                     <StyledWrapper>
                         <CoverMovie movieItem={data[0]} />
+                        <StyledSpan>All Movies</StyledSpan>
                         <StyledFlexWrap>
                             {
                                 renderMovies()
+                            }
+                        </StyledFlexWrap>
+                        <StyledSpan>Top Rated</StyledSpan>
+                        <StyledFlexWrap>
+                            {
+                                renderTopRated()
                             }
                         </StyledFlexWrap>
                     </StyledWrapper>

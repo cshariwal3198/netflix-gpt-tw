@@ -1,25 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { IMovie } from "../types";
+import { options } from "./utils";
 
-export const useFecthMovies = () => {
+export const useFetchMovies = () => {
 
     const [loading, setLoading] = useState<boolean>(true);
-    const [data, setData] = useState<any>(null);
-
-    const options = useMemo(() => ({
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            Authorization: import.meta.env.VITE_AUTH_TOKEN
-        }
-    }
-    ), []);
+    const [allMovies, setAllMovies] = useState<IMovie[]>([]);
 
     useEffect(() => {
         async function getAllMovies() {
             setLoading(true)
             try {
                 await fetch('https://api.themoviedb.org/3/discover/movie', options).then((res) => (res.json())).then((result) => (
-                    setData(result.results)
+                    setAllMovies(result.results)
                 ));
                 setLoading(false);
             } catch (err) {
@@ -28,9 +21,9 @@ export const useFecthMovies = () => {
             }
         }
         getAllMovies();
-    }, [options])
+    }, [])
 
-    return { data, loading }
+    return { allMovies, loading }
 
 }
 
