@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useFetchMovies } from "../hooks/fetch-movies";
-import { Navbar } from "./Navbar";
 import { ShimmerUI } from "./shimmer";
 import { IMovie } from "../types";
 import { Card } from "./movie-card";
-import { useSelector } from "react-redux";
 import { CoverMovie } from "./cover-movie";
 import { useFetchTopRated } from "../hooks";
+import { Footer } from "./footer";
+import { useGetFavourites } from "../hooks/use-get-favourites";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -36,12 +36,12 @@ const StyledSpan = styled.span`
     font-style: italic;
 `;
 
-export default function Body() {
+export default function Home() {
 
     const { allMovies: data, loading } = useFetchMovies();
     const { loading: topRatedLoad, topRatedMovies } = useFetchTopRated();
     const [allMovies, setAllMovies] = useState<IMovie[]>([]);
-    const favourites = useSelector((state: any) => (state.favourites));
+    const { favourites } = useGetFavourites();
 
     useEffect(() => {
         if (!loading && data.length) {
@@ -49,7 +49,7 @@ export default function Body() {
         }
     }, [data, loading]);
 
-    const onSearch = useCallback((e) => {
+    const onSearch = useCallback((e: any) => {
         setAllMovies((preState) => (
             e.target.value ? [...preState, ...topRatedMovies].filter(({ original_title, title }) => (
                 String(original_title).includes(e.target.value) || String(title).includes(e.target.value)
@@ -73,9 +73,8 @@ export default function Body() {
 
     return (
         <div className="font-medium flex flex-col">
-            <Navbar onSearch={onSearch} />
             {
-                loading && topRatedLoad ? <ShimmerUI /> :
+                loading ? <ShimmerUI /> :
                     <StyledWrapper>
                         <CoverMovie movieItem={data[0]} />
                         <StyledSpan>All Movies</StyledSpan>
@@ -92,6 +91,7 @@ export default function Body() {
                         </StyledFlexWrap>
                     </StyledWrapper>
             }
-        </div>
+            <Footer />
+        </div >
     )
 }

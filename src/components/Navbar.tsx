@@ -6,6 +6,7 @@ import { FiSun } from "react-icons/fi";
 import { useTheme } from "../contexts/theme-context";
 import { IconType } from "react-icons";
 import { UserAccount } from "./account";
+import { Link } from "react-router-dom";
 
 const StyledInputWrapper = styled.div`
     display: flex;
@@ -44,8 +45,8 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e) => void }) => {
         <div className="flex justify-between h-20 shadow-md shadow-slate-700 mb-6 rounded-b-md">
             <div className="flex justify-around items-center w-1/2 text-xl">
                 <img src="/images/neflix_logo.png" alt="Logo" className="w-40" />
-                <div>Movies</div>
-                <div>Favourites</div>
+                <Link to="/">Movies</Link>
+                <Link to="/favourites">Favourites</Link>
                 <div>Rated</div>
                 <div>TV Shows</div>
             </div>

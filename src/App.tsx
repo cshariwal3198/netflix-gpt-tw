@@ -5,14 +5,26 @@ import {
 } from "react-router-dom";
 import { Loading } from "./components/loading";
 
-const Body = React.lazy(() => import('./components/body'));
+const Home = React.lazy(() => import('./components/home'));
+const Root = React.lazy(() => import('./components/root'));
+const Favourites = React.lazy(() => import('./components/favourites'));
 
 export default function App() {
 
   const appRouter = createBrowserRouter([
     {
       path: '/',
-      element: <Body />
+      element: <Root />,
+      children: [
+        {
+          path: '/',
+          element: <Home />
+        },
+        {
+          path: '/favourites',
+          element: <Favourites />
+        }
+      ]
     }
   ]);
 
