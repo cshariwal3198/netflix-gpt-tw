@@ -9,7 +9,6 @@ export const useDisplaySizeGroup = () => {
     useEffect(() => {
         const handleResize = () => {
             const width = window.innerWidth;
-            console.log(width);
             if (width < 720) {
                 setIsSM(true);
                 setIsMD(false);

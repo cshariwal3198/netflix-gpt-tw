@@ -7,14 +7,15 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 80%;
-    margin-bottom: 30px;
+    width: 100%;
     text-align: center;
+    margin-top: 8px;
 `;
 
 const StyledImage = styled.img`
-    border-radius: 40px;
-    height: 50vh;
+    border-radius: 10px;
+    height: 65vh;
+    filter: contrast(0.9);
 `;
 
 const StyledPoster = styled.img`
@@ -22,8 +23,8 @@ const StyledPoster = styled.img`
     position: absolute;
     z-index: 2;
     bottom: -30px;
-    right: 30px;
-    border-radius: 40px;
+    right: 60px;
+    border-radius: 20px;
     box-shadow: 10px 12px 10px 0px black;
 `;
 
@@ -43,6 +44,7 @@ const TitleWrapper = styled(StyledSpan) <{ $isMD: boolean, $isSM: boolean }>`
     font-size: ${({ $isMD, $isSM }) => ($isMD ? '3rem' : $isSM ? '2rem' : '4rem')};
     font-style: normal;
     top: unset; left: unset;
+    z-index: 2;
 `;
 
 const ReleaseDateWrapper = styled(StyledSpan)`
@@ -70,7 +72,7 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
     return (
         <StyledWrapper>
             <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
-            <StyledImage src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} width="100%" className="shadow-slate-950 shadow-2xl dark:shadow-slate-100" />
+            <StyledImage src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} />
             <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} />
             {
                 (isMD || isSM) ? null : <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
