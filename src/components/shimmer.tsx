@@ -8,8 +8,8 @@ export const ShimmerUI = memo(() => {
     }
 
     return (
-        <>
-            <div className="h-96 w-full bg-neutral-300 rounded-2xl gap-5 py-10 mx-5" />
+        <div className="flex flex-col justify-center items-center w-full">
+            <div className="h-96 w-[90%] bg-neutral-300 rounded-2xl gap-5 justify-center items-center" />
             <div className="w-full h-full flex flex-wrap gap-5">
                 {
                     data.map((i) => (
@@ -18,6 +18,6 @@ export const ShimmerUI = memo(() => {
                     ))
                 }
             </div>
-        </>
+        </div>
     )
 });

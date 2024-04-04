@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
     width: 100%;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 10px;
 `;
 
 const StyledFlexWrap = styled.div`
@@ -25,8 +25,8 @@ const StyledFlexWrap = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     row-gap: 25px;
-    column-gap: 25px;
-    margin-top: 15px;
+    column-gap: 12px;
+    margin-top: 8px;
 `;
 
 const StyledSpan = styled.span`
@@ -34,6 +34,8 @@ const StyledSpan = styled.span`
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 600;
     font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 10px;
 `;
 
 export default function Home() {
@@ -58,7 +60,7 @@ export default function Home() {
     }, [data, topRatedMovies]);
 
     const getIsFavourite = useCallback((id: number) => (
-        favourites.some(({ id: movieId }: { id: number }) => (movieId === id))
+        favourites?.some(({ id: movieId }: { id: number }) => (movieId === id))
     ), [favourites]);
 
     const renderMovies = useCallback(() => allMovies?.map((item) => (

@@ -12,7 +12,6 @@ export const ThemeProvider = (props: { children: React.ReactNode }) => {
     const [isDarktheme, setDarktheme] = useState(false);
 
     const toggleTheme = useCallback(() => {
-        console.log(isDarktheme);
         setDarktheme(!isDarktheme)
     }, [isDarktheme]);
 

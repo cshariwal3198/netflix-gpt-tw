@@ -32,7 +32,7 @@ const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
     )
 })
 
-export const Navbar = memo(({ onSearch }: { onSearch: (e) => void }) => {
+export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -42,7 +42,7 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e) => void }) => {
     onSearch;
 
     return (
-        <div className="flex justify-between h-20 shadow-md shadow-slate-700 mb-6 rounded-b-md">
+        <div className="flex justify-between h-20 shadow-md shadow-slate-700 rounded-b-md">
             <div className="flex justify-around items-center w-1/2 text-xl">
                 <img src="/images/neflix_logo.png" alt="Logo" className="w-40" />
                 <Link to="/">Movies</Link>
@@ -51,15 +51,13 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e) => void }) => {
                 <div>TV Shows</div>
             </div>
             <div className="flex items-center justify-around text-xl w-1/4">
-                <div className="flex items-center justify-around p-2 w-[30vw]">
-                    {
-                        theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
-                    }
-                    <StyledInputWrapper>
-                        <StyledIcon size='30px' onClick={onclick} />
-                        <StyledInput ref={inputRef} />
-                    </StyledInputWrapper>
-                </div>
+                {
+                    theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
+                }
+                <StyledInputWrapper>
+                    <StyledIcon size='30px' onClick={onclick} />
+                    <StyledInput ref={inputRef} />
+                </StyledInputWrapper>
                 <UserAccount />
             </div>
         </div>
