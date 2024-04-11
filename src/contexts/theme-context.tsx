@@ -9,7 +9,7 @@ export const useTheme = () => (useContext(ThemeContext));
 
 export const ThemeProvider = (props: { children: React.ReactNode }) => {
 
-    const [isDarktheme, setDarktheme] = useState(false);
+    const [isDarktheme, setDarktheme] = useState(localStorage.getItem('theme') === 'dark');
 
     const toggleTheme = useCallback(() => {
         setDarktheme(!isDarktheme)

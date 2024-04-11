@@ -14,8 +14,7 @@ const StyledWrapper = styled.div`
     column-gap: 20px;
     row-gap: 20px;
     width: 100%;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
     padding: 10px;
 `;
 
@@ -43,7 +42,7 @@ export default function Home() {
     const { loading: topRatedLoad, topRatedMovies } = useFetchTopRated();
     const [allMovies, setAllMovies] = useState<IMovie[]>([]);
     const { favourites } = useGetFavourites();
-    const { isMD, isSM } = useDisplaySizeGroup();
+    const { isSM } = useDisplaySizeGroup();
 
     useEffect(() => {
         if (!loading && data.length) {
@@ -64,15 +63,15 @@ export default function Home() {
         favourites?.some(({ id: movieId }: { id: number }) => (movieId === id))
     ), [favourites]);
 
-    const renderMovies = useCallback(() => allMovies?.map((item) => (
-        <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id)} />
+    const renderMovies = useCallback(() => allMovies?.slice(1).map((item) => (
+        <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id)} canViewSimillar={true} />
     )), [allMovies, getIsFavourite]);
 
     const renderTopRated = useCallback(() => (
         topRatedMovies?.map((item) => (
-            <Card item={item} isFavourite={false} key={item.id} />
+            <Card item={item} isFavourite={getIsFavourite(item?.id)} key={item.id} canViewSimillar={true} />
         ))
-    ), [topRatedMovies]);
+    ), [getIsFavourite, topRatedMovies]);
 
     return (
         <div className="font-medium flex flex-col">
@@ -81,13 +80,13 @@ export default function Home() {
                     <StyledWrapper>
                         <CoverMovie movieItem={data[0]} />
                         <StyledSpan>All Movies</StyledSpan>
-                        <StyledFlexWrap $isSM={isSM || isMD}>
+                        <StyledFlexWrap $isSM={isSM}>
                             {
                                 renderMovies()
                             }
                         </StyledFlexWrap>
                         <StyledSpan>Top Rated</StyledSpan>
-                        <StyledFlexWrap $isSM={isSM || isMD}>
+                        <StyledFlexWrap $isSM={isSM}>
                             {
                                 renderTopRated()
                             }
