@@ -5,8 +5,7 @@ import { ShimmerUI } from "./shimmer";
 import { IMovie } from "../types";
 import { Card } from "./movie-card";
 import { CoverMovie } from "./cover-movie";
-import { useFetchTopRated } from "../hooks";
-import { Footer } from "./footer";
+import { useDisplaySizeGroup, useFetchTopRated } from "../hooks";
 import { useGetFavourites } from "../hooks/use-get-favourites";
 
 const StyledWrapper = styled.div`
@@ -20,10 +19,10 @@ const StyledWrapper = styled.div`
     padding: 10px;
 `;
 
-const StyledFlexWrap = styled.div`
+const StyledFlexWrap = styled.div<{ $isSM: boolean }>`
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: ${({ $isSM }) => ($isSM ? 'center' : 'start')};
     row-gap: 25px;
     column-gap: 12px;
     margin-top: 8px;
@@ -44,6 +43,7 @@ export default function Home() {
     const { loading: topRatedLoad, topRatedMovies } = useFetchTopRated();
     const [allMovies, setAllMovies] = useState<IMovie[]>([]);
     const { favourites } = useGetFavourites();
+    const { isMD, isSM } = useDisplaySizeGroup();
 
     useEffect(() => {
         if (!loading && data.length) {
@@ -58,6 +58,7 @@ export default function Home() {
             )) : data
         ))
     }, [data, topRatedMovies]);
+    onSearch; topRatedLoad;
 
     const getIsFavourite = useCallback((id: number) => (
         favourites?.some(({ id: movieId }: { id: number }) => (movieId === id))
@@ -80,20 +81,19 @@ export default function Home() {
                     <StyledWrapper>
                         <CoverMovie movieItem={data[0]} />
                         <StyledSpan>All Movies</StyledSpan>
-                        <StyledFlexWrap>
+                        <StyledFlexWrap $isSM={isSM || isMD}>
                             {
                                 renderMovies()
                             }
                         </StyledFlexWrap>
                         <StyledSpan>Top Rated</StyledSpan>
-                        <StyledFlexWrap>
+                        <StyledFlexWrap $isSM={isSM || isMD}>
                             {
                                 renderTopRated()
                             }
                         </StyledFlexWrap>
                     </StyledWrapper>
             }
-            <Footer />
         </div >
     )
 }
