@@ -1,13 +1,17 @@
 import { memo } from "react";
-import { Navbar } from "./navbar";
 import { Outlet } from "react-router-dom";
+import { Navbar } from "./Navbar";
+import { Footer } from "./footer";
 
 const Root = memo(() => {
 
     return (
-        <div className="font-medium flex flex-col">
+        <div className="font-medium flex flex-col h-full w-full">
             <Navbar onSearch={() => ('')} />
-            <Outlet />
+            <div className="flex flex-col overflow-auto">
+                <Outlet />
+                <Footer />
+            </div>
         </div>
     )
 });

@@ -8,6 +8,7 @@ import { Loading } from "./components/loading";
 const Home = React.lazy(() => import('./components/home'));
 const Root = React.lazy(() => import('./components/root'));
 const Favourites = React.lazy(() => import('./components/favourites'));
+const ViewSimillar = React.lazy(() => import('./components/simillar-movies'))
 
 export default function App() {
 
@@ -23,6 +24,10 @@ export default function App() {
         {
           path: '/favourites',
           element: <Favourites />
+        },
+        {
+          path: '/:id',
+          element: <ViewSimillar />
         }
       ]
     }

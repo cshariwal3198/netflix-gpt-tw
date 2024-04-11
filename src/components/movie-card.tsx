@@ -1,9 +1,10 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { IMovie } from "../types";
-import { FaHeart } from 'react-icons/fa';
 import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
 import { useDispatch } from "react-redux";
+import { MovieDetail } from "./movie-detail";
+import { StyledHeart } from "../common-styles";
 
 const StyledMovieCard = styled.div`
     display: flex;
@@ -39,15 +40,7 @@ const StyledSpan = styled.span`
 const StyledOverview = styled(StyledSpan) <{ $hover: boolean }>`
     bottom: 30px;
     top: unset;
-    opacity: ${({ $hover }) => ($hover ? '1' : '0.5')};
-`;
-
-const StyledHeart = styled(FaHeart) <{ $isFavourite: boolean }>`
-    position: absolute;
-    bottom: 20px;
-    right: 30px;
-    fill: ${({ $isFavourite }) => ($isFavourite ? 'red' : 'white')};
-    cursor: pointer;
+    opacity: ${({ $hover }) => ($hover ? '1' : '0.1')};
 `;
 
 export const Card = memo(({ item, isFavourite }: { item: IMovie, isFavourite: boolean }) => {
@@ -55,6 +48,7 @@ export const Card = memo(({ item, isFavourite }: { item: IMovie, isFavourite: bo
     const { overview, poster_path, title, id } = item;
 
     const [hover, setHover] = useState<boolean>(false);
+    const [showInfo, setShowInfo] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const slicedOverview = useMemo(() => `${overview.slice(0, 100)}...`, [overview]);
@@ -66,14 +60,21 @@ export const Card = memo(({ item, isFavourite }: { item: IMovie, isFavourite: bo
         isFavourite ? dispatch(removeFromFavourites(id)) : dispatch(addToFavourites(item))
     }, [dispatch, id, isFavourite, item]);
 
+    const openMovieInfo = useCallback(() => (setShowInfo(true)), []);
+
     return (
-        <StyledMovieCard onMouseOver={onMouseOver} onMouseOut={onMouseLeave}>
-            <StyledSpan>{title}</StyledSpan>
-            <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
-            <StyledOverview $hover={hover}>{slicedOverview}</StyledOverview>
+        <>
+            <StyledMovieCard onMouseOver={onMouseOver} onMouseOut={onMouseLeave} onClick={openMovieInfo}>
+                <StyledSpan>{title}</StyledSpan>
+                <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
+                <StyledOverview $hover={hover}>{slicedOverview}</StyledOverview>
+                {
+                    hover ? <StyledHeart size="40px" title="Add to fav" onClick={onClick} $isFavourite={isFavourite} /> : null
+                }
+            </StyledMovieCard>
             {
-                hover ? <StyledHeart size="40px" title="Add to fav" onClick={onClick} $isFavourite={isFavourite} /> : null
+                showInfo ? <MovieDetail movieItem={item} isFavourite={isFavourite} setShowInfo={setShowInfo} /> : null
             }
-        </StyledMovieCard>
+        </>
     );
 });
