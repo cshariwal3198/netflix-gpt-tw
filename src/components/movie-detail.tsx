@@ -1,4 +1,4 @@
-import { SyntheticEvent, memo, useCallback } from "react";
+import React, { SyntheticEvent, memo, useCallback } from "react";
 import styled from 'styled-components';
 import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
@@ -32,17 +32,18 @@ const StyledContent = styled.div`
 
 const StyledProd = styled.div`
     display: flex;
-    height: 40px;
+    height: fit-content;
+    justify-content: space-center;
     align-items: center;
-    padding: 15px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid;
-    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+    column-gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
 `;
 
 const StyledProdImage = styled.img`
-    height: 40px;
+    height: 35px;
 `;
 
 const StyledSpan = styled.span`
@@ -81,10 +82,10 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
 
     const renderProduction = useCallback(() => (
         movieDetails?.production_companies?.map(({ logo_path, name }) => (
-            <div className="flex gap-2 font-medium mx-5 items-center" key={name}>
+            <React.Fragment key={name}>
                 <StyledProdImage src={`https://image.tmdb.org/t/p/w500/${logo_path}`} alt="" />
-                <h6>{name}</h6>
-            </div>
+                <h6 className="break-keep">{name}</h6>
+            </React.Fragment>
         ))
     ), [movieDetails?.production_companies]);
 
