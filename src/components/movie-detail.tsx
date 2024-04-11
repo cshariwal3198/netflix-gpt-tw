@@ -56,7 +56,7 @@ const StyledSpan = styled.span`
     font: 500; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 `;
 
-export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo }: { movieItem: IMovie, isFavourite: boolean, setShowInfo: (arg: boolean) => void }) => {
+export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewSimillar }: { movieItem: IMovie, isFavourite: boolean, setShowInfo: (arg: boolean) => void, canViewSimillar: boolean }) => {
 
     const { id, poster_path, overview, original_title, backdrop_path } = movieItem;
     const { isMD, isSM, isLG } = useDisplaySizeGroup();
@@ -122,7 +122,10 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo }: { movi
                     <div className="flex gap-5 p-4 overflow-auto">
                         {renderVideos()}
                     </div>
-                    <Link className="font-bold text-xl justify-center text-blue-700" to={`/${id}`}>View More</Link>
+                    {
+                        canViewSimillar ?
+                            <Link className="font-bold text-xl justify-center text-blue-700" to={`/${id}`}>View Simillar</Link> : null
+                    }
                     <StyledFav $isFavourite={isFavourite} size="60px" onClick={onFavouriteClick} />
                 </StyledContent>
             </Wrapper>

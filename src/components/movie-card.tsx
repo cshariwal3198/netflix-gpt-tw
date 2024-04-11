@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { IMovie } from "../types";
 import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
 import { useDispatch } from "react-redux";
-import { MovieDetail } from "./movie-detail";
 import { StyledHeart } from "../common-styles";
+import { MovieDetail } from "./movie-detail";
 
 const StyledMovieCard = styled.div`
     display: flex;
@@ -43,7 +43,7 @@ const StyledOverview = styled(StyledSpan) <{ $hover: boolean }>`
     opacity: ${({ $hover }) => ($hover ? '1' : '0.1')};
 `;
 
-export const Card = memo(({ item, isFavourite }: { item: IMovie, isFavourite: boolean }) => {
+export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie, isFavourite: boolean,  canViewSimillar: boolean }) => {
 
     const { overview, poster_path, title, id } = item;
 
@@ -73,7 +73,7 @@ export const Card = memo(({ item, isFavourite }: { item: IMovie, isFavourite: bo
                 }
             </StyledMovieCard>
             {
-                showInfo ? <MovieDetail movieItem={item} isFavourite={isFavourite} setShowInfo={setShowInfo} /> : null
+                showInfo ? <MovieDetail movieItem={item} isFavourite={isFavourite} setShowInfo={setShowInfo} canViewSimillar={canViewSimillar} /> : null
             }
         </>
     );

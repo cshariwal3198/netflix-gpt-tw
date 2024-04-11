@@ -25,10 +25,15 @@ const StyledInput = styled.input`
 `;
 
 const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
-    const { toggleTheme } = useTheme();
+    const { toggleTheme, theme } = useTheme();
+
+    const onClick = useCallback(() => {
+        localStorage.setItem('theme', theme === 'dark' ? 'light' : 'dark')
+        toggleTheme();
+    }, [theme, toggleTheme]);
 
     return (
-        createElement(iconName, { onClick: toggleTheme, size: '26px', cursor: 'pointer' })
+        createElement(iconName, { onClick, size: '26px', cursor: 'pointer' })
     )
 })
 
