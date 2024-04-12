@@ -44,7 +44,7 @@ const Categories = memo(() => {
                             <StyledWrapper>
                                 {
                                     movies?.map((item) => (
-                                        <Card item={item} canViewSimillar={false} isFavourite={getIsFavourite(item.id)} key={item.id} />
+                                        <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id)} key={item.id} />
                                     ))
                                 }
                             </StyledWrapper>

@@ -13,6 +13,8 @@ const StyledWrapper = styled.div`
     width: 100%;
     text-align: center;
     margin-top: 8px;
+    border: 1px solid white;
+    border-radius: 10px;
 `;
 
 const StyledImage = styled.img`
