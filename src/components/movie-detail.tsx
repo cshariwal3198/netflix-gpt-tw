@@ -1,22 +1,23 @@
-import { SyntheticEvent, memo, useCallback } from "react";
+import React, { SyntheticEvent, memo, useCallback } from "react";
 import styled from 'styled-components';
 import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
-import { StyledHeart } from "../common-styles";
+import { StyledHeart, StyledSpan } from "../common-styles";
 import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
 import { useDispatch } from "react-redux";
 import { useFetchMovieDetails } from "../hooks/get-movie-details";
 import { Link } from "react-router-dom";
 
 const StyledFav = styled(StyledHeart)`
-    right: 30px;
-    bottom: 30px;
+    left: 30px;
+    top: 30px;
 `;
 
 const Wrapper = styled.div<{ $isSM: boolean, $backdrop: string }>`
     display: grid;
     grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '1fr 2fr')};
     column-gap: 30px;
+    border: 1px solid white;
 `;
 
 const StyledContent = styled.div`
@@ -32,33 +33,28 @@ const StyledContent = styled.div`
 
 const StyledProd = styled.div`
     display: flex;
-    height: 40px;
+    height: fit-content;
+    justify-content: space-center;
     align-items: center;
-    padding: 15px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid;
-    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+    column-gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
 `;
 
 const StyledProdImage = styled.img`
-    height: 40px;
+    height: 35px;
 `;
 
-const StyledSpan = styled.span`
-    width: fit-content;
-    padding: 8px;
-    padding-left: 10px;
-    padding-right: 10px;
-    background: none;
-    border: 1px solid;
-    border-radius: 20px;
-    font: 500; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+const StyledLink = styled(Link)`
+    font-size: 20px;
+    color: #4479db;
 `;
 
 export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewSimillar }: { movieItem: IMovie, isFavourite: boolean, setShowInfo: (arg: boolean) => void, canViewSimillar: boolean }) => {
 
-    const { id, poster_path, overview, original_title, backdrop_path } = movieItem;
+    const { id, poster_path, overview, original_title, backdrop_path, title } = movieItem;
     const { isMD, isSM, isLG } = useDisplaySizeGroup();
     const { movieDetails } = useFetchMovieDetails(id);
     const dispatch = useDispatch();
@@ -81,10 +77,10 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
 
     const renderProduction = useCallback(() => (
         movieDetails?.production_companies?.map(({ logo_path, name }) => (
-            <div className="flex gap-2 font-medium mx-5 items-center" key={name}>
+            <React.Fragment key={name}>
                 <StyledProdImage src={`https://image.tmdb.org/t/p/w500/${logo_path}`} alt="" />
-                <h6>{name}</h6>
-            </div>
+                <h6 className="break-keep">{name}</h6>
+            </React.Fragment>
         ))
     ), [movieDetails?.production_companies]);
 
@@ -99,7 +95,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
     return (
         <div className="flex flex-col justify-center items-center absolute top-0 right-0 bottom-0 left-0 z-10 bg-[#000000B3] h-full w-full" onClick={onClick}>
             <Wrapper
-                className="h-[80%] w-[90%] justify-center items-center bg-slate-100 border-slate-800 rounded-lg overflow-hidden dark:bg-zinc-700"
+                className="h-[80%] w-[90%] relative justify-center items-center bg-slate-100 border-slate-800 rounded-lg overflow-hidden dark:bg-zinc-700"
                 $isSM={isSM || isMD}
                 $backdrop={backdrop_path}
             >
@@ -124,10 +120,13 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                     </div>
                     {
                         canViewSimillar ?
-                            <Link className="font-bold text-xl justify-center text-blue-700" to={`/${id}`}>View Simillar</Link> : null
+                            <div className="flex justify-around items-center">
+                                <Link className="font-bold text-xl justify-center text-blue-700" to={`/simillar/${title}/${id}`}>View Simillar</Link>
+                                <StyledLink to={`${title}/${id}`}>More Info</StyledLink>
+                            </div> : null
                     }
-                    <StyledFav $isFavourite={isFavourite} size="60px" onClick={onFavouriteClick} />
                 </StyledContent>
+                <StyledFav $isFavourite={isFavourite} size="80px" onClick={onFavouriteClick} title="Add to Favourites" />
             </Wrapper>
         </div>
     )

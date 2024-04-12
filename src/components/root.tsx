@@ -8,7 +8,7 @@ const Root = memo(() => {
     return (
         <div className="font-medium flex flex-col h-full w-full">
             <Navbar onSearch={() => ('')} />
-            <div className="flex flex-col overflow-auto">
+            <div className="flex flex-col overflow-auto h-full">
                 <Outlet />
                 <Footer />
             </div>

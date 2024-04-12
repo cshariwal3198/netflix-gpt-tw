@@ -16,6 +16,7 @@ export const Footer = memo(() => {
         <>
             <StyledLine />
             <StyledSpan>Footer Content</StyledSpan>
+            <span className="flex justify-center items-center">Created by CSH</span>
         </>
     );
 })

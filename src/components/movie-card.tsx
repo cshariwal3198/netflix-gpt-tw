@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { SyntheticEvent, memo, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { IMovie } from "../types";
 import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
@@ -10,6 +10,7 @@ const StyledMovieCard = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px;
+    min-width: 280px;
     max-width: 360px;
     position: relative;
     text-align: center;
@@ -43,7 +44,7 @@ const StyledOverview = styled(StyledSpan) <{ $hover: boolean }>`
     opacity: ${({ $hover }) => ($hover ? '1' : '0.1')};
 `;
 
-export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie, isFavourite: boolean,  canViewSimillar: boolean }) => {
+export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie, isFavourite: boolean, canViewSimillar: boolean }) => {
 
     const { overview, poster_path, title, id } = item;
 
@@ -56,7 +57,8 @@ export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie
     const onMouseOver = useCallback(() => (setHover(true)), []);
     const onMouseLeave = useCallback(() => (setHover(false)), []);
 
-    const onClick = useCallback(() => {
+    const onClick = useCallback((e: SyntheticEvent) => {
+        e.stopPropagation();
         isFavourite ? dispatch(removeFromFavourites(id)) : dispatch(addToFavourites(item))
     }, [dispatch, id, isFavourite, item]);
 

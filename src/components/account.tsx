@@ -1,21 +1,16 @@
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { memo, useCallback, useState } from "react";
-import { ManageAccount } from "./manage-account-menu";
+import { Link } from "react-router-dom";
 
 const styles = 'flex cursor-pointer text-center justify-center items-center w-full h-full rounded-xl hover:scale-125  hover:bg-zinc-200';
 
 export const UserAccount = memo(() => {
 
     const [hover, setHover] = useState<boolean>(false);
-    const [showProfile, setShowProfile] = useState<boolean>(false);
     const { user } = useUser();
     const { signOut } = useAuth();
 
-    const toggleHover = useCallback(() => (
-        setHover(!hover)
-    ), [hover]);
-
-    const onProfileClick = useCallback(() => (setShowProfile(true)), []);
+    const toggleHover = useCallback(() => setHover(!hover), [hover]);
 
     const onSignOutClick = useCallback(() => (signOut()), [signOut]);
 
@@ -33,15 +28,14 @@ export const UserAccount = memo(() => {
                                 <h4 className="text-sm">{user?.primaryEmailAddress?.emailAddress}</h4>
                                 <hr className="text-black dark:text-white font-bold" />
                             </div>
-                            <span className={styles} onClick={onProfileClick}>Profile</span>
+                            <span className={styles}>
+                                <Link to="/account">Profile</Link>
+                            </span>
                             <span className={styles} onClick={onSignOutClick}>Sign Out</span>
                         </div>
                     ) : null
                 }
             </div>
-            {
-                showProfile ? <ManageAccount setShowProfile={setShowProfile} /> : null
-            }
         </>
     )
 });
