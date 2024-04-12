@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetchMovieDetails } from "../hooks/get-movie-details";
 import { IMovie, IMovieDetails } from "../types";
@@ -7,7 +7,8 @@ import { useDisplaySizeGroup } from "../hooks";
 import { BiStar, BiCalendar } from "react-icons/bi";
 import { FaHeart, FaPlay } from "react-icons/fa";
 import { StyledSpan } from "../common-styles";
-import ReactPlayer from 'react-player';
+import { Card } from "./movie-card";
+import { PlayTrailer } from "./play-trialer";
 
 const StyledBackground = styled.img`
     position: fixed;
@@ -56,11 +57,24 @@ const StyledFlex = styled.div`
     justify-content: start;
 `;
 
+const StyledSimillarDiv = styled.div<{ $isSM: boolean }>`
+    display: flex;
+    flex-wrap: nowrap;
+    column-gap: 20px;
+    overflow-x: scroll;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    overflow-y: hidden;
+`;
+
 const MovieInfo = memo(() => {
 
     const { id } = useParams();
-    const { movieDetails } = useFetchMovieDetails(Number(id));
-    console.log(movieDetails);
+    const { movieDetails, simillarMovies } = useFetchMovieDetails(Number(id));
+
+    const [playVideo, setPlayVideo] = useState<boolean>(false);
 
     const { isMD, isSM } = useDisplaySizeGroup();
 
@@ -72,23 +86,12 @@ const MovieInfo = memo(() => {
         ))
     }, [genres]);
 
-    const renderTrailerVideo = useCallback(() => {
-        const trailerObject = videos?.results?.find(({ name }) => (name.toLowerCase() === 'official trailer'));
+    const onPlayClick = useCallback(() => (setPlayVideo(true)), []);
 
-        if (trailerObject) {
-            const { id, key } = trailerObject;
-            return (
-                <div>
-                    <ReactPlayer key={id} url={`https://www.youtube.com/embed/${key}`} controls />
-                </div>
-            )
-        }
-        return null;
-
-    }, [videos?.results]);
+    const onPlayClose = useCallback(() => (setPlayVideo(false)), []);
 
     return (
-        <div className="flex flex-col items-center size-[100%] relative text-[white]">
+        <div className="flex flex-col items-center size-[100%] relative text-[white] overflow-auto">
             <StyledBackground src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} alt="" />
             <StyledGrid $isSM={isSM}>
                 <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
@@ -104,16 +107,31 @@ const MovieInfo = memo(() => {
                         </StyledFlex>
                         <StyledFlex>
                             <StyledButton><FaHeart />Wishlist</StyledButton>
-                            <StyledButton> <FaPlay />Play </StyledButton>
+                            <StyledButton onClick={onPlayClick}> <FaPlay />Play </StyledButton>
                         </StyledFlex>
                     </div>
-                    <div className="flex flex-col gap-5">
-                        <div className="flex gap-x-5">{renderGenres()}</div>
-                        <span className="font-normal">{overview}</span>
-                        {renderTrailerVideo()}
+                    <div className="flex flex-col gap-5 justify-center">
+                        <div className="flex gap-5 flex-wrap">{renderGenres()}</div>
+                        <span className="font-light text-xl">{overview}</span>
                     </div>
                 </StyledInnerGrid>
             </StyledGrid>
+            <div className="flex flex-col gap-4 justify-start p-3 relative w-full">
+                <h1 className="font-bold font-sans text-[40px]">Simillar Movies</h1>
+                <StyledSimillarDiv $isSM={isMD || isSM}>
+                    {
+                        simillarMovies.length ?
+                            simillarMovies.map((item) => (
+                                item.backdrop_path ?
+                                    <Card isFavourite={false} item={item} key={item?.original_title} canViewSimillar={false} /> : null
+                            )) :
+                            <h1>No simillar movies Available</h1>
+                    }
+                </StyledSimillarDiv>
+            </div>
+            {
+                playVideo ? <PlayTrailer videos={videos} onClick={onPlayClose} /> : null
+            }
         </div>
     );
 });

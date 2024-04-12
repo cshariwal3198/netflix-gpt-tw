@@ -10,6 +10,7 @@ const StyledMovieCard = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px;
+    min-width: 280px;
     max-width: 360px;
     position: relative;
     text-align: center;
