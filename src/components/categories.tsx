@@ -1,8 +1,9 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useGetCategoryMovies } from "../utils";
 import styled from "styled-components";
 import { Card } from "./movie-card";
 import { RingLoader } from "react-spinners";
+import { useGetFavourites } from "../hooks/use-get-favourites";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -23,10 +24,15 @@ const StyledSpan = styled.span`
 const Categories = memo(() => {
 
     const { popular, topRated, upcoming } = useGetCategoryMovies();
+    const { favourites } = useGetFavourites();
 
     const moviesToRender = [
         { name: 'Popular', movies: popular }, { name: 'Top Rated', movies: topRated }, { name: 'UpComing', movies: upcoming }
     ];
+
+    const getIsFavourite = useCallback((id: number) => (
+        favourites?.some(({ id: movieId }: { id: number }) => (movieId === id))
+    ), [favourites]);
 
     return (
         <div className="flex flex-col h-full">
@@ -38,7 +44,7 @@ const Categories = memo(() => {
                             <StyledWrapper>
                                 {
                                     movies?.map((item) => (
-                                        <Card item={item} canViewSimillar={false} isFavourite={false} key={item.id} />
+                                        <Card item={item} canViewSimillar={false} isFavourite={getIsFavourite(item.id)} key={item.id} />
                                     ))
                                 }
                             </StyledWrapper>

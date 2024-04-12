@@ -9,8 +9,8 @@ import { useFetchMovieDetails } from "../hooks/get-movie-details";
 import { Link } from "react-router-dom";
 
 const StyledFav = styled(StyledHeart)`
-    right: 30px;
-    bottom: 30px;
+    left: 30px;
+    top: 30px;
 `;
 
 const Wrapper = styled.div<{ $isSM: boolean, $backdrop: string }>`
@@ -95,7 +95,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
     return (
         <div className="flex flex-col justify-center items-center absolute top-0 right-0 bottom-0 left-0 z-10 bg-[#000000B3] h-full w-full" onClick={onClick}>
             <Wrapper
-                className="h-[80%] w-[90%] justify-center items-center bg-slate-100 border-slate-800 rounded-lg overflow-hidden dark:bg-zinc-700"
+                className="h-[80%] w-[90%] relative justify-center items-center bg-slate-100 border-slate-800 rounded-lg overflow-hidden dark:bg-zinc-700"
                 $isSM={isSM || isMD}
                 $backdrop={backdrop_path}
             >
@@ -120,11 +120,13 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                     </div>
                     {
                         canViewSimillar ?
-                            <Link className="font-bold text-xl justify-center text-blue-700" to={`/simillar/${id}`}>View Simillar</Link> : null
+                            <div className="flex justify-around items-center">
+                                <Link className="font-bold text-xl justify-center text-blue-700" to={`/simillar/${title}/${id}`}>View Simillar</Link>
+                                <StyledLink to={`${title}/${id}`}>More Info</StyledLink>
+                            </div> : null
                     }
-                    <StyledLink to={`${title}/${id}`}>More Info</StyledLink>
-                    <StyledFav $isFavourite={isFavourite} size="60px" onClick={onFavouriteClick} />
                 </StyledContent>
+                <StyledFav $isFavourite={isFavourite} size="80px" onClick={onFavouriteClick} title="Add to Favourites" />
             </Wrapper>
         </div>
     )

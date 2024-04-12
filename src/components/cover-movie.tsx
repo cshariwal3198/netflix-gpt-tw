@@ -1,8 +1,10 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import styled from "styled-components";
 import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
 import { Link } from "react-router-dom";
+import { PlayTrailer } from "./play-trialer";
+import { useFetchMovieDetails } from "../hooks/get-movie-details";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -82,25 +84,35 @@ const ButtonWrapper = styled.div`
 export const CoverMovie = memo((props: { movieItem: IMovie }) => {
 
     const { backdrop_path, original_title, overview, release_date, poster_path, id, title } = props.movieItem;
+    const { movieDetails: { videos } } = useFetchMovieDetails(id);
+    const [playVideo, setPlayVideo] = useState<boolean>(false);
 
     const { isMD, isSM } = useDisplaySizeGroup();
 
+    const onPlayClick = () => (setPlayVideo(true));
+    const onClose = () => (setPlayVideo(false));
+
     return (
-        <StyledWrapper>
-            <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
-            <StyledImage src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} />
-            <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} />
-            <ButtonWrapper>
-                <button className="text-lg p-2 text-black border-[1px] rounded-md bg-[#ffffff]">
-                    <Link to={`/${title}/${id}`}>More Info</Link>
-                </button>
-                <button className="text-lg p-2 text-white border-[1px] rounded-md bg-red-600">Watch</button>
-            </ButtonWrapper>
+        <>
+            <StyledWrapper>
+                <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
+                <StyledImage src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} />
+                <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} />
+                <ButtonWrapper>
+                    <button className="text-lg p-2 text-black border-[1px] rounded-md bg-[#ffffff]">
+                        <Link to={`/${title}/${id}`}>More Info</Link>
+                    </button>
+                    <button className="text-lg p-2 text-white border-[1px] rounded-md bg-red-600" onClick={onPlayClick}>Watch</button>
+                </ButtonWrapper>
+                {
+                    (isMD || isSM) ? null : <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
+                }
+                <StyledPara $isMD={isMD} $isSM={isSM}>{overview}</StyledPara>
+            </StyledWrapper>
             {
-                (isMD || isSM) ? null : <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
+                playVideo ? <PlayTrailer onClick={onClose} videos={videos} /> : null
             }
-            <StyledPara $isMD={isMD} $isSM={isSM}>{overview}</StyledPara>
-        </StyledWrapper>
+        </>
     );
 
 })

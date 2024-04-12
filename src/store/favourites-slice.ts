@@ -8,7 +8,9 @@ export const favouritesSlice = createSlice({
     initialState,
     reducers: {
         addToFavourites: (store, action) => {
-            store.push(action.payload)
+            if (!store.some(({ id }) => (action.payload.id === id))) {
+                store.push(action.payload)
+            }
         },
         removeFromFavourites(store, action) {
             return store.filter(({ id }) => (id !== action.payload))

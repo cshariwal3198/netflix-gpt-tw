@@ -122,7 +122,7 @@ const MovieInfo = memo(() => {
                     {
                         simillarMovies.length ?
                             simillarMovies.map((item) => (
-                                item.backdrop_path ?
+                                item.backdrop_path && item.poster_path ?
                                     <Card isFavourite={false} item={item} key={item?.original_title} canViewSimillar={false} /> : null
                             )) :
                             <h1>No simillar movies Available</h1>

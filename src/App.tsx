@@ -29,7 +29,7 @@ export default function App() {
           element: <Favourites />
         },
         {
-          path: '/simillar/:id',
+          path: '/simillar/:title/:id',
           element: <ViewSimillar />
         },
         {

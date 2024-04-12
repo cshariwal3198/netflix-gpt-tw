@@ -1,6 +1,6 @@
 import { memo, useCallback } from "react";
 import styled from "styled-components";
-import { Player } from "./player";
+import { Player } from "./player/player";
 import { Close } from "@material-ui/icons";
 
 const StyledWrapper = styled.div`

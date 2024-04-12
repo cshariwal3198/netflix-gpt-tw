@@ -4,14 +4,14 @@ import { Card } from "./movie-card";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const StyledFlex = styled.div`
+const StyledFlex = styled.div<{ $isDataAvailable: boolean }>`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     row-gap: 25px;
     column-gap: 25px;
     margin-top: 15px;
-    height: 100%;
+    height: ${({ $isDataAvailable }) => ($isDataAvailable ? 'unset' : '100%')};
 `;
 
 const StyledSpan = styled.span`
@@ -37,7 +37,7 @@ const Favourites = memo(() => {
     const { favourites } = useGetFavourites();
 
     return (
-        <StyledFlex>
+        <StyledFlex $isDataAvailable={Boolean(favourites.length)}>
             {
                 favourites.length ? favourites.map((item) => (
                     <Card item={item} isFavourite={true} />

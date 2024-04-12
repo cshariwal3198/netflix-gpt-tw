@@ -110,7 +110,7 @@ const Control = ({
     return (
         <div className="control_Container" ref={controlRef}>
             <div className="top_container">
-                <h2>Video PLayer</h2>
+                <h2></h2>
             </div>
             <div className="mid__container">
                 <div className="icon__btn" onDoubleClick={onRewind}>
@@ -295,9 +295,6 @@ export const Player = ({ videoSource }: { videoSource: string }) => {
 
     return (
         <div className="video_container">
-            <div>
-                <h2>React player</h2>
-            </div>
             <Container maxWidth="md" justify="center" style={{ height: '100%' }}>
                 <div className="player__wrapper" onMouseMove={mouseMoveHandler}>
                     <ReactPlayer
