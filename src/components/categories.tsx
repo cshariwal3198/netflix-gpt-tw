@@ -2,6 +2,7 @@ import { memo } from "react";
 import { useGetCategoryMovies } from "../utils";
 import styled from "styled-components";
 import { Card } from "./movie-card";
+import { RingLoader } from "react-spinners";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -28,18 +29,24 @@ const Categories = memo(() => {
     ];
 
     return (
-        <div>
+        <div className="flex flex-col h-full">
             {
-                moviesToRender.map(({ movies, name }) => (
-                    <>
-                        <StyledSpan>{name}</StyledSpan>
-                        <StyledWrapper>
-                            {movies?.map((item) => (
-                                <Card item={item} canViewSimillar={false} isFavourite={false} key={item.id} />
-                            ))}
-                        </StyledWrapper>
-                    </>
-                ))
+                popular.length || topRated.length || upcoming.length ?
+                    moviesToRender.map(({ movies, name }) => (
+                        <>
+                            <StyledSpan>{name}</StyledSpan>
+                            <StyledWrapper>
+                                {
+                                    movies?.map((item) => (
+                                        <Card item={item} canViewSimillar={false} isFavourite={false} key={item.id} />
+                                    ))
+                                }
+                            </StyledWrapper>
+                        </>
+                    )) :
+                    <div className="flex h-[100%] w-full justify-center items-center">
+                        <RingLoader color="#36d7b7" />
+                    </div>
             }
         </div>
     )

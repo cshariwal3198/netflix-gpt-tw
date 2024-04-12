@@ -2,7 +2,7 @@ import React, { SyntheticEvent, memo, useCallback } from "react";
 import styled from 'styled-components';
 import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
-import { StyledHeart } from "../common-styles";
+import { StyledHeart, StyledSpan } from "../common-styles";
 import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
 import { useDispatch } from "react-redux";
 import { useFetchMovieDetails } from "../hooks/get-movie-details";
@@ -17,6 +17,7 @@ const Wrapper = styled.div<{ $isSM: boolean, $backdrop: string }>`
     display: grid;
     grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '1fr 2fr')};
     column-gap: 30px;
+    border: 1px solid white;
 `;
 
 const StyledContent = styled.div`
@@ -46,20 +47,14 @@ const StyledProdImage = styled.img`
     height: 35px;
 `;
 
-const StyledSpan = styled.span`
-    width: fit-content;
-    padding: 8px;
-    padding-left: 10px;
-    padding-right: 10px;
-    background: none;
-    border: 1px solid;
-    border-radius: 20px;
-    font: 500; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+const StyledLink = styled(Link)`
+    font-size: 20px;
+    color: #4479db;
 `;
 
 export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewSimillar }: { movieItem: IMovie, isFavourite: boolean, setShowInfo: (arg: boolean) => void, canViewSimillar: boolean }) => {
 
-    const { id, poster_path, overview, original_title, backdrop_path } = movieItem;
+    const { id, poster_path, overview, original_title, backdrop_path, title } = movieItem;
     const { isMD, isSM, isLG } = useDisplaySizeGroup();
     const { movieDetails } = useFetchMovieDetails(id);
     const dispatch = useDispatch();
@@ -125,8 +120,9 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                     </div>
                     {
                         canViewSimillar ?
-                            <Link className="font-bold text-xl justify-center text-blue-700" to={`/${id}`}>View Simillar</Link> : null
+                            <Link className="font-bold text-xl justify-center text-blue-700" to={`/simillar/${id}`}>View Simillar</Link> : null
                     }
+                    <StyledLink to={`${title}/${id}`}>More Info</StyledLink>
                     <StyledFav $isFavourite={isFavourite} size="60px" onClick={onFavouriteClick} />
                 </StyledContent>
             </Wrapper>

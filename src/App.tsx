@@ -10,7 +10,8 @@ const Root = React.lazy(() => import('./components/root'));
 const Favourites = React.lazy(() => import('./components/favourites'));
 const ViewSimillar = React.lazy(() => import('./components/simillar-movies'));
 const ManageAccount = React.lazy(() => import('./components/manage-account-menu'));
-const Categories = React.lazy(() => (import('./components/categories')))
+const Categories = React.lazy(() => (import('./components/categories')));
+const MovieInfo = React.lazy(() => (import('./components/movie-info')));
 
 export default function App() {
 
@@ -28,7 +29,7 @@ export default function App() {
           element: <Favourites />
         },
         {
-          path: '/:id',
+          path: '/simillar/:id',
           element: <ViewSimillar />
         },
         {
@@ -38,6 +39,10 @@ export default function App() {
         {
           path: '/categories',
           element: <Categories />
+        },
+        {
+          path: '/:title/:id',
+          element: <MovieInfo />
         }
       ]
     }

@@ -2,6 +2,7 @@ import { memo } from "react";
 import styled from "styled-components";
 import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
+import { Link } from "react-router-dom";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -15,7 +16,11 @@ const StyledWrapper = styled.div`
 const StyledImage = styled.img`
     border-radius: 10px;
     height: 65vh;
-    filter: contrast(0.9);
+    filter: blur(2px);
+    z-index: -1;
+    width: 100%;
+    opacity: 0.7;
+    mask-image: linear-gradient(180deg, #c7c4c4 80%, #0000 100%);
 `;
 
 const StyledPoster = styled.img`
@@ -61,11 +66,22 @@ const StyledPara = styled(StyledSpan) <{ $isMD: boolean, $isSM: boolean }>`
     font-size: ${({ $isMD, $isSM }) => ($isMD ? '25px' : $isSM ? '20px' : '35px')};
     text-align: right;
     z-index: 3;
+    width: 70%;
+    right: 20px;
+    color: white;
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    width: 40%;
+    left: 20px; bottom: 40px;
+    position: absolute;
+    gap: 20px;
 `;
 
 export const CoverMovie = memo((props: { movieItem: IMovie }) => {
 
-    const { backdrop_path, original_title, overview, release_date, poster_path } = props.movieItem;
+    const { backdrop_path, original_title, overview, release_date, poster_path, id, title } = props.movieItem;
 
     const { isMD, isSM } = useDisplaySizeGroup();
 
@@ -74,6 +90,12 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
             <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
             <StyledImage src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} />
             <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} />
+            <ButtonWrapper>
+                <button className="text-lg p-2 text-black border-[1px] rounded-md bg-[#ffffff]">
+                    <Link to={`/${title}/${id}`}>More Info</Link>
+                </button>
+                <button className="text-lg p-2 text-white border-[1px] rounded-md bg-red-600">Watch</button>
+            </ButtonWrapper>
             {
                 (isMD || isSM) ? null : <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
             }
