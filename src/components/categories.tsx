@@ -1,9 +1,10 @@
-import { memo, useCallback } from "react";
-import { useGetCategoryMovies } from "../utils";
+import { memo, useCallback, useMemo } from "react";
+import { useGetMoviesBasedOnCategory } from "../utils";
 import styled from "styled-components";
 import { Card } from "./movie-card";
 import { RingLoader } from "react-spinners";
 import { useGetFavourites } from "../hooks/use-get-favourites";
+import { IMovie } from "../types";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -23,12 +24,12 @@ const StyledSpan = styled.span`
 
 const Categories = memo(() => {
 
-    const { popular, topRated, upcoming } = useGetCategoryMovies();
     const { favourites } = useGetFavourites();
+    const { popular, topRated, upcoming } = useGetMoviesBasedOnCategory();
 
-    const moviesToRender = [
-        { name: 'Popular', movies: popular }, { name: 'Top Rated', movies: topRated }, { name: 'UpComing', movies: upcoming }
-    ];
+    const moviesToRender = useMemo(() => ([
+        { name: 'Popular', moviesData: popular }, { name: 'Top Rated', moviesData: topRated }, { name: 'UpComing', moviesData: upcoming }
+    ]), [popular, topRated, upcoming]);
 
     const getIsFavourite = useCallback((id: number) => (
         favourites?.some(({ id: movieId }: { id: number }) => (movieId === id))
@@ -37,22 +38,22 @@ const Categories = memo(() => {
     return (
         <div className="flex flex-col h-full">
             {
-                popular.length || topRated.length || upcoming.length ?
-                    moviesToRender.map(({ movies, name }) => (
-                        <>
-                            <StyledSpan>{name}</StyledSpan>
-                            <StyledWrapper>
-                                {
-                                    movies?.map((item) => (
+                moviesToRender.map(({ moviesData, name }) => (
+                    <>
+                        <StyledSpan>{name}</StyledSpan>
+                        <StyledWrapper>
+                            {
+                                moviesData.isLoading ?
+                                    <div className="flex h-[100%] w-full justify-center items-center">
+                                        <RingLoader color="#36d7b7" />
+                                    </div> :
+                                    moviesData.data.results?.map((item: IMovie) => (
                                         <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id)} key={item.id} />
                                     ))
-                                }
-                            </StyledWrapper>
-                        </>
-                    )) :
-                    <div className="flex h-[100%] w-full justify-center items-center">
-                        <RingLoader color="#36d7b7" />
-                    </div>
+                            }
+                        </StyledWrapper>
+                    </>
+                ))
             }
         </div>
     )

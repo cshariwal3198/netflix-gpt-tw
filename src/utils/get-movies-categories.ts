@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { IMovie } from "../types";
+import useSWR from "swr";
 
 const options = {
     method: 'GET',
@@ -9,43 +8,14 @@ const options = {
     }
 };
 
-export const getPopularList = async () => {
-    return await fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=2', options)
-        .then(response => response.json())
-        .then(response => (response))
-        .catch(err => console.error(err));
-}
+const fetcher = (url: string) => (fetch(url, options).then((res) => (res.json())));
 
-export const getTopRatedList = async () => {
-    return await fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=2', options)
-        .then(response => response.json())
-        .then(response => (response))
-        .catch(err => console.error(err));
-}
+export const useGetMoviesBasedOnCategory = () => {
+    const popular = useSWR('https://api.themoviedb.org/3/movie/popular?language=en-US&page=2', fetcher);
+    const topRated = useSWR('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=2', fetcher);
+    const upcoming = useSWR('https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=2', fetcher);
 
-export const getUpcomingList = async () => {
-    return await fetch('https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=2', options)
-        .then(response => response.json())
-        .then(response => (response))
-        .catch(err => console.error(err));
-}
-
-export const useGetCategoryMovies = () => {
-    const [movies, setMovies] = useState<{ popular: IMovie[], topRated: IMovie[], upcoming: IMovie[] }>({} as any);
-
-    useEffect(() => {
-        async function getMovies() {
-            try {
-                const res1 = await getPopularList();
-                const res2 = await getTopRatedList();
-                const res3 = await getUpcomingList();
-                setMovies({ popular: res1.results, topRated: res2.results, upcoming: res3.results })
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        getMovies();
-    }, []);
-
-    return { popular: movies?.popular || [], topRated: movies?.topRated || [], upcoming: movies?.upcoming || [] }
+    return {
+        popular, topRated, upcoming
+    }
 }
