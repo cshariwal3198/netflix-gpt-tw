@@ -54,7 +54,7 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
             <div className="flex justify-around items-center w-1/2 text-2xl">
                 <img src="/images/neflix_logo.png" alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} />
                 <Link to="/categories">Movies</Link>
-                <div>TV Shows</div>
+                <Link to="/tvshows">TV Shows</Link>
                 <Link to="/favourites">Favourites</Link>
             </div>
             <div className="flex items-center justify-around text-xl w-1/4">

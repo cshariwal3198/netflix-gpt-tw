@@ -12,6 +12,7 @@ const ViewSimillar = React.lazy(() => import('./components/simillar-movies'));
 const ManageAccount = React.lazy(() => import('./components/manage-account-menu'));
 const Categories = React.lazy(() => (import('./components/categories')));
 const MovieInfo = React.lazy(() => (import('./components/movie-info')));
+const TvShows = React.lazy(() => import('./components/tv-shows'));
 
 export default function App() {
 
@@ -43,6 +44,10 @@ export default function App() {
         {
           path: '/:title/:id',
           element: <MovieInfo />
+        },
+        {
+          path: '/tvshows',
+          element: <TvShows />
         }
       ]
     }
