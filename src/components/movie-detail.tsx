@@ -57,6 +57,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
     const { id, poster_path, overview, original_title, backdrop_path, title } = movieItem;
     const { isMD, isSM, isLG } = useDisplaySizeGroup();
     const { movieDetails } = useFetchMovieDetails(id);
+
     const dispatch = useDispatch();
 
     const onClick = useCallback((e: SyntheticEvent) => {
