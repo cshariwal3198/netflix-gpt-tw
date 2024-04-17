@@ -5,13 +5,15 @@ import { addToFavourites, removeFromFavourites } from "../store/favourites-slice
 import { useDispatch } from "react-redux";
 import { StyledHeart } from "../common-styles";
 import { MovieDetail } from "./movie-detail";
+import { useDisplaySizeGroup } from "../hooks";
 
-const StyledMovieCard = styled.div`
+const StyledMovieCard = styled.div<{ $isSM: boolean }>`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    min-width: 280px;
-    max-width: 360px;
+    max-height: ${({ $isSM }) => ($isSM ? '200px' : '300px')};
+    max-width: ${({ $isSM }) => ($isSM ? '150px' : '200px')};
+    min-width: 150px;
     position: relative;
     text-align: center;
 
@@ -31,7 +33,7 @@ const StyledImage = styled.img`
 
 const StyledSpan = styled.span`
     position: absolute;
-    top: 25px;
+    top: 15px;
     font-weight: 500;
     padding: 10px;
     color: white;
@@ -41,7 +43,8 @@ const StyledSpan = styled.span`
 const StyledOverview = styled(StyledSpan) <{ $hover: boolean }>`
     bottom: 30px;
     top: unset;
-    opacity: ${({ $hover }) => ($hover ? '1' : '0.1')};
+    opacity: ${({ $hover }) => ($hover ? '1' : '0.2')};
+    margin-left: 0px;
 `;
 
 export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie, isFavourite: boolean, canViewSimillar: boolean }) => {
@@ -51,6 +54,7 @@ export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie
     const [hover, setHover] = useState<boolean>(false);
     const [showInfo, setShowInfo] = useState<boolean>(false);
     const dispatch = useDispatch();
+    const { isMD, isSM } = useDisplaySizeGroup();
 
     const slicedOverview = useMemo(() => `${overview.slice(0, 100)}...`, [overview]);
 
@@ -66,7 +70,7 @@ export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie
 
     return (
         <>
-            <StyledMovieCard onMouseOver={onMouseOver} onMouseOut={onMouseLeave} onClick={openMovieInfo}>
+            <StyledMovieCard onMouseOver={onMouseOver} onMouseOut={onMouseLeave} onClick={openMovieInfo} $isSM={isSM || isMD}>
                 <StyledSpan>{title}</StyledSpan>
                 <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
                 <StyledOverview $hover={hover}>{slicedOverview}</StyledOverview>

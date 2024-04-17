@@ -1,10 +1,10 @@
 import { memo, useCallback, useMemo } from "react";
-import { useGetMoviesBasedOnCategory } from "../utils";
 import styled from "styled-components";
 import { Card } from "./movie-card";
 import { RingLoader } from "react-spinners";
 import { useGetFavourites } from "../hooks/use-get-favourites";
 import { IMovie } from "../types";
+import { useGetMoviesBasedOnCategory } from "../hooks";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -43,11 +43,11 @@ const Categories = memo(() => {
                         <StyledSpan>{name}</StyledSpan>
                         <StyledWrapper>
                             {
-                                moviesData.isLoading ?
+                                !moviesData.length ?
                                     <div className="flex h-[100%] w-full justify-center items-center">
                                         <RingLoader color="#36d7b7" />
                                     </div> :
-                                    moviesData.data.results?.map((item: IMovie) => (
+                                    moviesData.map((item: IMovie) => (
                                         <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id)} key={item.id} />
                                     ))
                             }

@@ -78,7 +78,7 @@ const MovieInfo = memo(() => {
 
     const { isMD, isSM } = useDisplaySizeGroup();
 
-    const { backdrop_path, poster_path, genres, overview, vote_average, original_title, tagline, release_date, videos } = movieDetails?.data?.result as IMovieDetails & IMovie;
+    const { backdrop_path, poster_path, genres, overview, vote_average, original_title, tagline, release_date, videos } = movieDetails as IMovieDetails & IMovie;
 
     const renderGenres = useCallback(() => {
         return genres?.map(({ id, name }) => (
