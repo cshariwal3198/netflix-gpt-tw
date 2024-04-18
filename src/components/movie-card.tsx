@@ -6,18 +6,19 @@ import { useDispatch } from "react-redux";
 import { StyledHeart } from "../common-styles";
 import { MovieDetail } from "./movie-detail";
 import { useDisplaySizeGroup } from "../hooks";
+import { getValueBasedOnResolution } from "./utils";
 
 interface ICardProps {
     item: IMovie, isFavourite: boolean, canViewSimillar: boolean, type?: 'movie' | 'tvshow'
 }
 
-const StyledMovieCard = styled.div<{ $isSM: boolean }>`
+const StyledMovieCard = styled.div<{ $isSM: boolean, $isMD: boolean }>`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    max-height: ${({ $isSM }) => ($isSM ? '200px' : '300px')};
-    max-width: ${({ $isSM }) => ($isSM ? '150px' : '200px')};
-    min-width: 150px;
+    max-height: ${({ $isSM, $isMD }) => ($isSM ? '210px' : getValueBasedOnResolution($isMD, '250px', '300px'))};
+    max-width: ${({ $isSM, $isMD }) => ($isSM ? '165px' : getValueBasedOnResolution($isMD, '180px', '220px'))};
+    min-width: 165px;
     position: relative;
     text-align: center;
 
@@ -47,7 +48,7 @@ const StyledSpan = styled.span`
 const StyledOverview = styled(StyledSpan) <{ $hover: boolean, $isSM: boolean }>`
     bottom: 30px;
     top: unset;
-    opacity: ${({ $hover }) => ($hover ? '1' : '0.2')};
+    opacity: ${({ $hover }) => ($hover ? '0.7' : '0.2')};
     margin-left: 0px;
     font-weight: ${({ $isSM }) => ($isSM ? 400 : 500)};
 `;
@@ -75,7 +76,7 @@ export const Card = memo(({ item, isFavourite, canViewSimillar, type }: ICardPro
 
     return (
         <>
-            <StyledMovieCard onMouseOver={onMouseOver} onMouseOut={onMouseLeave} onClick={openMovieInfo} $isSM={isSM || isMD}>
+            <StyledMovieCard onMouseOver={onMouseOver} onMouseOut={onMouseLeave} onClick={openMovieInfo} $isSM={isSM} $isMD={isMD}>
                 <StyledSpan>{title}</StyledSpan>
                 <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
                 <StyledOverview $hover={hover} $isSM={isSM || isMD}>{slicedOverview}</StyledOverview>

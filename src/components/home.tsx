@@ -6,6 +6,7 @@ import { Card } from "./movie-card";
 import { CoverMovie } from "./cover-movie";
 import { useDisplaySizeGroup, useGetMoviesBasedOnCategory } from "../hooks";
 import { useGetFavourites } from "../hooks/use-get-favourites";
+import { getValueBasedOnResolution } from "./utils";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -19,27 +20,26 @@ const StyledWrapper = styled.div`
 
 const StyledFlexWrap = styled.div<{ $isSM: boolean }>`
     display: flex;
-    flex-wrap: wrap;
-    justify-content: ${({ $isSM }) => ($isSM ? 'center' : 'start')};
-    row-gap: 25px;
     column-gap: 12px;
-    margin-top: 8px;
+    overflow: auto;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    overflow-y: hidden;
+    min-height: 255px;
 `;
 
-const StyledSpan = styled.span`
-    font-size: 45px;
+const StyledSpan = styled.span<{ $isSM: boolean, $isMD: boolean }>`
+    font-size: ${({ $isSM, $isMD }) => ($isSM ? '22px' : getValueBasedOnResolution($isMD, '32px', '45px'))};
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 600;
     font-style: italic;
-    margin-top: 10px;
-    margin-bottom: 10px;
 `;
 
 export default function Home() {
 
-    const { allMovies, topRated } = useGetMoviesBasedOnCategory();
+    const { allMovies, topRated, nowPlaying } = useGetMoviesBasedOnCategory();
     const { getIsFavourite } = useGetFavourites();
-    const { isSM } = useDisplaySizeGroup();
+    const { isSM, isMD } = useDisplaySizeGroup();
 
     const renderMovies = useCallback(() => allMovies?.slice(1).map((item: IMovie) => (
         <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id, 'movie')} canViewSimillar={true} />
@@ -51,19 +51,31 @@ export default function Home() {
         ))
     ), [getIsFavourite, topRated]);
 
+    const renderNowPlaying = useCallback(() => (
+        nowPlaying?.map((item: IMovie) => (
+            <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
+        ))
+    ), [getIsFavourite, nowPlaying]);
+
     return (
         <div className="font-medium flex flex-col">
             {
                 !allMovies.length ? <ShimmerUI /> :
                     <StyledWrapper>
                         <CoverMovie movieItem={allMovies[0]} />
-                        <StyledSpan>All Movies</StyledSpan>
+                        <StyledSpan $isSM={isSM} $isMD={isMD}>Now Playing</StyledSpan>
+                        <StyledFlexWrap $isSM={isSM}>
+                            {
+                                renderNowPlaying()
+                            }
+                        </StyledFlexWrap>
+                        <StyledSpan $isSM={isSM} $isMD={isMD}>Popular</StyledSpan>
                         <StyledFlexWrap $isSM={isSM}>
                             {
                                 renderMovies()
                             }
                         </StyledFlexWrap>
-                        <StyledSpan>Top Rated</StyledSpan>
+                        <StyledSpan $isSM={isSM} $isMD={isMD}>Top Rated</StyledSpan>
                         <StyledFlexWrap $isSM={isSM}>
                             {
                                 renderTopRated()

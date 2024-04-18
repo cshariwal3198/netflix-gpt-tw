@@ -82,9 +82,9 @@ const StyledVideoItem = styled.div<{ $isSM: boolean }>`
     margin-left: ${({ $isSM }) => ($isSM ? 0 : '10px')};
 `;
 
-const VideosWrapper = styled.div`
+const VideosWrapper = styled.div<{ $isSM: boolean }>`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: ${({ $isSM }) => ($isSM ? '1fr' : '1fr 1fr')};
     row-gap: 20px;
     column-gap: 40px;
     padding: 20px;
@@ -155,7 +155,7 @@ const MovieInfo = memo(() => {
                     <span className="text-3xl text-black dark:text-white">Related Videos</span>
                     {
                         videos?.results?.length ?
-                            <VideosWrapper>
+                            <VideosWrapper $isSM={isSM}>
                                 {
                                     videos?.results?.map(({ name, key }) => (
                                         <StyledVideoItem key={key} $isSM={isSM}>

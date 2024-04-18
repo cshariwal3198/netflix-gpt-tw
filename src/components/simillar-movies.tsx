@@ -18,14 +18,14 @@ const StyledDiv = styled.div<{ $isSM: boolean }>`
 
 const ViewSimillar = memo(() => {
 
-    const { title, id } = useParams();
+    const { type, id } = useParams();
     const { isMD, isSM } = useDisplaySizeGroup();
 
-    const { simillarShowsData } = useFetchMovieOrShowDetails(Number(id));
+    const { simillarShowsData } = useFetchMovieOrShowDetails(Number(id), type);
 
     return (
         <div className="flex flex-col gap-5 justify-start">
-            <h1 className="text-[35px] font-semibold pt-4 pl-5">Showing Simillar Movies for {title}</h1>
+            <h1 className="text-[35px] font-semibold pt-4 pl-5">Showing Simillar {type === 'movie' ? 'Movies' : 'Shows'}</h1>
             <StyledDiv $isSM={isMD || isSM}>
                 {
                     !simillarShowsData.isLoading ?
@@ -33,7 +33,7 @@ const ViewSimillar = memo(() => {
                             item.backdrop_path && item.poster_path ?
                                 <Card isFavourite={false} item={item} key={item?.original_title} canViewSimillar={false} /> : null
                         )) :
-                        <h1>No simillar movies Available</h1>
+                        <h1>No simillar {type === 'movie' ? 'Movies' : 'Shows'} Available</h1>
                 }
             </StyledDiv>
         </div>

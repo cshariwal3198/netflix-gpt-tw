@@ -30,7 +30,7 @@ export default function App() {
           element: <Favourites />
         },
         {
-          path: '/simillar/:title/:id',
+          path: '/simillar/:type/:id',
           element: <ViewSimillar />
         },
         {

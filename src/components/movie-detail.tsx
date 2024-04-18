@@ -2,19 +2,23 @@ import React, { SyntheticEvent, memo, useCallback } from "react";
 import styled from 'styled-components';
 import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
-import { StyledHeart, StyledSpan } from "../common-styles";
+import { StyledSpan } from "../common-styles";
 import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
 import { useDispatch } from "react-redux";
 import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
 import { Link, useNavigate } from "react-router-dom";
+import { FaHeart } from "react-icons/fa";
 
 interface IMovieDetailProps {
     movieItem: IMovie, isFavourite: boolean, setShowInfo: (arg: boolean) => void, canViewSimillar: boolean, type?: 'movie' | 'tvshow'
 }
 
-const StyledFav = styled(StyledHeart)`
-    left: 30px;
-    top: 30px;
+const StyledFav = styled(FaHeart) <{ $isFavourite: boolean }>`
+    /* position: absolute;
+    bottom: 20px;
+    right: 30px; */
+    fill: ${({ $isFavourite }) => ($isFavourite ? 'red' : 'white')};
+    cursor: pointer;
 `;
 
 const Wrapper = styled.div<{ $isSM: boolean, $backdrop: string }>`
@@ -33,11 +37,12 @@ const StyledContent = styled.div`
     position: relative;
     overflow: auto;
     margin-top: 10px;
+    margin-bottom: 15px;
 `;
 
 const StyledProd = styled.div`
     display: flex;
-    height: fit-content;
+    min-height: 70px;
     justify-content: space-center;
     align-items: center;
     width: 100%;
@@ -54,7 +59,8 @@ const StyledProdImage = styled.img`
 const StyledLabel = styled.label`
     font-size: 20px;
     cursor: pointer;
-    color: #4479db;
+    color: rgb(29 78 216);
+    font-weight: 700;
 `;
 
 export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewSimillar, type = 'movie' }: IMovieDetailProps) => {
@@ -115,9 +121,9 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                     isLG ? <img src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" /> : null
                 }
                 <StyledContent>
-                    <h1 className="font-extrabold font-serif text-4xl self-center">{original_title}</h1>
-                    <h3 className="font-thin font-serif text-base">{overview}</h3>
-                    <div className="flex gap-4 justify-start">
+                    <span className="flex font-extrabold font-serif sm:text-2xl text-xl h-[50px] self-center items-center">{original_title}</span>
+                    <h3 className="font-thin font-serif text-base py-4">{overview}</h3>
+                    <div className="flex flex-wrap gap-4 justify-start">
                         {renderGenres()}
                     </div>
                     <span className="font-serif text-2xl">Status: {showDetails?.status}</span>
@@ -129,7 +135,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                         <h1 className="text-2xl text-sky-800 mr-5">Creators </h1>
                         {renderProduction()}
                     </StyledProd>
-                    <div className="flex gap-5 p-4 overflow-auto">
+                    <div className="flex gap-5 p-4 overflow-auto min-h-[200px]">
                         {renderVideos()}
                     </div>
                     {
@@ -139,8 +145,10 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                                 <StyledLabel onClick={onRouteClick}>More Info</StyledLabel>
                             </div> : null
                     }
+                    <div className="flex md:h-[80px] h-[40px] w-full items-center justify-center">
+                        <StyledFav $isFavourite={isFavourite} size={isSM ? '60px' : '80px'} onClick={onFavouriteClick} title="Add to Favourites" />
+                    </div>
                 </StyledContent>
-                <StyledFav $isFavourite={isFavourite} size="80px" onClick={onFavouriteClick} title="Add to Favourites" />
             </Wrapper>
         </div>
     )

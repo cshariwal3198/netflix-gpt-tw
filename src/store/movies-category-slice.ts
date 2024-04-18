@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IMovie } from "../types";
 
-const initialState: { allMovies: IMovie[], popular: IMovie[], topRated: IMovie[], upcoming: IMovie[] } = {
-    allMovies: [], popular: [], topRated: [], upcoming: []
+const initialState: { allMovies: IMovie[], popular: IMovie[], topRated: IMovie[], upcoming: IMovie[], nowPlaying: IMovie[] } = {
+    allMovies: [], popular: [], topRated: [], upcoming: [], nowPlaying: []
 }
 
 export const moviesCategorySlice = createSlice({
@@ -20,9 +20,12 @@ export const moviesCategorySlice = createSlice({
         },
         addUpcomingMovies: (store, action) => {
             store.upcoming = action.payload
+        },
+        addNowPlayingMovies: (store, action) => {
+            store.nowPlaying = action.payload
         }
     }
 });
 
 export const { reducer: moviesCategoryReducer } = moviesCategorySlice;
-export const { addPopularMovies, addTopRatedMovies, addUpcomingMovies, addAllMovies } = moviesCategorySlice.actions;
+export const { addPopularMovies, addTopRatedMovies, addUpcomingMovies, addAllMovies, addNowPlayingMovies } = moviesCategorySlice.actions;

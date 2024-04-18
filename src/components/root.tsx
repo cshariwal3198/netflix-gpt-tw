@@ -8,7 +8,7 @@ const StyledImage = styled.img`
     display: flex;
     width: 100%; height: 100%;
     position: fixed;
-    filter: blur(14px);
+    filter: blur(8px);
     opacity: 0.7;
     mask-image: linear-gradient(180deg, #c7c4c4 80%, #0000 100%);
     z-index: -1;

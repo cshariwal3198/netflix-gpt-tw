@@ -5,8 +5,7 @@ import { useDisplaySizeGroup } from "../hooks";
 import { Link } from "react-router-dom";
 import { PlayTrailer } from "./play-trialer";
 import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
-
-const getValueBasedOnResolution = ($isSM: boolean, val1: string, val2: string) => ($isSM ? val1 : val2);
+import { getValueBasedOnResolution } from "./utils";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -21,7 +20,7 @@ const StyledWrapper = styled.div`
 
 const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
     border-radius: 10px;
-    height: ${({ $isSM, $isMD }) => ($isSM ? '50vh' : $isMD ? '60vh' : '75vh')};
+    height: ${({ $isSM, $isMD }) => ($isSM ? '50vh' : getValueBasedOnResolution($isMD, '60vh', '75vh'))};
     filter: blur(2px);
     z-index: -1;
     width: 100%;
@@ -32,7 +31,7 @@ const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
 `;
 
 const StyledPoster = styled.img<{ $isSM: boolean, $isMD: boolean }>`
-    max-height: ${({ $isSM, $isMD }) => ($isSM ? '20vh' : $isMD ? '30vh' : '40vh')};
+    max-height: ${({ $isSM, $isMD }) => ($isSM ? '20vh' : getValueBasedOnResolution($isMD, '30vh', '40vh'))};
     position: absolute;
     z-index: 2;
     bottom: -30px;
@@ -71,7 +70,6 @@ const StyledPara = styled.p <{ $isMD: boolean, $isSM: boolean }>`
     font-size: ${({ $isMD, $isSM }) => ($isMD ? '22px' : getValueBasedOnResolution($isSM, '15px', '28px'))};
     z-index: 3;
     width: ${({ $isMD, $isSM }) => ($isMD ? '60%' : getValueBasedOnResolution($isSM, '70%', '50%'))};
-    color: white;
 `;
 
 const ButtonWrapper = styled.div<{ $isSM: boolean }>`
@@ -79,7 +77,7 @@ const ButtonWrapper = styled.div<{ $isSM: boolean }>`
     width: 40%;
     left: 4%; bottom: ${({ $isSM }) => ($isSM ? '70px' : '30px')};
     position: absolute;
-    gap: 20px; z-index: 20;
+    gap: 20px; z-index: 10;
 `;
 
 export const CoverMovie = memo((props: { movieItem: IMovie }) => {

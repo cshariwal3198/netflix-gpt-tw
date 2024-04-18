@@ -7,21 +7,25 @@ import styled from "styled-components";
 import { RingLoader } from "react-spinners";
 import { IMovie } from "../types";
 import { useTheme } from "../contexts/theme-context";
-import { useGetFavourites } from "../hooks";
+import { useDisplaySizeGroup, useGetFavourites } from "../hooks";
+import { getValueBasedOnResolution } from "./utils";
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.div<{ $isSM: boolean, $isMD: boolean }>`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    column-gap: ${({ $isSM, $isMD }) => ($isSM ? '8px' : getValueBasedOnResolution($isMD, '12px', '15px'))};
+    row-gap: ${({ $isSM, $isMD }) => ($isSM ? '20px' : getValueBasedOnResolution($isMD, '28px', '32px'))};
+    margin-bottom: 30px;
 `;
 
-const StyledSpan = styled.span`
-    font-size: 45px;
+const StyledSpan = styled.span<{ $isSM: boolean, $isMD: boolean }>`
+    font-size: ${({ $isSM, $isMD }) => ($isSM ? '22px' : getValueBasedOnResolution($isMD, '32px', '45px'))};
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 600;
     font-style: italic;
     margin-top: 10px;
+    margin-left: 5%;
     margin-bottom: 10px;
 `;
 
@@ -38,6 +42,7 @@ const TvShows = memo(() => {
     const [value, setValue] = useState(0);
     const { theme } = useTheme();
     const { getIsFavourite } = useGetFavourites();
+    const { isMD, isSM } = useDisplaySizeGroup();
 
     const tvShowsToRender = useMemo(() => ([
         { name: 'Popular', showsData: popular }, { name: 'Top Rated', showsData: topRated }, { name: 'Trending', showsData: trending }
@@ -49,8 +54,8 @@ const TvShows = memo(() => {
 
     const renderShows = useCallback((index: number) => (
         <>
-            <StyledSpan>{tvShowsToRender[index].name}</StyledSpan>
-            <StyledWrapper>
+            <StyledSpan $isSM={isSM} $isMD={isMD}>{tvShowsToRender[index].name}</StyledSpan>
+            <StyledWrapper $isSM={isSM} $isMD={isMD}>
                 {
                     tvShowsToRender[index].showsData.isLoading ?
                         <div className="flex h-[100%] w-full justify-center items-center">
@@ -62,7 +67,7 @@ const TvShows = memo(() => {
                 }
             </StyledWrapper>
         </>
-    ), [getIsFavourite, tvShowsToRender]);
+    ), [getIsFavourite, isMD, isSM, tvShowsToRender]);
 
     const showContent = useMemo(() => renderShows(value), [renderShows, value]);
 
