@@ -11,7 +11,7 @@ export interface IMovie {
     backdrop_path: string;
 }
 
-export interface IMovieDetails {
+export interface IMovieDetails extends IMovie {
     id: number;
     homepage: string;
     status: string;
@@ -22,4 +22,21 @@ export interface IMovieDetails {
     videos: {
         results: { id: number; key: string; name: string; }[];
     }
+}
+
+export interface ITvShowDeatils extends IMovieDetails {
+    name: string;
+    number_of_episodes: number;
+    number_of_seasons: number;
+    first_air_date: string;
+    seasons: {
+        air_date: string;
+        episode_count: number;
+        id: number;
+        name: string;
+        overview: string;
+        poster_path: string;
+        season_number: number;
+        vote_average: number
+    }[]
 }

@@ -4,7 +4,7 @@ import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
 import { Link } from "react-router-dom";
 import { PlayTrailer } from "./play-trialer";
-import { useFetchMovieDetails } from "../hooks/get-movie-details";
+import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
 
 const getValueBasedOnResolution = ($isSM: boolean, val1: string, val2: string) => ($isSM ? val1 : val2);
 
@@ -85,7 +85,7 @@ const ButtonWrapper = styled.div<{ $isSM: boolean }>`
 export const CoverMovie = memo((props: { movieItem: IMovie }) => {
 
     const { backdrop_path, original_title, overview, release_date, poster_path, id, title } = props.movieItem;
-    const { movieDetails: { videos } } = useFetchMovieDetails(id);
+    const { showDetails: { videos } } = useFetchMovieOrShowDetails(id, 'movie');
     const [playVideo, setPlayVideo] = useState<boolean>(false);
 
     const { isMD, isSM } = useDisplaySizeGroup();

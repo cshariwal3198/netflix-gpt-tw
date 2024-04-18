@@ -38,20 +38,16 @@ const StyledSpan = styled.span`
 export default function Home() {
 
     const { allMovies, topRated } = useGetMoviesBasedOnCategory();
-    const { favourites } = useGetFavourites();
+    const { getIsFavourite } = useGetFavourites();
     const { isSM } = useDisplaySizeGroup();
 
-    const getIsFavourite = useCallback((id: number) => (
-        favourites?.some(({ id: movieId }: { id: number }) => (movieId === id))
-    ), [favourites]);
-
     const renderMovies = useCallback(() => allMovies?.slice(1).map((item: IMovie) => (
-        <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id)} canViewSimillar={true} />
+        <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id, 'movie')} canViewSimillar={true} />
     )), [allMovies, getIsFavourite]);
 
     const renderTopRated = useCallback(() => (
         topRated?.map((item: IMovie) => (
-            <Card item={item} isFavourite={getIsFavourite(item?.id)} key={item.id} canViewSimillar={true} />
+            <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
         ))
     ), [getIsFavourite, topRated]);
 

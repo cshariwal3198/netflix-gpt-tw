@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { Card } from "./movie-card";
 import { RingLoader } from "react-spinners";
@@ -27,19 +27,19 @@ const Categories = memo(() => {
     const { favourites } = useGetFavourites();
     const { popular, topRated, upcoming } = useGetMoviesBasedOnCategory();
 
-    const moviesToRender = useMemo(() => ([
+    const moviesToRender: { name: string, moviesData: IMovie[] }[] = useMemo(() => ([
         { name: 'Popular', moviesData: popular }, { name: 'Top Rated', moviesData: topRated }, { name: 'UpComing', moviesData: upcoming }
     ]), [popular, topRated, upcoming]);
 
     const getIsFavourite = useCallback((id: number) => (
-        favourites?.some(({ id: movieId }: { id: number }) => (movieId === id))
+        favourites?.movie?.some(({ id: movieId }: { id: number }) => (movieId === id))
     ), [favourites]);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col">
             {
                 moviesToRender.map(({ moviesData, name }) => (
-                    <>
+                    <React.Fragment key={name}>
                         <StyledSpan>{name}</StyledSpan>
                         <StyledWrapper>
                             {
@@ -48,11 +48,11 @@ const Categories = memo(() => {
                                         <RingLoader color="#36d7b7" />
                                     </div> :
                                     moviesData.map((item: IMovie) => (
-                                        <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id)} key={item.id} />
+                                        <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id)} key={item.id} type="movie" />
                                     ))
                             }
                         </StyledWrapper>
-                    </>
+                    </React.Fragment>
                 ))
             }
         </div>

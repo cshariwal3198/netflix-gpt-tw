@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { options } from "./utils";
 import useSWR from "swr";
-import { IMovieDetails } from "../types";
+import { IMovieDetails, ITvShowDeatils } from "../types";
 
 const fetcher = (url: string) => (fetch(url, options).then((res) => (res.json())));
 
-export const useFetchMovieDetails = (id: number) => {
+export const useFetchMovieOrShowDetails = (id: number, type: 'movie' | 'tvshow') => {
 
-    const [movieDetails, setMovieDeatils] = useState<IMovieDetails>({} as IMovieDetails);
+    const [movieDetails, setMovieDeatils] = useState<IMovieDetails | ITvShowDeatils>({} as IMovieDetails | ITvShowDeatils);
 
-    const simillarMoviesData = useSWR(`https://api.themoviedb.org/3/movie/${id}/similar?language=en-US&page=1`, fetcher);
+    const simillarShowsData = useSWR(`https://api.themoviedb.org/3/${type === 'movie' ? 'movie' : 'tv'}/${id}/similar?language=en-US&page=1`, fetcher);
 
     useEffect(() => {
         async function getMovies() {
-            await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_API_KEY}&append_to_response=videos`)
+            await fetch(`https://api.themoviedb.org/3/${type === 'movie' ? 'movie' : 'tv'}/${id}?api_key=${import.meta.env.VITE_API_KEY}&append_to_response=videos`)
                 .then((res => res.json())).then(data => (setMovieDeatils(data)));
         }
         getMovies();
-    }, [id]);
+    }, [id, type]);
 
-    return { movieDetails, simillarMoviesData };
+    return { showDetails: movieDetails, simillarShowsData };
 
 }

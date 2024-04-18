@@ -3,15 +3,23 @@ import { useGetFavourites } from "../hooks/use-get-favourites";
 import { Card } from "./movie-card";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { IMovie } from "../types";
 
-const StyledFlex = styled.div<{ $isDataAvailable: boolean }>`
+const StyledFlex = styled.div<{ $isData: boolean }>`
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    row-gap: 25px;
+    overflow: auto;
     column-gap: 25px;
     margin-top: 15px;
-    height: ${({ $isDataAvailable }) => ($isDataAvailable ? 'unset' : '100%')};
+    padding-top: 10px;
+    padding-bottom: 30px;
+`;
+
+const StyledWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
 `;
 
 const StyledSpan = styled.span`
@@ -32,22 +40,44 @@ const StyledLink = styled(Link)`
     color: #118bf7;
 `;
 
+const renderContent = (shows: IMovie[]) => (
+    shows.map((item) => (
+        <Card item={item} isFavourite={true} key={item.id} canViewSimillar={false} />
+    ))
+);
+
 const Favourites = memo(() => {
 
-    const { favourites } = useGetFavourites();
+    const { favourites: { movie: favMovies, tvshow: favShows } } = useGetFavourites();
 
     return (
-        <StyledFlex $isDataAvailable={Boolean(favourites.length)}>
-            {
-                favourites.length ? favourites.map((item) => (
-                    <Card item={item} isFavourite={true} />
-                )) :
-                    <StyledSpan>
-                        No favourites
-                        <StyledLink to="/">Add Movie To Favourites</StyledLink>
-                    </StyledSpan>
-            }
-        </StyledFlex>
+        <StyledWrapper>
+            <div className="h-[40%] p-5">
+                <h1 className="ml-[4%] font-serif text-xl">Favourite Movies</h1>
+                <StyledFlex $isData={!!favMovies.length}>
+                    {
+                        favMovies.length ? renderContent(favMovies) :
+                            <StyledSpan>
+                                No favourite Movies
+                                <StyledLink to="/categories">Add Movie To Favourites</StyledLink>
+                            </StyledSpan>
+                    }
+                </StyledFlex>
+            </div>
+            <hr />
+            <div>
+                <h1 className="ml-[4%] font-serif text-xl">Favourite Shows</h1>
+                <StyledFlex $isData={!!favShows.length}>
+                    {
+                        favShows.length ? renderContent(favShows) :
+                            <StyledSpan>
+                                No favourite Shows
+                                <StyledLink to="/tvshows">Add Shows To Favourites</StyledLink>
+                            </StyledSpan>
+                    }
+                </StyledFlex>
+            </div>
+        </StyledWrapper>
     )
 });
 

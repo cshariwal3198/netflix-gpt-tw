@@ -1,2 +1,2 @@
 export * from './input';
-export * from '../hooks/get-movies-categories';
+export * from '../hooks/fetch-movies-categories';

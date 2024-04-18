@@ -1,19 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IMovie } from "../types";
 
-const initialState: IMovie[] = [];
+const initialState: { movie: IMovie[], tvshow: IMovie[] } = {
+    movie: [], tvshow: []
+};
 
 export const favouritesSlice = createSlice({
     name: 'favourites',
     initialState,
     reducers: {
         addToFavourites: (store, action) => {
-            if (!store.some(({ id }) => (action.payload.id === id))) {
-                store.push(action.payload)
+            const { item, type } = action.payload;
+            if (!store[type as keyof typeof store]?.some(({ id }) => (item.id === id))) {
+                store[type as keyof typeof store].push(item)
             }
         },
         removeFromFavourites(store, action) {
-            return store.filter(({ id }) => (id !== action.payload))
+            const { type } = action.payload;
+            store[type as keyof typeof store].filter(({ id }) => (id !== action.payload.id))
         }
     }
 });
