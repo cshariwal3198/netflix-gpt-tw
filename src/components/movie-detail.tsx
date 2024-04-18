@@ -57,6 +57,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
     const { id, poster_path, overview, original_title, backdrop_path, title } = movieItem;
     const { isMD, isSM, isLG } = useDisplaySizeGroup();
     const { movieDetails } = useFetchMovieDetails(id);
+
     const dispatch = useDispatch();
 
     const onClick = useCallback((e: SyntheticEvent) => {
@@ -69,11 +70,11 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
         isFavourite ? dispatch(removeFromFavourites(id)) : dispatch(addToFavourites(movieItem))
     }, [dispatch, id, isFavourite, movieItem]);
 
-    const renderGenres = useCallback(() => {
-        return movieDetails?.genres?.map(({ id, name }) => (
+    const renderGenres = useCallback(() => (
+        movieDetails?.genres?.map(({ id, name }) => (
             <StyledSpan key={id}>{name}</StyledSpan>
         ))
-    }, [movieDetails.genres]);
+    ), [movieDetails.genres]);
 
     const renderProduction = useCallback(() => (
         movieDetails?.production_companies?.map(({ logo_path, name }) => (
@@ -104,8 +105,10 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                 }
                 <StyledContent>
                     <h1 className="font-extrabold font-serif text-4xl self-center">{original_title}</h1>
-                    <h3 className="font-thin font-serif text-lg">{overview}</h3>
-                    <div className="flex gap-4 justify-start">{renderGenres()}</div>
+                    <h3 className="font-thin font-serif text-base">{overview}</h3>
+                    <div className="flex gap-4 justify-start">
+                        {renderGenres()}
+                    </div>
                     <span className="font-serif text-2xl">Status: {movieDetails?.status}</span>
                     {
                         movieDetails?.belongs_to_collection?.name ?

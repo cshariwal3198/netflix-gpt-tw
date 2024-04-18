@@ -11,12 +11,12 @@ export const StyledHeart = styled(FaHeart) <{ $isFavourite: boolean }>`
 
 export const StyledSpan = styled.span`
     width: fit-content;
-    padding: 10px;
-    font-size: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 5px;
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     background: none;
     border: 1px solid;
-    border-radius: 15px;
-    font: 500; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 8px;
+    font: 300; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 `;

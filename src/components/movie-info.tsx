@@ -72,7 +72,7 @@ const StyledSimillarDiv = styled.div<{ $isSM: boolean }>`
 const MovieInfo = memo(() => {
 
     const { id } = useParams();
-    const { movieDetails, simillarMovies } = useFetchMovieDetails(Number(id));
+    const { movieDetails, simillarMoviesData } = useFetchMovieDetails(Number(id));
 
     const [playVideo, setPlayVideo] = useState<boolean>(false);
 
@@ -120,8 +120,8 @@ const MovieInfo = memo(() => {
                 <h1 className="font-bold font-sans text-[40px]">Simillar Movies</h1>
                 <StyledSimillarDiv $isSM={isMD || isSM}>
                     {
-                        simillarMovies.length ?
-                            simillarMovies.map((item) => (
+                        !simillarMoviesData.isLoading && simillarMoviesData?.data?.results.length ?
+                            simillarMoviesData?.data?.results.map((item: IMovie) => (
                                 item.backdrop_path && item.poster_path ?
                                     <Card isFavourite={false} item={item} key={item?.original_title} canViewSimillar={false} /> : null
                             )) :
