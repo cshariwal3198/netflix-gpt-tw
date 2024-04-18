@@ -25,7 +25,7 @@ const VideoWrapper = styled.div`
 const StyledClose = styled(Close)`
     font-weight: 900;
     position: fixed;
-    right: 20vh;
+    right: 10%;
     top: 5vh; cursor: pointer;
     color: #fffffe;
 `;
@@ -42,7 +42,7 @@ export const PlayTrailer = memo(({ videos, onClick }: {
         if (trailerObject) {
             const { id, key } = trailerObject;
             return (
-                <Player videoSource={`https://www.youtube.com/embed/${key}`} />
+                <Player videoSource={`https://www.youtube.com/embed/${key}`} key={id} />
             )
         }
         return <h1 className="text-2xl font-bold text-white">No Video</h1>;

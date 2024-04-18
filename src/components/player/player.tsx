@@ -223,10 +223,8 @@ export const Player = ({ videoSource }: { videoSource: string }) => {
         videoPlayerRef.current.seekTo(videoPlayerRef.current.getCurrentTime() + 10);
     };
 
-    //console.log("========", (controlRef.current.style.visibility = "false"));
     const progressHandler = (state) => {
         if (count > 3) {
-            console.log("close");
             controlRef.current.style.visibility = "hidden"; // toggling player control container
         } else if (controlRef.current.style.visibility === "visible") {
             count += 1;
@@ -243,8 +241,6 @@ export const Player = ({ videoSource }: { videoSource: string }) => {
     };
 
     const seekMouseUpHandler = (e, value) => {
-        console.log(value);
-
         setVideoState({ ...videoState, seeking: false });
         videoPlayerRef.current.seekTo(value / 100);
     };
@@ -284,12 +280,10 @@ export const Player = ({ videoSource }: { videoSource: string }) => {
     };
 
     const bufferStartHandler = () => {
-        console.log("Bufering.......");
         setVideoState({ ...videoState, buffer: true });
     };
 
     const bufferEndHandler = () => {
-        console.log("buffering stoped ,,,,,,play");
         setVideoState({ ...videoState, buffer: false });
     };
 

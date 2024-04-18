@@ -40,7 +40,7 @@ const Favourites = memo(() => {
         <StyledFlex $isDataAvailable={Boolean(favourites.length)}>
             {
                 favourites.length ? favourites.map((item) => (
-                    <Card item={item} isFavourite={true} />
+                    <Card item={item} isFavourite={true} key={item.id} canViewSimillar={false} />
                 )) :
                     <StyledSpan>
                         No favourites

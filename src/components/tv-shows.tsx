@@ -55,7 +55,7 @@ const TvShows = memo(() => {
                             <RingLoader color="#36d7b7" />
                         </div> :
                         tvShowsToRender[index].showsData.data.results.map((item: IMovie) => (
-                            <Card canViewSimillar={false} isFavourite={false} item={item} key={item.id} />
+                            <Card canViewSimillar={true} isFavourite={false} item={item} key={item.id} type="tvshow" />
                         ))
                 }
             </StyledWrapper>

@@ -7,6 +7,10 @@ import { StyledHeart } from "../common-styles";
 import { MovieDetail } from "./movie-detail";
 import { useDisplaySizeGroup } from "../hooks";
 
+interface ICardProps {
+    item: IMovie, isFavourite: boolean, canViewSimillar: boolean, type?: 'movie' | 'tvshow'
+}
+
 const StyledMovieCard = styled.div<{ $isSM: boolean }>`
     display: flex;
     flex-direction: column;
@@ -48,7 +52,7 @@ const StyledOverview = styled(StyledSpan) <{ $hover: boolean, $isSM: boolean }>`
     font-weight: ${({ $isSM }) => ($isSM ? 400 : 500)};
 `;
 
-export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie, isFavourite: boolean, canViewSimillar: boolean }) => {
+export const Card = memo(({ item, isFavourite, canViewSimillar, type }: ICardProps) => {
 
     const { overview, poster_path, title, id } = item;
 
@@ -80,7 +84,7 @@ export const Card = memo(({ item, isFavourite, canViewSimillar }: { item: IMovie
                 }
             </StyledMovieCard>
             {
-                showInfo ? <MovieDetail movieItem={item} isFavourite={isFavourite} setShowInfo={setShowInfo} canViewSimillar={canViewSimillar} /> : null
+                showInfo ? <MovieDetail movieItem={item} isFavourite={isFavourite} setShowInfo={setShowInfo} canViewSimillar={canViewSimillar} type={type} /> : null
             }
         </>
     );

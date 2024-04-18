@@ -42,12 +42,16 @@ export default function App() {
           element: <Categories />
         },
         {
-          path: '/:title/:id',
+          path: '/:type/:id',
           element: <MovieInfo />
         },
         {
           path: '/tvshows',
           element: <TvShows />
+        },
+        {
+          path: '/:type/:id',
+          element: <MovieInfo />
         }
       ]
     }
