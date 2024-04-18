@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { RingLoader } from "react-spinners";
 import { IMovie } from "../types";
 import { useTheme } from "../contexts/theme-context";
+import { useGetFavourites } from "../hooks";
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -36,6 +37,7 @@ const TvShows = memo(() => {
     const { popular, topRated, trending } = useFetchTvShows();
     const [value, setValue] = useState(0);
     const { theme } = useTheme();
+    const { getIsFavourite } = useGetFavourites();
 
     const tvShowsToRender = useMemo(() => ([
         { name: 'Popular', showsData: popular }, { name: 'Top Rated', showsData: topRated }, { name: 'Trending', showsData: trending }
@@ -55,12 +57,12 @@ const TvShows = memo(() => {
                             <RingLoader color="#36d7b7" />
                         </div> :
                         tvShowsToRender[index].showsData.data.results.map((item: IMovie) => (
-                            <Card canViewSimillar={true} isFavourite={false} item={item} key={item.id} type="tvshow" />
+                            <Card canViewSimillar={true} isFavourite={getIsFavourite(item.id, 'tvshow')} item={item} key={item.id} type="tvshow" />
                         ))
                 }
             </StyledWrapper>
         </>
-    ), [tvShowsToRender]);
+    ), [getIsFavourite, tvShowsToRender]);
 
     const showContent = useMemo(() => renderShows(value), [renderShows, value]);
 

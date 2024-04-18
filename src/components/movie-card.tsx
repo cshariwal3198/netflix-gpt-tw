@@ -68,8 +68,8 @@ export const Card = memo(({ item, isFavourite, canViewSimillar, type }: ICardPro
 
     const onClick = useCallback((e: SyntheticEvent) => {
         e.stopPropagation();
-        isFavourite ? dispatch(removeFromFavourites(id)) : dispatch(addToFavourites(item));
-    }, [dispatch, id, isFavourite, item]);
+        isFavourite ? dispatch(removeFromFavourites({id, type})) : dispatch(addToFavourites({item, type}));
+    }, [dispatch, id, isFavourite, item, type]);
 
     const openMovieInfo = useCallback(() => (setShowInfo(true)), []);
 

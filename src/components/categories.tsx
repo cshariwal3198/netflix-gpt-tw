@@ -32,7 +32,7 @@ const Categories = memo(() => {
     ]), [popular, topRated, upcoming]);
 
     const getIsFavourite = useCallback((id: number) => (
-        favourites?.some(({ id: movieId }: { id: number }) => (movieId === id))
+        favourites?.movie?.some(({ id: movieId }: { id: number }) => (movieId === id))
     ), [favourites]);
 
     return (
@@ -48,7 +48,7 @@ const Categories = memo(() => {
                                         <RingLoader color="#36d7b7" />
                                     </div> :
                                     moviesData.map((item: IMovie) => (
-                                        <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id)} key={item.id} />
+                                        <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id)} key={item.id} type="movie" />
                                     ))
                             }
                         </StyledWrapper>
