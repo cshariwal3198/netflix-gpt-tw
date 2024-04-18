@@ -36,7 +36,7 @@ const Categories = memo(() => {
     ), [favourites]);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col">
             {
                 moviesToRender.map(({ moviesData, name }) => (
                     <React.Fragment key={name}>
