@@ -11,7 +11,7 @@ import { useTheme } from "../contexts/theme-context";
 const StyledWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 20px;
 `;
 
