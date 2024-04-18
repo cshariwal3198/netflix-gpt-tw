@@ -1,10 +1,12 @@
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import styled from "styled-components";
 import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
 import { Link } from "react-router-dom";
 import { PlayTrailer } from "./play-trialer";
 import { useFetchMovieDetails } from "../hooks/get-movie-details";
+
+const getValueBasedOnResolution = ($isSM: boolean, val1: string, val2: string) => ($isSM ? val1 : val2);
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -17,18 +19,20 @@ const StyledWrapper = styled.div`
     border-radius: 10px;
 `;
 
-const StyledImage = styled.img`
+const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
     border-radius: 10px;
-    height: 65vh;
+    height: ${({ $isSM, $isMD }) => ($isSM ? '50vh' : $isMD ? '60vh' : '75vh')};
     filter: blur(2px);
     z-index: -1;
     width: 100%;
     opacity: 0.7;
     mask-image: linear-gradient(180deg, #c7c4c4 80%, #0000 100%);
+    aspect-ratio: calc(8);
+    background: linear-gradient();
 `;
 
-const StyledPoster = styled.img`
-    height: 40vh;
+const StyledPoster = styled.img<{ $isSM: boolean, $isMD: boolean }>`
+    max-height: ${({ $isSM, $isMD }) => ($isSM ? '20vh' : $isMD ? '30vh' : '40vh')};
     position: absolute;
     z-index: 2;
     bottom: -30px;
@@ -48,12 +52,11 @@ const StyledSpan = styled.span`
     font-style: italic;
 `;
 
-const TitleWrapper = styled(StyledSpan) <{ $isMD: boolean, $isSM: boolean }>`
-    font-weight: ${({ $isMD, $isSM }) => ($isMD ? '600' : $isSM ? '500' : '700')};
-    font-size: ${({ $isMD, $isSM }) => ($isMD ? '3rem' : $isSM ? '2rem' : '4rem')};
-    font-style: normal;
-    top: unset; left: unset;
+const TitleWrapper = styled.p <{ $isMD: boolean, $isSM: boolean }>`
+    font-weight: ${({ $isMD, $isSM }) => ($isMD ? '600' : getValueBasedOnResolution($isSM, '500', '700'))};
+    font-size: ${({ $isMD, $isSM }) => ($isMD ? '2rem' : getValueBasedOnResolution($isSM, '1.5rem', '3rem'))};
     z-index: 2;
+    font-family: serif;
 `;
 
 const ReleaseDateWrapper = styled(StyledSpan)`
@@ -62,25 +65,21 @@ const ReleaseDateWrapper = styled(StyledSpan)`
     right: 30px;
 `;
 
-const StyledPara = styled(StyledSpan) <{ $isMD: boolean, $isSM: boolean }>`
-    top: unset;
-    left: unset;
-    bottom: 20px;
-    font-weight: 500;
-    font-size: ${({ $isMD, $isSM }) => ($isMD ? '25px' : $isSM ? '20px' : '35px')};
-    text-align: right;
+const StyledPara = styled.p <{ $isMD: boolean, $isSM: boolean }>`
+    font-family: serif;
+    font-weight: 300;
+    font-size: ${({ $isMD, $isSM }) => ($isMD ? '22px' : getValueBasedOnResolution($isSM, '15px', '28px'))};
     z-index: 3;
-    width: 70%;
-    right: 20px;
+    width: ${({ $isMD, $isSM }) => ($isMD ? '60%' : getValueBasedOnResolution($isSM, '70%', '50%'))};
     color: white;
 `;
 
-const ButtonWrapper = styled.div`
-    display: flex;
+const ButtonWrapper = styled.div<{ $isSM: boolean }>`
+    display: ${({ $isSM }) => ($isSM ? 'grid' : 'flex')};
     width: 40%;
-    left: 20px; bottom: 40px;
+    left: 20px; bottom: ${({ $isSM }) => ($isSM ? '100px' : '30px')};
     position: absolute;
-    gap: 20px;
+    gap: 20px; z-index: 20;
 `;
 
 export const CoverMovie = memo((props: { movieItem: IMovie }) => {
@@ -94,13 +93,20 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
     const onPlayClick = () => (setPlayVideo(true));
     const onClose = () => (setPlayVideo(false));
 
+    const trimmedOverview = useMemo(() => (
+        isSM ? overview.slice(0, 120) + '...' : overview
+    ), [isSM, overview]);
+
     return (
         <>
             <StyledWrapper>
-                <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
-                <StyledImage src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} />
-                <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} />
-                <ButtonWrapper>
+                <div className="flex flex-col absolute text-start gap-5 p-5 ml-[3%] md:mt-[10%] mt-[5%]">
+                    <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
+                    <StyledPara $isMD={isMD} $isSM={isSM}>{trimmedOverview}</StyledPara>
+                </div>
+                <StyledImage src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} $isSM={isSM} $isMD={isMD} />
+                <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} $isSM={isSM} $isMD={isMD} />
+                <ButtonWrapper $isSM={isSM}>
                     <button className="text-lg p-2 text-black border-[1px] rounded-md bg-[#ffffff]">
                         <Link to={`/${title}/${id}`}>More Info</Link>
                     </button>
@@ -109,10 +115,13 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
                 {
                     (isMD || isSM) ? null : <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
                 }
-                <StyledPara $isMD={isMD} $isSM={isSM}>{overview}</StyledPara>
             </StyledWrapper>
             {
-                playVideo ? <PlayTrailer onClick={onClose} videos={videos} /> : null
+                playVideo ?
+                    <>
+                        {/* <PlayTrailer onClick={onClose} videos={videos} /> */}
+                    </>
+                    : null
             }
         </>
     );
