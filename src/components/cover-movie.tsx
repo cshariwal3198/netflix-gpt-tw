@@ -27,6 +27,8 @@ const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
     width: 100%;
     opacity: 0.7;
     mask-image: linear-gradient(180deg, #c7c4c4 80%, #0000 100%);
+    aspect-ratio: calc(8);
+    background: linear-gradient();
 `;
 
 const StyledPoster = styled.img<{ $isSM: boolean, $isMD: boolean }>`
@@ -115,7 +117,11 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
                 }
             </StyledWrapper>
             {
-                playVideo ? <PlayTrailer onClick={onClose} videos={videos} /> : null
+                playVideo ?
+                    <>
+                        {/* <PlayTrailer onClick={onClose} videos={videos} /> */}
+                    </>
+                    : null
             }
         </>
     );
