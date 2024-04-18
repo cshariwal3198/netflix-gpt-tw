@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import styled from "styled-components";
 import { Card } from "./movie-card";
 import { RingLoader } from "react-spinners";
@@ -10,7 +10,7 @@ const StyledWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 20px;
+    gap: 10px;
 `;
 
 const StyledSpan = styled.span`
@@ -24,16 +24,12 @@ const StyledSpan = styled.span`
 
 const Categories = memo(() => {
 
-    const { favourites } = useGetFavourites();
+    const { getIsFavourite } = useGetFavourites();
     const { popular, topRated, upcoming } = useGetMoviesBasedOnCategory();
 
     const moviesToRender: { name: string, moviesData: IMovie[] }[] = useMemo(() => ([
         { name: 'Popular', moviesData: popular }, { name: 'Top Rated', moviesData: topRated }, { name: 'UpComing', moviesData: upcoming }
     ]), [popular, topRated, upcoming]);
-
-    const getIsFavourite = useCallback((id: number) => (
-        favourites?.movie?.some(({ id: movieId }: { id: number }) => (movieId === id))
-    ), [favourites]);
 
     return (
         <div className="flex flex-col">
@@ -43,12 +39,12 @@ const Categories = memo(() => {
                         <StyledSpan>{name}</StyledSpan>
                         <StyledWrapper>
                             {
-                                !moviesData.length ?
+                                !moviesData?.length ?
                                     <div className="flex h-[100%] w-full justify-center items-center">
                                         <RingLoader color="#36d7b7" />
                                     </div> :
                                     moviesData.map((item: IMovie) => (
-                                        <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id)} key={item.id} type="movie" />
+                                        <Card item={item} canViewSimillar={true} isFavourite={getIsFavourite(item.id, 'movie')} key={item.id} type="movie" />
                                     ))
                             }
                         </StyledWrapper>

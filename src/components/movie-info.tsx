@@ -75,11 +75,19 @@ const StyledVideoItem = styled.div<{ $isSM: boolean }>`
     display: grid;
     grid-template-columns: 1fr 40px;
     justify-content: space-around;
-    width: ${({ $isSM }) => ($isSM ? '100%' : '40%')};
+    width: 100%;
     padding: 12px;
     border: 1px solid;
     border-radius: 6px;
     margin-left: ${({ $isSM }) => ($isSM ? 0 : '10px')};
+`;
+
+const VideosWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 20px;
+    column-gap: 40px;
+    padding: 20px;
 `;
 
 const MovieInfo = memo(() => {
@@ -112,7 +120,7 @@ const MovieInfo = memo(() => {
     }, []);
 
     const onPlayVideo = useCallback((key: string) => {
-        setKeyToPlay(key)
+        setKeyToPlay(key);
         setPlayVideo(true);
     }, []);
 
@@ -147,12 +155,16 @@ const MovieInfo = memo(() => {
                     <span className="text-3xl text-black dark:text-white">Related Videos</span>
                     {
                         videos?.results?.length ?
-                            videos?.results?.map(({ name, key }) => (
-                                <StyledVideoItem key={key} $isSM={isSM}>
-                                    <span className="text-lg text-black dark:text-white">{name}</span>
-                                    <button className="flex justify-center text-lg cursor-pointer text-red-500" onClick={() => onPlayVideo(key)}>Play</button>
-                                </StyledVideoItem>
-                            )) : <span className="text-xl">No Videos Found</span>
+                            <VideosWrapper>
+                                {
+                                    videos?.results?.map(({ name, key }) => (
+                                        <StyledVideoItem key={key} $isSM={isSM}>
+                                            <span className="text-lg text-black dark:text-white">{name}</span>
+                                            <button className="flex justify-center text-lg cursor-pointer text-red-500" onClick={() => onPlayVideo(key)}>Play</button>
+                                        </StyledVideoItem>
+                                    ))
+                                }
+                            </VideosWrapper> : <span className="text-xl">No Videos Found</span>
                     }
                 </div>
             </div>
@@ -160,7 +172,7 @@ const MovieInfo = memo(() => {
                 <h1 className="font-bold font-sans text-[40px]">Simillar {type === 'Movie' ? 'Movies' : 'Shows'}</h1>
                 <StyledSimillarDiv $isSM={isMD || isSM}>
                     {
-                        !simillarShowsData.isLoading && simillarShowsData?.data?.results.length ?
+                        !simillarShowsData.isLoading && simillarShowsData?.data?.results?.length ?
                             simillarShowsData?.data?.results.map((item: IMovie) => (
                                 item.backdrop_path && item.poster_path ?
                                     <Card isFavourite={false} item={item} key={item?.original_title} canViewSimillar={false} /> : null
