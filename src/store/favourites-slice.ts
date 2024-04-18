@@ -17,7 +17,7 @@ export const favouritesSlice = createSlice({
         },
         removeFromFavourites(store, action) {
             const { type } = action.payload;
-            store[type as keyof typeof store].filter(({ id }) => (id !== action.payload.id))
+            store[type as keyof typeof store].splice(store[type as keyof typeof store].findIndex(({ id }: { id: number }) => (id === Number(action.payload.id))), 1);
         }
     }
 });

@@ -1,4 +1,4 @@
-import { createElement, memo, useCallback, useRef } from "react";
+import { createElement, memo, useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoIosSearch } from "react-icons/io";
 import { LuMoonStar } from "react-icons/lu";
@@ -7,6 +7,17 @@ import { useTheme } from "../contexts/theme-context";
 import { IconType } from "react-icons";
 import { UserAccount } from "./account";
 import { Link, useNavigate } from "react-router-dom";
+import { useDisplaySizeGroup } from "../hooks";
+import { CgMenu, CgClose } from "react-icons/cg";
+
+const StyledNavWrapper = styled.div`
+    display: flex;
+    justify-content: space-around;
+    padding-right: 10px; padding-left: 10px;
+    padding-top: 5px; padding-bottom: 5px;
+    align-items: center;
+    width: 100%;
+`;
 
 const StyledInputWrapper = styled.div`
     display: flex;
@@ -19,9 +30,42 @@ const StyledIcon = styled(IoIosSearch)`
 `;
 
 const StyledInput = styled.input`
-    width: 10vw;
+    /* width: 10vw; */
     background: none;
     border: none;
+    display: none;
+`;
+
+const StyledOpenMenuIcon = styled(CgMenu)`
+    cursor: pointer;
+`;
+
+const StyledCloseMenuIcon = styled(CgClose)`
+    cursor: pointer;
+`;
+
+const StyledMiniWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 10px;
+    row-gap: 10px;
+    justify-content: space-around;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+`;
+
+const StyledMainWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    box-shadow: 0px 20px 20px 0px #4d4b4b;
+    transition: all 2s;
 `;
 
 const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
@@ -40,33 +84,77 @@ const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
 export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const { isSM, isMD, isLG } = useDisplaySizeGroup();
+    const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
     const { theme } = useTheme();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isMD || isLG) {
+            setIsCollapsed(false);
+        }
+    }, [isLG, isMD]);
 
     const onclick = useCallback(() => (inputRef.current?.focus), []);
     onSearch;
 
     const onLogoClick = useCallback(() => navigate('/'), [navigate]);
 
+    const onMenuClick = useCallback(() => (setIsCollapsed(!isCollapsed)), [isCollapsed])
+
+    const renderMenuItems = useCallback(() => (
+        <>
+            <Link to="/categories">Movies</Link>
+            <Link to="/tvshows">TV Shows</Link>
+            <Link to="/favourites">Favourites</Link>
+        </>
+    ), []);
+
+    const renderThemeIcons = useCallback(() => (
+        theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
+    ), [theme]);
+
     return (
-        <div className="flex justify-between h-20 shadow-md shadow-slate-700 rounded-b-md">
-            <div className="flex justify-around items-center w-1/2 text-2xl">
-                <img src="/images/neflix_logo.png" alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} />
-                <Link to="/categories">Movies</Link>
-                <Link to="/tvshows">TV Shows</Link>
-                <Link to="/favourites">Favourites</Link>
-            </div>
-            <div className="flex items-center justify-around text-xl w-1/4">
+        <StyledMainWrapper>
+            <StyledNavWrapper>
                 {
-                    theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
+                    isSM ?
+                        <StyledMiniWrapper>
+                            <img src="/images/neflix_logo.png" alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
+                            {
+                                isCollapsed ? <StyledCloseMenuIcon size="35px" onClick={onMenuClick} /> : <StyledOpenMenuIcon size="35px" onClick={onMenuClick} />
+                            }
+                            <UserAccount />
+                        </StyledMiniWrapper> :
+                        <>
+                            <div className="flex justify-around items-center md:w-[70%] text-2xl">
+                                <img src="/images/neflix_logo.png" alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
+                                {renderMenuItems()}
+                            </div>
+                            <div className="flex items-center justify-around text-xl w-1/4">
+                                {
+                                    renderThemeIcons()
+                                }
+                                {
+                                    (isSM || isMD) ? null :
+                                        <StyledInputWrapper>
+                                            <StyledIcon size='30px' onClick={onclick} />
+                                            <StyledInput ref={inputRef} />
+                                        </StyledInputWrapper>
+                                }
+                                <UserAccount />
+                            </div>
+                        </>
                 }
-                <StyledInputWrapper>
-                    <StyledIcon size='30px' onClick={onclick} />
-                    <StyledInput ref={inputRef} />
-                </StyledInputWrapper>
-                <UserAccount />
-            </div>
-        </div>
+            </StyledNavWrapper>
+            {
+                isCollapsed ?
+                    <div className="grid grid-cols-2 gap-[18px] justify-center items-center text-xl transition-all w-[100%] justify-items-center">
+                        {renderMenuItems()}
+                        {renderThemeIcons()}
+                    </div> : null
+            }
+        </StyledMainWrapper>
     )
 })

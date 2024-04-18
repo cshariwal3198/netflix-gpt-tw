@@ -52,7 +52,7 @@ const Favourites = memo(() => {
 
     return (
         <StyledWrapper>
-            <div className="h-[40%] p-5">
+            <div className="h-[50%] p-5">
                 <h1 className="ml-[4%] font-serif text-xl">Favourite Movies</h1>
                 <StyledFlex $isData={!!favMovies.length}>
                     {

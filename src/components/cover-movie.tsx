@@ -36,7 +36,7 @@ const StyledPoster = styled.img<{ $isSM: boolean, $isMD: boolean }>`
     position: absolute;
     z-index: 2;
     bottom: -30px;
-    right: 60px;
+    right: ${({ $isSM }) => ($isSM ? '5%' : '8%')};
     border-radius: 20px;
     box-shadow: 10px 12px 10px 0px black;
 `;
@@ -77,7 +77,7 @@ const StyledPara = styled.p <{ $isMD: boolean, $isSM: boolean }>`
 const ButtonWrapper = styled.div<{ $isSM: boolean }>`
     display: ${({ $isSM }) => ($isSM ? 'grid' : 'flex')};
     width: 40%;
-    left: 20px; bottom: ${({ $isSM }) => ($isSM ? '100px' : '30px')};
+    left: 4%; bottom: ${({ $isSM }) => ($isSM ? '70px' : '30px')};
     position: absolute;
     gap: 20px; z-index: 20;
 `;
@@ -91,7 +91,7 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
     const { isMD, isSM } = useDisplaySizeGroup();
 
     const onPlayClick = () => (setPlayVideo(true));
-    const onClose = () => (setPlayVideo(false));
+    // const onClose = () => (setPlayVideo(false));
 
     const trimmedOverview = useMemo(() => (
         isSM ? overview.slice(0, 120) + '...' : overview
@@ -108,7 +108,7 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
                 <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} $isSM={isSM} $isMD={isMD} />
                 <ButtonWrapper $isSM={isSM}>
                     <button className="text-lg p-2 text-black border-[1px] rounded-md bg-[#ffffff]">
-                        <Link to={`/${title}/${id}`}>More Info</Link>
+                        <Link to={`/movie/${id}`}>More Info</Link>
                     </button>
                     <button className="text-lg p-2 text-white border-[1px] rounded-md bg-red-600" onClick={onPlayClick}>Watch</button>
                 </ButtonWrapper>
