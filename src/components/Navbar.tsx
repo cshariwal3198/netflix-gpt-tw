@@ -65,7 +65,6 @@ const StyledMainWrapper = styled.div`
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
     box-shadow: 0px 20px 20px 0px #4d4b4b;
-    transition: all 2s;
 `;
 
 const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
@@ -107,7 +106,7 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
         <>
             <Link to="/categories">Movies</Link>
             <Link to="/tvshows">TV Shows</Link>
-            <Link to="/favourites">Favourites</Link>
+            <Link to="/favourites">My List</Link>
         </>
     ), []);
 
