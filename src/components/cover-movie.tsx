@@ -95,7 +95,7 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
     return (
         <>
             <StyledWrapper $isSM={isSM} $isMD={isMD}>
-                <div className="flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%] bg-gradient-to-r dark:from-black from-[#ffffff96]">
+                <div className="flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%] bg-gradient-to-r dark:from-black from-[#ffffffce]">
                     <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
                     <StyledPara $isMD={isMD} $isSM={isSM}>{trimmedOverview}</StyledPara>
                 </div>
