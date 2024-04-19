@@ -34,6 +34,7 @@ const StyledTab = styled(Tabs) <{ $theme: string }>`
     margin: 20px;
     border-radius: 8px;
     padding: 5px;
+    transition: all 2s;
 `;
 
 const TvShows = memo(() => {

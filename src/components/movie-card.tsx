@@ -17,13 +17,13 @@ const StyledMovieCard = styled.div<{ $isSM: boolean, $isMD: boolean }>`
     flex-direction: column;
     padding: 10px;
     max-height: ${({ $isSM, $isMD }) => ($isSM ? '210px' : getValueBasedOnResolution($isMD, '250px', '300px'))};
-    max-width: ${({ $isSM, $isMD }) => ($isSM ? '165px' : getValueBasedOnResolution($isMD, '180px', '220px'))};
-    min-width: 165px;
+    max-width: ${({ $isSM, $isMD }) => ($isSM ? '160px' : getValueBasedOnResolution($isMD, '175px', '210px'))};
+    min-width: 170px;
     position: relative;
     text-align: center;
 
     &:hover{
-        transform: scale(1.2);
+        transform: scale(1.1);
         transition: cubic-bezier(0.39, 0.575, 0.565, 1) 1.2s;
     }
 `;

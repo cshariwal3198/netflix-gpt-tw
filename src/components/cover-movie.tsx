@@ -3,31 +3,19 @@ import styled from "styled-components";
 import { IMovie } from "../types";
 import { useDisplaySizeGroup } from "../hooks";
 import { Link } from "react-router-dom";
-import { PlayTrailer } from "./play-trialer";
 import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
 import { getValueBasedOnResolution } from "./utils";
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.div<{ $isSM: boolean, $isMD: boolean }>`
     display: flex;
     flex-direction: column;
     position: relative;
     width: 100%;
+    height: ${({ $isSM, $isMD }) => ($isSM ? '40vh' : getValueBasedOnResolution($isMD, '60vh', '75vh'))};
     text-align: center;
     margin-top: 8px;
     border: 1px solid white;
     border-radius: 10px;
-`;
-
-const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
-    border-radius: 10px;
-    height: ${({ $isSM, $isMD }) => ($isSM ? '50vh' : getValueBasedOnResolution($isMD, '60vh', '75vh'))};
-    filter: blur(2px);
-    z-index: -1;
-    width: 100%;
-    opacity: 0.7;
-    mask-image: linear-gradient(180deg, #c7c4c4 80%, #0000 100%);
-    aspect-ratio: calc(8);
-    background: linear-gradient();
 `;
 
 const StyledPoster = styled.img<{ $isSM: boolean, $isMD: boolean }>`
@@ -52,8 +40,8 @@ const StyledSpan = styled.span`
 `;
 
 const TitleWrapper = styled.p <{ $isMD: boolean, $isSM: boolean }>`
-    font-weight: ${({ $isMD, $isSM }) => ($isMD ? '600' : getValueBasedOnResolution($isSM, '500', '700'))};
-    font-size: ${({ $isMD, $isSM }) => ($isMD ? '2rem' : getValueBasedOnResolution($isSM, '1.5rem', '3rem'))};
+    font-weight: ${({ $isMD, $isSM }) => ($isSM ? '600' : getValueBasedOnResolution($isMD, '500', '700'))};
+    font-size: ${({ $isMD, $isSM }) => ($isSM ? '1rem' : getValueBasedOnResolution($isMD, '1.5rem', '2.5rem'))};
     z-index: 2;
     font-family: serif;
 `;
@@ -61,15 +49,17 @@ const TitleWrapper = styled.p <{ $isMD: boolean, $isSM: boolean }>`
 const ReleaseDateWrapper = styled(StyledSpan)`
     left: unset;
     top: 30px;
-    right: 30px;
+    right: 3%;
+    color: white;
+    font-size: 24px;
 `;
 
 const StyledPara = styled.p <{ $isMD: boolean, $isSM: boolean }>`
     font-family: serif;
     font-weight: 300;
-    font-size: ${({ $isMD, $isSM }) => ($isMD ? '22px' : getValueBasedOnResolution($isSM, '15px', '28px'))};
+    font-size: ${({ $isMD, $isSM }) => ($isSM ? '18px' : getValueBasedOnResolution($isMD, '21px', '24px'))};
     z-index: 3;
-    width: ${({ $isMD, $isSM }) => ($isMD ? '60%' : getValueBasedOnResolution($isSM, '70%', '50%'))};
+    width: ${({ $isMD, $isSM }) => ($isSM ? '60%' : getValueBasedOnResolution($isMD, '70%', '70%'))};
 `;
 
 const ButtonWrapper = styled.div<{ $isSM: boolean }>`
@@ -80,29 +70,38 @@ const ButtonWrapper = styled.div<{ $isSM: boolean }>`
     gap: 20px; z-index: 10;
 `;
 
+const StyledIframe = styled.iframe`
+    border-radius: 10px;
+    z-index: -1;
+    opacity: 0.7;
+`;
+
 export const CoverMovie = memo((props: { movieItem: IMovie }) => {
 
-    const { backdrop_path, original_title, overview, release_date, poster_path, id, title } = props.movieItem;
+    const { original_title, overview, release_date, poster_path, id } = props.movieItem;
     const { showDetails: { videos } } = useFetchMovieOrShowDetails(id, 'movie');
     const [playVideo, setPlayVideo] = useState<boolean>(false);
 
     const { isMD, isSM } = useDisplaySizeGroup();
 
     const onPlayClick = () => (setPlayVideo(true));
-    // const onClose = () => (setPlayVideo(false));
 
     const trimmedOverview = useMemo(() => (
         isSM ? overview.slice(0, 120) + '...' : overview
     ), [isSM, overview]);
 
+    const trailerKey = useMemo(() => ((videos?.results?.find(({ name }) => (name.toLowerCase() === 'official trailer')) || videos?.results[0])?.key), [videos?.results]);
+
     return (
         <>
-            <StyledWrapper>
-                <div className="flex flex-col absolute text-start gap-5 p-5 ml-[3%] md:mt-[10%] mt-[5%]">
+            <StyledWrapper $isSM={isSM} $isMD={isMD}>
+                <div className="flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%] bg-gradient-to-r dark:from-black from-[#ffffff96]">
                     <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
                     <StyledPara $isMD={isMD} $isSM={isSM}>{trimmedOverview}</StyledPara>
                 </div>
-                <StyledImage src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} $isSM={isSM} $isMD={isMD} />
+                <StyledIframe className="h-[100%] w-[100%] aspect-video"
+                    src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&vq=hd1080`} title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></StyledIframe>
                 <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} $isSM={isSM} $isMD={isMD} />
                 <ButtonWrapper $isSM={isSM}>
                     <button className="text-lg p-2 text-black border-[1px] rounded-md bg-[#ffffff]">
@@ -110,14 +109,12 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
                     </button>
                     <button className="text-lg p-2 text-white border-[1px] rounded-md bg-red-600" onClick={onPlayClick}>Watch</button>
                 </ButtonWrapper>
-                {
-                    (isMD || isSM) ? null : <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
-                }
+                <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
             </StyledWrapper>
             {
                 playVideo ?
                     <>
-                        {/* <PlayTrailer onClick={onClose} videos={videos} /> */}
+                        {/* <PlayTrailer onClick={() => (setPlayVideo(false))} videos={videos} /> */}
                     </>
                     : null
             }

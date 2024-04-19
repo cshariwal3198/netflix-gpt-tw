@@ -20,7 +20,7 @@ const StyledWrapper = styled.div`
 
 const StyledFlexWrap = styled.div<{ $isSM: boolean }>`
     display: flex;
-    column-gap: 12px;
+    column-gap: 8px;
     overflow: auto;
     padding-top: 10px;
     padding-bottom: 15px;
