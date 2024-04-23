@@ -9,7 +9,7 @@ import { useDisplaySizeGroup } from "../hooks";
 import { getValueBasedOnResolution } from "./utils";
 
 interface ICardProps {
-    item: IMovie, isFavourite: boolean, canViewSimillar: boolean, type?: 'movie' | 'tvshow'
+    item: IMovie, isFavourite: boolean, canViewSimillar: boolean, type?: 'movie' | 'tvshow', canShowDetails?: boolean
 }
 
 const StyledMovieCard = styled.div<{ $isSM: boolean, $isMD: boolean }>`
@@ -53,12 +53,12 @@ const StyledOverview = styled(StyledSpan) <{ $hover: boolean, $isSM: boolean }>`
     font-weight: ${({ $isSM }) => ($isSM ? 400 : 500)};
 `;
 
-export const Card = memo(({ item, isFavourite, canViewSimillar, type }: ICardProps) => {
+export const Card = memo(({ item, isFavourite, canViewSimillar, type, canShowDetails }: ICardProps) => {
 
     const { overview, poster_path, title, id } = item;
 
     const [hover, setHover] = useState<boolean>(false);
-    const [showInfo, setShowInfo] = useState<boolean>(false);
+    const [showInfo, setShowInfo] = useState<boolean>(canShowDetails || false);
     const dispatch = useDispatch();
     const { isMD, isSM } = useDisplaySizeGroup();
 
@@ -72,7 +72,11 @@ export const Card = memo(({ item, isFavourite, canViewSimillar, type }: ICardPro
         isFavourite ? dispatch(removeFromFavourites({ id, type })) : dispatch(addToFavourites({ item, type }));
     }, [dispatch, id, isFavourite, item, type]);
 
-    const openMovieInfo = useCallback(() => (setShowInfo(true)), []);
+    const openMovieInfo = useCallback(() => {
+        if (canShowDetails !== false) {
+            setShowInfo(true);
+        }
+    }, [canShowDetails]);
 
     return (
         <>

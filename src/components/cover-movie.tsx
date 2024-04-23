@@ -40,8 +40,8 @@ const StyledSpan = styled.span`
 `;
 
 const TitleWrapper = styled.p <{ $isMD: boolean, $isSM: boolean }>`
-    font-weight: ${({ $isMD, $isSM }) => ($isSM ? '600' : getValueBasedOnResolution($isMD, '500', '700'))};
-    font-size: ${({ $isMD, $isSM }) => ($isSM ? '1rem' : getValueBasedOnResolution($isMD, '1.5rem', '2.5rem'))};
+    font-weight: ${({ $isMD, $isSM }) => ($isSM ? '600' : getValueBasedOnResolution($isMD, '600', '700'))};
+    font-size: ${({ $isMD, $isSM }) => ($isSM ? '1.5rem' : getValueBasedOnResolution($isMD, '2rem', '2.5rem'))};
     z-index: 2;
     font-family: serif;
 `;

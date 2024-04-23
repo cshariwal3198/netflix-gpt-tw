@@ -33,7 +33,7 @@ const StyledContent = styled.div`
     flex-direction: column;
     height: 100%; width: 100%;
     padding: 15px;
-    row-gap: 25px;
+    row-gap: 20px;
     position: relative;
     overflow: auto;
     margin-top: 10px;
@@ -46,7 +46,7 @@ const StyledProd = styled.div`
     justify-content: space-center;
     align-items: center;
     width: 100%;
-    padding: 20px;
+    padding: 8px;
     column-gap: 8px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -111,7 +111,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
     ), [id, navigate, type]);
 
     return (
-        <div className="flex flex-col justify-center items-center absolute top-0 right-0 bottom-0 left-0 z-10 bg-[#000000B3] h-full w-full" onClick={onClick}>
+        <div className="flex flex-col justify-center items-center absolute top-0 right-0 bottom-0 left-0 z-10 bg-[#000000B3] h-[100vh] w-[100vw]" onClick={onClick}>
             <Wrapper
                 className="h-[80%] w-[90%] relative justify-center items-center bg-[#ffffffbe] border-slate-800 rounded-lg overflow-hidden dark:bg-zinc-700"
                 $isSM={isSM || isMD}
@@ -122,7 +122,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                 }
                 <StyledContent>
                     <span className="flex font-extrabold font-serif sm:text-2xl text-xl h-[50px] self-center items-center">{original_title || name}</span>
-                    <h3 className="font-thin font-serif text-base py-4">{overview}</h3>
+                    <h3 className="font-thin font-serif text-base py-2">{overview}</h3>
                     <div className="flex flex-wrap gap-4 justify-start">
                         {renderGenres()}
                     </div>
