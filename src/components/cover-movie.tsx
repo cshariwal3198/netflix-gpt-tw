@@ -40,8 +40,8 @@ const StyledSpan = styled.span`
 `;
 
 const TitleWrapper = styled.p <{ $isMD: boolean, $isSM: boolean }>`
-    font-weight: ${({ $isMD, $isSM }) => ($isSM ? '600' : getValueBasedOnResolution($isMD, '500', '700'))};
-    font-size: ${({ $isMD, $isSM }) => ($isSM ? '1rem' : getValueBasedOnResolution($isMD, '1.5rem', '2.5rem'))};
+    font-weight: ${({ $isMD, $isSM }) => ($isSM ? '600' : getValueBasedOnResolution($isMD, '600', '700'))};
+    font-size: ${({ $isMD, $isSM }) => ($isSM ? '1.5rem' : getValueBasedOnResolution($isMD, '2rem', '2.5rem'))};
     z-index: 2;
     font-family: serif;
 `;
@@ -95,7 +95,7 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
     return (
         <>
             <StyledWrapper $isSM={isSM} $isMD={isMD}>
-                <div className="flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%] bg-gradient-to-r dark:from-black from-[#ffffff96]">
+                <div className="flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%] bg-gradient-to-r dark:from-black from-[#ffffffce]">
                     <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
                     <StyledPara $isMD={isMD} $isSM={isSM}>{trimmedOverview}</StyledPara>
                 </div>

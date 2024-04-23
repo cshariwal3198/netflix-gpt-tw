@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
 import { IMovie, ITvShowDeatils } from "../types";
@@ -9,6 +9,7 @@ import { FaHeart, FaPlay } from "react-icons/fa";
 import { StyledSpan } from "../common-styles";
 import { Card } from "./movie-card";
 import { PlayTrailer } from "./play-trialer";
+import { getValueBasedOnResolution } from "./utils";
 
 const StyledBackground = styled.img`
     position: fixed;
@@ -31,25 +32,27 @@ const StyledInnerGrid = styled.div<{ $isSM: boolean }>`
     grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '0.6fr 1fr')};
     column-gap: 30px;
     row-gap: 20px;
-    width: 100%; padding: 20px;
+    width: 100%;
 `;
 
-const StyledImage = styled.img`
-    height: 50vh;
-    min-width: 260px;
-    border-radius: 30px;
+const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
+    max-height: ${({ $isSM, $isMD }) => ($isSM ? '30vh' : getValueBasedOnResolution($isMD, '40Vh', '50vh'))};
+    min-width: ${({ $isSM, $isMD }) => ($isSM ? '180px' : getValueBasedOnResolution($isMD, '220px', '260px'))};;
+    border-radius: 10px;
     box-shadow: 5px 0px 30px white;
     justify-self: center;
+    padding: 10px;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ $isSM: boolean, $isMD: boolean }>`
     display: grid;
     grid-template-columns: 20px auto;
-    column-gap: 15px;
-    min-width: 160px;
+    column-gap: 8px;
+    min-width: ${({ $isSM, $isMD }) => ($isSM ? '80px' : getValueBasedOnResolution($isMD, '110px', '150px'))};
     max-width: fit-content; align-items: center;
     padding: 8px; border: 1px solid;
-    font-size: x-large; border-radius: 7px;
+    font-size: ${({ $isSM, $isMD }) => ($isSM ? '20px' : getValueBasedOnResolution($isMD, 'large', 'x-large'))};
+    border-radius: 7px;
 `;
 
 const StyledFlex = styled.div`
@@ -61,14 +64,11 @@ const StyledFlex = styled.div`
 const StyledSimillarDiv = styled.div<{ $isSM: boolean }>`
     display: flex;
     flex-wrap: nowrap;
-    column-gap: 20px;
+    column-gap: 6px;
     overflow-x: scroll;
-    padding-top: 35px;
-    padding-bottom: 35px;
-    margin-bottom: 20px;
-    padding-left: 20px;
+    padding-left: 10px;
     overflow-y: hidden;
-    max-height: 300px;
+    min-height: 260px;
 `;
 
 const StyledVideoItem = styled.div<{ $isSM: boolean }>`
@@ -87,7 +87,19 @@ const VideosWrapper = styled.div<{ $isSM: boolean }>`
     grid-template-columns: ${({ $isSM }) => ($isSM ? '1fr' : '1fr 1fr')};
     row-gap: 20px;
     column-gap: 40px;
-    padding: 20px;
+    padding: 10px;
+`;
+
+const StyledPara = styled.p`
+    text-decoration: dashed;
+    cursor: pointer;
+    color: #3a76cf;
+`;
+
+const StyledAnchor = styled.a`
+    text-decoration: none;
+    color: #3a76cf;
+    font-weight: 400;
 `;
 
 const MovieInfo = memo(() => {
@@ -95,12 +107,13 @@ const MovieInfo = memo(() => {
     const { type = 'movie', id } = useParams();
     const { showDetails, simillarShowsData } = useFetchMovieOrShowDetails(Number(id), type as 'movie' | 'tvshow');
     const [keyToPlay, setKeyToPlay] = useState<string>('');
+    const [canShowSliced, setCanShowSliced] = useState<boolean>(false);
 
     const [playVideo, setPlayVideo] = useState<boolean>(false);
 
     const { isMD, isSM } = useDisplaySizeGroup();
 
-    const { backdrop_path, poster_path, genres, overview, vote_average, original_title, tagline, release_date, videos, name } = showDetails as ITvShowDeatils;
+    const { backdrop_path, poster_path, genres, overview, vote_average, original_title, tagline, release_date, videos, name, homepage } = showDetails as ITvShowDeatils;
 
     const renderGenres = useCallback(() => {
         return genres?.map(({ id, name }) => (
@@ -124,15 +137,55 @@ const MovieInfo = memo(() => {
         setPlayVideo(true);
     }, []);
 
+    const alterShowMore = useCallback(() => (setCanShowSliced(!canShowSliced)), [canShowSliced]);
+
+    const renderOverView = useCallback(() => {
+        if (overview?.length > 300) {
+            return (
+                !canShowSliced ?
+                    (<>
+                        {overview?.slice(0, 320)}... <StyledPara onClick={alterShowMore}>see more</StyledPara>
+                    </>)
+                    : (<>
+                        {overview}... <StyledPara onClick={alterShowMore}>see less</StyledPara>
+                    </>)
+            )
+        }
+        return overview;
+    }, [alterShowMore, canShowSliced, overview]);
+
+    const renderRelatedVideos = useCallback(() => (
+        videos?.results?.length ?
+            <VideosWrapper $isSM={isSM}>
+                {
+                    videos?.results?.map(({ name, key }) => (
+                        <StyledVideoItem key={key} $isSM={isSM}>
+                            <span className="sm:text-lg text-[15px] text-black dark:text-white">{name}</span>
+                            <button className="flex justify-center items-center sm:text-lg text-[15px] cursor-pointer text-red-500" onClick={() => onPlayVideo(key)}>Play</button>
+                        </StyledVideoItem>
+                    ))
+                }
+            </VideosWrapper> : <span className="text-xl">No Videos Found</span>
+    ), [isSM, onPlayVideo, videos?.results]);
+
+    const renderSimillarSuggestion = useCallback(() => (
+        !simillarShowsData.isLoading && simillarShowsData?.data?.results?.length ?
+            simillarShowsData?.data?.results.map((item: IMovie) => (
+                item.backdrop_path && item.poster_path ?
+                    <Card isFavourite={false} item={item} key={item?.original_title} canViewSimillar={false} canShowDetails={false} /> : null
+            )) :
+            <h1>No simillar movies/shows Available</h1>
+    ), [simillarShowsData?.data?.results, simillarShowsData.isLoading]);
+
     return (
         <div className="flex flex-col items-center size-[100%] relative overflow-auto">
             <StyledBackground src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} alt="" />
             <div className="flex flex-col gap-4 justify-center">
                 <StyledGrid $isSM={isSM}>
-                    <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
+                    <StyledImage $isSM={isSM} $isMD={isMD} src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
                     <StyledInnerGrid $isSM={isSM || isMD}>
-                        <div className="flex flex-col gap-y-4 ml-2 sm:justify-center">
-                            <h1 className="text-[45px] font-sans">{original_title || name}</h1>
+                        <div className="flex flex-col gap-y-3 ml-2 sm:justify-center">
+                            <h1 className={`font-sans ${isSM ? 'text-[25px]' : isMD ? 'text-[35px]' : 'text-[45px]'}`}>{original_title || name}</h1>
                             {
                                 tagline ? <span className="shadow-[rgb(21, 21, 21) 0px 0px 5px] text-[18px] italic self-center text-black dark:text-white">{tagline}</span> : null
                             }
@@ -141,50 +194,40 @@ const MovieInfo = memo(() => {
                                 <span className="flex gap-2 items-center text-black dark:text-white"><BiCalendar size="25px" />{release_date}</span>
                             </StyledFlex>
                             <StyledFlex>
-                                <StyledButton><FaHeart />Wishlist</StyledButton>
-                                <StyledButton onClick={onPlayClick}> <FaPlay />Play </StyledButton>
+                                <StyledButton $isSM={isSM} $isMD={isMD}><FaHeart />Wishlist</StyledButton>
+                                <StyledButton $isSM={isSM} $isMD={isMD} onClick={onPlayClick}> <FaPlay />Play </StyledButton>
                             </StyledFlex>
                         </div>
                         <div className="flex flex-col gap-5 justify-center">
                             <div className="flex gap-5 flex-wrap">{renderGenres()}</div>
-                            <span className="font-light text-xl text-black dark:text-white">{overview}</span>
+                            <span className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'} text-black dark:text-white`}>
+                                {renderOverView()}
+                            </span>
+                            <span className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'} text-black dark:text-white`}>
+                                Go to : <StyledAnchor href={homepage} target="_blank">Home Page</StyledAnchor>
+                            </span>
                         </div>
                     </StyledInnerGrid>
                 </StyledGrid>
-                <div className="flex flex-col gap-3 justify-center font-sans p-5">
+                <div className="flex flex-col gap-1 justify-center font-sans p-2">
                     <span className="text-3xl text-black dark:text-white">Related Videos</span>
                     {
-                        videos?.results?.length ?
-                            <VideosWrapper $isSM={isSM}>
-                                {
-                                    videos?.results?.map(({ name, key }) => (
-                                        <StyledVideoItem key={key} $isSM={isSM}>
-                                            <span className="text-lg text-black dark:text-white">{name}</span>
-                                            <button className="flex justify-center text-lg cursor-pointer text-red-500" onClick={() => onPlayVideo(key)}>Play</button>
-                                        </StyledVideoItem>
-                                    ))
-                                }
-                            </VideosWrapper> : <span className="text-xl">No Videos Found</span>
+                        renderRelatedVideos()
                     }
                 </div>
             </div>
             <div className="flex flex-col gap-4 justify-start p-3 relative w-full">
-                <h1 className="font-bold font-sans text-[40px]">Simillar {type === 'Movie' ? 'Movies' : 'Shows'}</h1>
+                <h1 className={`font-sans ${isSM || isMD ? 'text-[28px]' : 'text-[35px]'}`}>Simillar {type === 'Movie' ? 'Movies' : 'Shows'}</h1>
                 <StyledSimillarDiv $isSM={isMD || isSM}>
                     {
-                        !simillarShowsData.isLoading && simillarShowsData?.data?.results?.length ?
-                            simillarShowsData?.data?.results.map((item: IMovie) => (
-                                item.backdrop_path && item.poster_path ?
-                                    <Card isFavourite={false} item={item} key={item?.original_title} canViewSimillar={false} /> : null
-                            )) :
-                            <h1>No simillar movies/shows Available</h1>
+                        renderSimillarSuggestion()
                     }
                 </StyledSimillarDiv>
             </div>
             {
                 playVideo ? <PlayTrailer keyToPlay={keyToPlay} onClick={onPlayClose} /> : null
             }
-        </div>
+        </div >
     );
 });
 

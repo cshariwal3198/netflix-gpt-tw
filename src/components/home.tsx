@@ -11,8 +11,7 @@ import { getValueBasedOnResolution } from "./utils";
 const StyledWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    column-gap: 20px;
-    row-gap: 20px;
+    row-gap: 10px;
     width: 100%;
     justify-content: start;
     padding: 10px;
@@ -20,10 +19,9 @@ const StyledWrapper = styled.div`
 
 const StyledFlexWrap = styled.div<{ $isSM: boolean }>`
     display: flex;
-    column-gap: 8px;
     overflow: auto;
-    padding-top: 10px;
-    padding-bottom: 15px;
+    padding-top: 4px;
+    padding-bottom: 6px;
     overflow-y: hidden;
     min-height: 255px;
 `;
@@ -60,7 +58,7 @@ export default function Home() {
     return (
         <div className="font-medium flex flex-col">
             {
-                !allMovies.length ? <ShimmerUI /> :
+                !allMovies?.length ? <ShimmerUI /> :
                     <StyledWrapper>
                         <CoverMovie movieItem={allMovies[0]} />
                         <StyledSpan $isSM={isSM} $isMD={isMD}>Now Playing</StyledSpan>

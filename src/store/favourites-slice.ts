@@ -12,12 +12,12 @@ export const favouritesSlice = createSlice({
         addToFavourites: (store, action) => {
             const { item, type } = action.payload;
             if (!store[type as keyof typeof store]?.some(({ id }) => (item.id === id))) {
-                store[type as keyof typeof store].push(item)
+                store[type as keyof typeof store]?.push(item)
             }
         },
         removeFromFavourites(store, action) {
             const { type } = action.payload;
-            store[type as keyof typeof store].splice(store[type as keyof typeof store].findIndex(({ id }: { id: number }) => (id === Number(action.payload.id))), 1);
+            store[type as keyof typeof store]?.splice(store[type as keyof typeof store].findIndex(({ id }: { id: number }) => (id === Number(action.payload.id))), 1);
         }
     }
 });
