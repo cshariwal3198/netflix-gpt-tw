@@ -16,7 +16,7 @@ const StyledMovieCard = styled.div<{ $isSM: boolean, $isMD: boolean }>`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    max-height: ${({ $isSM, $isMD }) => ($isSM ? '210px' : getValueBasedOnResolution($isMD, '250px', '300px'))};
+    max-height: ${({ $isSM, $isMD }) => ($isSM ? '225px' : getValueBasedOnResolution($isMD, '250px', '300px'))};
     max-width: ${({ $isSM, $isMD }) => ($isSM ? '160px' : getValueBasedOnResolution($isMD, '175px', '210px'))};
     min-width: 170px;
     position: relative;
