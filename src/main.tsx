@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { ThemeProvider } from './contexts/theme-context.tsx'
-import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
+import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-react'
 import { Provider } from 'react-redux'
 import { store } from './store'
+import { SignInContainer } from './components/sign-in-component.tsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -19,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Provider store={store}>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
           <SignedOut>
-            <RedirectToSignIn />
+            <SignInContainer />
           </SignedOut>
           <SignedIn>
             <App />
