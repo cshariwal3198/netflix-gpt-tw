@@ -3,7 +3,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { Loading } from "./components/loading";
+import { FallBack } from "./components";
 
 const Home = React.lazy(() => import('./components/home'));
 const Root = React.lazy(() => import('./components/root'));
@@ -58,7 +58,7 @@ export default function App() {
   ]);
 
   return (
-    <React.Suspense fallback={<Loading />}>
+    <React.Suspense fallback={<FallBack />}>
       <RouterProvider router={appRouter} />
     </React.Suspense>
   )
