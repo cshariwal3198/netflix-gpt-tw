@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
 import { IMovie, ITvShowDeatils } from "../types";
@@ -10,6 +10,7 @@ import { StyledSpan } from "../common-styles";
 import { Card } from "./movie-card";
 import { PlayTrailer } from "./play-trialer";
 import { getValueBasedOnResolution } from "./utils";
+import { ShowCredit } from "./credit-info";
 
 const StyledBackground = styled.img`
     position: fixed;
@@ -61,7 +62,7 @@ const StyledFlex = styled.div`
     justify-content: start;
 `;
 
-const StyledSimillarDiv = styled.div<{ $isSM: boolean }>`
+const StyledSimillarDiv = styled.div`
     display: flex;
     flex-wrap: nowrap;
     column-gap: 6px;
@@ -180,7 +181,7 @@ const MovieInfo = memo(() => {
     return (
         <div className="flex flex-col items-center size-[100%] relative overflow-auto">
             <StyledBackground src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} alt="" />
-            <div className="flex flex-col gap-4 justify-center">
+            <div className="flex flex-col gap-4 justify-center relative">
                 <StyledGrid $isSM={isSM}>
                     <StyledImage $isSM={isSM} $isMD={isMD} src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
                     <StyledInnerGrid $isSM={isSM || isMD}>
@@ -204,11 +205,12 @@ const MovieInfo = memo(() => {
                                 {renderOverView()}
                             </span>
                             <span className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'} text-black dark:text-white`}>
-                                Go to : <StyledAnchor href={homepage} target="_blank">Home Page</StyledAnchor>
+                                Go to : <StyledAnchor href={homepage} target="_blank">Official Page</StyledAnchor>
                             </span>
                         </div>
                     </StyledInnerGrid>
                 </StyledGrid>
+                <ShowCredit type={type} id={id!} />
                 <div className="flex flex-col gap-1 justify-center font-sans p-2">
                     <span className="text-3xl text-black dark:text-white">Related Videos</span>
                     {
@@ -218,7 +220,7 @@ const MovieInfo = memo(() => {
             </div>
             <div className="flex flex-col gap-4 justify-start p-3 relative w-full">
                 <h1 className={`font-sans ${isSM || isMD ? 'text-[28px]' : 'text-[35px]'}`}>Simillar {type === 'Movie' ? 'Movies' : 'Shows'}</h1>
-                <StyledSimillarDiv $isSM={isMD || isSM}>
+                <StyledSimillarDiv>
                     {
                         renderSimillarSuggestion()
                     }

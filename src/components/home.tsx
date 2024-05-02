@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
     padding: 10px;
 `;
 
-const StyledFlexWrap = styled.div<{ $isSM: boolean }>`
+const StyledFlexWrap = styled.div`
     display: flex;
     overflow: auto;
     padding-top: 4px;
@@ -39,20 +39,34 @@ export default function Home() {
     const { getIsFavourite } = useGetFavourites();
     const { isSM, isMD } = useDisplaySizeGroup();
 
-    const renderMovies = useCallback(() => allMovies?.slice(1).map((item: IMovie) => (
-        <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id, 'movie')} canViewSimillar={true} />
-    )), [allMovies, getIsFavourite]);
+    const renderMovies = useCallback(() => (
+        <StyledFlexWrap>
+            {
+                allMovies?.slice(1).map((item: IMovie) => (
+                    <Card item={item} key={item.id} isFavourite={getIsFavourite(item.id, 'movie')} canViewSimillar={true} />
+                ))
+            }
+        </StyledFlexWrap>
+    ), [allMovies, getIsFavourite]);
 
     const renderTopRated = useCallback(() => (
-        topRated?.map((item: IMovie) => (
-            <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
-        ))
+        <StyledFlexWrap>
+            {
+                topRated?.map((item: IMovie) => (
+                    <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
+                ))
+            }
+        </StyledFlexWrap>
     ), [getIsFavourite, topRated]);
 
     const renderNowPlaying = useCallback(() => (
-        nowPlaying?.map((item: IMovie) => (
-            <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
-        ))
+        <StyledFlexWrap>
+            {
+                nowPlaying?.map((item: IMovie) => (
+                    <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
+                ))
+            }
+        </StyledFlexWrap>
     ), [getIsFavourite, nowPlaying]);
 
     return (
@@ -62,23 +76,13 @@ export default function Home() {
                     <StyledWrapper>
                         <CoverMovie movieItem={allMovies[0]} />
                         <StyledSpan $isSM={isSM} $isMD={isMD}>Now Playing</StyledSpan>
-                        <StyledFlexWrap $isSM={isSM}>
-                            {
-                                renderNowPlaying()
-                            }
-                        </StyledFlexWrap>
+                        {renderNowPlaying()}
+
                         <StyledSpan $isSM={isSM} $isMD={isMD}>Popular</StyledSpan>
-                        <StyledFlexWrap $isSM={isSM}>
-                            {
-                                renderMovies()
-                            }
-                        </StyledFlexWrap>
+                        {renderMovies()}
+
                         <StyledSpan $isSM={isSM} $isMD={isMD}>Top Rated</StyledSpan>
-                        <StyledFlexWrap $isSM={isSM}>
-                            {
-                                renderTopRated()
-                            }
-                        </StyledFlexWrap>
+                        {renderTopRated()}
                     </StyledWrapper>
             }
         </div >
