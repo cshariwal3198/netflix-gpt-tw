@@ -66,7 +66,7 @@ const StyledSimillarDiv = styled.div`
     display: flex;
     flex-wrap: nowrap;
     column-gap: 6px;
-    overflow-x: scroll;
+    overflow-x: auto;
     padding-left: 10px;
     overflow-y: hidden;
     min-height: 260px;
@@ -118,7 +118,7 @@ const MovieInfo = memo(() => {
 
     const renderGenres = useCallback(() => {
         return genres?.map(({ id, name }) => (
-            <StyledSpan key={id} className="text-black dark:text-white">{name}</StyledSpan>
+            <StyledSpan key={id}>{name}</StyledSpan>
         ))
     }, [genres]);
 
@@ -161,12 +161,12 @@ const MovieInfo = memo(() => {
                 {
                     videos?.results?.map(({ name, key }) => (
                         <StyledVideoItem key={key} $isSM={isSM}>
-                            <span className="sm:text-lg text-[15px] text-black dark:text-white">{name}</span>
+                            <h6 className="sm:text-lg text-[15px]">{name}</h6>
                             <button className="flex justify-center items-center sm:text-lg text-[15px] cursor-pointer text-red-500" onClick={() => onPlayVideo(key)}>Play</button>
                         </StyledVideoItem>
                     ))
                 }
-            </VideosWrapper> : <span className="text-xl">No Videos Found</span>
+            </VideosWrapper> : <h6 className="text-xl">No Videos Found</h6>
     ), [isSM, onPlayVideo, videos?.results]);
 
     const renderSimillarSuggestion = useCallback(() => (
@@ -188,11 +188,11 @@ const MovieInfo = memo(() => {
                         <div className="flex flex-col gap-y-3 ml-2 sm:justify-center">
                             <h1 className={`font-sans ${isSM ? 'text-[25px]' : isMD ? 'text-[35px]' : 'text-[45px]'}`}>{original_title || name}</h1>
                             {
-                                tagline ? <span className="shadow-[rgb(21, 21, 21) 0px 0px 5px] text-[18px] italic self-center text-black dark:text-white">{tagline}</span> : null
+                                tagline ? <h4 className="shadow-[rgb(21, 21, 21) 0px 0px 5px] text-[18px] italic self-center">{tagline}</h4> : null
                             }
                             <StyledFlex>
-                                <span className="flex gap-2 items-center text-black dark:text-white"><BiStar size="25px" />{vote_average}</span>
-                                <span className="flex gap-2 items-center text-black dark:text-white"><BiCalendar size="25px" />{release_date}</span>
+                                <h6 className="flex gap-2 items-center text-[16px]"><BiStar size="25px" />{vote_average}</h6>
+                                <h6 className="flex gap-2 items-center text-[16px]"><BiCalendar size="25px" />{release_date}</h6>
                             </StyledFlex>
                             <StyledFlex>
                                 <StyledButton $isSM={isSM} $isMD={isMD}><FaHeart />Wishlist</StyledButton>
@@ -201,23 +201,23 @@ const MovieInfo = memo(() => {
                         </div>
                         <div className="flex flex-col gap-5 justify-center">
                             <div className="flex gap-5 flex-wrap">{renderGenres()}</div>
-                            <span className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'} text-black dark:text-white`}>
+                            <h4 className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'}`}>
                                 {renderOverView()}
-                            </span>
-                            <span className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'} text-black dark:text-white`}>
+                            </h4>
+                            <h4 className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'}`}>
                                 Go to : <StyledAnchor href={homepage} target="_blank">Official Page</StyledAnchor>
-                            </span>
+                            </h4>
                         </div>
                     </StyledInnerGrid>
                 </StyledGrid>
-                <ShowCredit type={type} id={id!} />
                 <div className="flex flex-col gap-1 justify-center font-sans p-2">
-                    <span className="text-3xl text-black dark:text-white">Related Videos</span>
+                    <h5 className="text-3xl">Related Videos</h5>
                     {
                         renderRelatedVideos()
                     }
                 </div>
             </div>
+            <ShowCredit type={type} id={id!} />
             <div className="flex flex-col gap-4 justify-start p-3 relative w-full">
                 <h1 className={`font-sans ${isSM || isMD ? 'text-[28px]' : 'text-[35px]'}`}>Simillar {type === 'Movie' ? 'Movies' : 'Shows'}</h1>
                 <StyledSimillarDiv>

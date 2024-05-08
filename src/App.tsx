@@ -10,8 +10,8 @@ const Root = React.lazy(() => import('./components/root'));
 const Favourites = React.lazy(() => import('./components/favourites'));
 const ViewSimillar = React.lazy(() => import('./components/simillar-movies'));
 const ManageAccount = React.lazy(() => import('./components/manage-account-menu'));
-const Categories = React.lazy(() => (import('./components/categories')));
-const MovieInfo = React.lazy(() => (import('./components/movie-info')));
+const Categories = React.lazy(() => import('./components/categories'));
+const MovieInfo = React.lazy(() => import('./components/movie-info'));
 const TvShows = React.lazy(() => import('./components/tv-shows'));
 
 export default function App() {
