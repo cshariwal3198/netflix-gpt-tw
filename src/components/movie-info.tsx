@@ -159,7 +159,7 @@ const MovieInfo = memo(() => {
         videos?.results?.length ?
             <VideosWrapper $isSM={isSM}>
                 {
-                    videos?.results?.map(({ name, key }) => (
+                    videos?.results.slice(0, 10).map(({ name, key }) => (
                         <StyledVideoItem key={key} $isSM={isSM}>
                             <h6 className="sm:text-lg text-[15px]">{name}</h6>
                             <button className="flex justify-center items-center sm:text-lg text-[15px] cursor-pointer text-red-500" onClick={() => onPlayVideo(key)}>Play</button>
