@@ -35,7 +35,7 @@ const StyledSpan = styled.span<{ $isSM: boolean, $isMD: boolean }>`
 
 export default function Home() {
 
-    const { allMovies, topRated, nowPlaying } = useGetMoviesBasedOnCategory();
+    const { allMovies, topRated, nowPlaying, upcoming } = useGetMoviesBasedOnCategory();
     const { getIsFavourite } = useGetFavourites();
     const { isSM, isMD } = useDisplaySizeGroup();
 
@@ -49,40 +49,30 @@ export default function Home() {
         </StyledFlexWrap>
     ), [allMovies, getIsFavourite]);
 
-    const renderTopRated = useCallback(() => (
-        <StyledFlexWrap>
-            {
-                topRated?.map((item: IMovie) => (
-                    <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
-                ))
-            }
-        </StyledFlexWrap>
-    ), [getIsFavourite, topRated]);
-
-    const renderNowPlaying = useCallback(() => (
-        <StyledFlexWrap>
-            {
-                nowPlaying?.map((item: IMovie) => (
-                    <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
-                ))
-            }
-        </StyledFlexWrap>
-    ), [getIsFavourite, nowPlaying]);
-
     return (
         <div className="font-medium flex flex-col">
             {
                 !allMovies?.length ? <ShimmerUI /> :
                     <StyledWrapper>
                         <CoverMovie movieItem={allMovies[0]} />
-                        <StyledSpan $isSM={isSM} $isMD={isMD}>Now Playing</StyledSpan>
-                        {renderNowPlaying()}
-
                         <StyledSpan $isSM={isSM} $isMD={isMD}>Popular</StyledSpan>
                         {renderMovies()}
 
-                        <StyledSpan $isSM={isSM} $isMD={isMD}>Top Rated</StyledSpan>
-                        {renderTopRated()}
+                        {
+                            [{ movieList: topRated, name: 'Top Rated' }, { movieList: nowPlaying, name: 'Now Playing' }, { movieList: upcoming, name: 'Up Coming' }]
+                                .map(({ movieList, name }) => (
+                                    <>
+                                        <StyledSpan $isSM={isSM} $isMD={isMD}>{name}</StyledSpan>
+                                        <StyledFlexWrap key={name}>
+                                            {
+                                                movieList?.map((item: IMovie) => (
+                                                    <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
+                                                ))
+                                            }
+                                        </StyledFlexWrap>
+                                    </>
+                                ))
+                        }
                     </StyledWrapper>
             }
         </div >

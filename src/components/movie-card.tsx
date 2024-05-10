@@ -9,16 +9,17 @@ import { useDisplaySizeGroup } from "../hooks";
 import { getValueBasedOnResolution } from "./utils";
 
 interface ICardProps {
-    item: IMovie, isFavourite: boolean, canViewSimillar: boolean, type?: 'movie' | 'tvshow', canShowDetails?: boolean
+    item: IMovie, isFavourite: boolean, canViewSimillar: boolean, type?: 'movie' | 'tvshow', canShowDetails?: boolean,
+    canShowWishlist?: boolean
 }
 
 const StyledMovieCard = styled.div<{ $isSM: boolean, $isMD: boolean }>`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    max-height: ${({ $isSM, $isMD }) => ($isSM ? '225px' : getValueBasedOnResolution($isMD, '250px', '300px'))};
+    max-height: ${({ $isSM, $isMD }) => ($isSM ? '225px' : getValueBasedOnResolution($isMD, '250px', '280px'))};
     max-width: ${({ $isSM, $isMD }) => ($isSM ? '160px' : getValueBasedOnResolution($isMD, '175px', '210px'))};
-    min-width: 170px;
+    min-width: 160px;
     position: relative;
     text-align: center;
 
@@ -53,7 +54,7 @@ const StyledOverview = styled(StyledSpan) <{ $hover: boolean, $isSM: boolean }>`
     font-weight: ${({ $isSM }) => ($isSM ? 400 : 500)};
 `;
 
-export const Card = memo(({ item, isFavourite, canViewSimillar, type, canShowDetails }: ICardProps) => {
+export const Card = memo(({ item, isFavourite, canViewSimillar, type, canShowDetails, canShowWishlist = true }: ICardProps) => {
 
     const { overview, poster_path, title, id } = item;
 
@@ -85,7 +86,7 @@ export const Card = memo(({ item, isFavourite, canViewSimillar, type, canShowDet
                 <StyledImage src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
                 <StyledOverview $hover={hover} $isSM={isSM || isMD}>{slicedOverview}</StyledOverview>
                 {
-                    hover ? <StyledHeart size="40px" title="Add to fav" onClick={onClick} $isFavourite={isFavourite} /> : null
+                    hover && canShowWishlist ? <StyledHeart size="40px" title="Add to fav" onClick={onClick} $isFavourite={isFavourite} /> : null
                 }
             </StyledMovieCard>
             {

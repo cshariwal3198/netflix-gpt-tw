@@ -15,7 +15,7 @@ const StyledWrapper = styled.div<{ $isSM: boolean }>`
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    gap: 0px 12px;
+    gap: 0px 10px;
     padding: 10px 20px;
     overflow-y: hidden;
 `;
@@ -32,15 +32,15 @@ const StyledImage = styled.img`
 const StyledDiv = styled.div`
     display: grid;
     grid-template-columns: auto;
-    min-width: 150px;
-    max-width: 160px;
+    min-width: 135px;
+    max-width: 145px;
     height: 240px;
     font-size: 14px;
     justify-content: center;
     justify-items: center;
     align-items: center;
-    border: 1px solid black;
     border-radius: 7px;
+    overflow: hidden;
 `;
 
 const StyledText = styled.h6`

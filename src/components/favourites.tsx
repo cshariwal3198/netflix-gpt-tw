@@ -42,7 +42,7 @@ const StyledLink = styled(Link)`
 
 const renderContent = (shows: IMovie[]) => (
     shows.map((item) => (
-        <Card item={item} isFavourite={true} key={item.id} canViewSimillar={false} />
+        <Card item={item} isFavourite={true} key={item.id} canViewSimillar={false} canShowWishlist={false} />
     ))
 );
 

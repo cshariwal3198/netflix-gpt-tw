@@ -1,9 +1,9 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
 import { IMovie, ITvShowDeatils } from "../types";
 import styled from "styled-components";
-import { useDisplaySizeGroup } from "../hooks";
+import { useDisplaySizeGroup, useGetFavourites } from "../hooks";
 import { BiStar, BiCalendar } from "react-icons/bi";
 import { FaHeart, FaPlay } from "react-icons/fa";
 import { StyledSpan } from "../common-styles";
@@ -11,6 +11,8 @@ import { Card } from "./movie-card";
 import { PlayTrailer } from "./play-trialer";
 import { getValueBasedOnResolution } from "./utils";
 import { ShowCredit } from "./credit-info";
+import { useDispatch } from "react-redux";
+import { addToFavourites, removeFromFavourites } from "../store";
 
 const StyledBackground = styled.img`
     position: fixed;
@@ -45,7 +47,7 @@ const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
     padding: 10px;
 `;
 
-const StyledButton = styled.button<{ $isSM: boolean, $isMD: boolean }>`
+const StyledButton = styled.button<{ $isSM: boolean, $isMD: boolean, $isWishlisted?: boolean }>`
     display: grid;
     grid-template-columns: 20px auto;
     column-gap: 8px;
@@ -54,6 +56,11 @@ const StyledButton = styled.button<{ $isSM: boolean, $isMD: boolean }>`
     padding: 8px; border: 1px solid;
     font-size: ${({ $isSM, $isMD }) => ($isSM ? '20px' : getValueBasedOnResolution($isMD, 'large', 'x-large'))};
     border-radius: 7px;
+    color: ${({ $isWishlisted }) => ($isWishlisted ? 'red' : 'auto')};
+
+    > svg{
+        fill: ${({ $isWishlisted }) => ($isWishlisted ? 'red' : 'auto')};
+    }
 `;
 
 const StyledFlex = styled.div`
@@ -107,8 +114,11 @@ const MovieInfo = memo(() => {
 
     const { type = 'movie', id } = useParams();
     const { showDetails, simillarShowsData } = useFetchMovieOrShowDetails(Number(id), type as 'movie' | 'tvshow');
+    const { getIsFavourite } = useGetFavourites();
+    const isWishListed = useMemo(() => getIsFavourite(Number(id), type as 'movie' | 'tvshow'), [getIsFavourite, id, type]);
     const [keyToPlay, setKeyToPlay] = useState<string>('');
     const [canShowSliced, setCanShowSliced] = useState<boolean>(false);
+    const dispatch = useDispatch();
 
     const [playVideo, setPlayVideo] = useState<boolean>(false);
 
@@ -139,6 +149,10 @@ const MovieInfo = memo(() => {
     }, []);
 
     const alterShowMore = useCallback(() => (setCanShowSliced(!canShowSliced)), [canShowSliced]);
+
+    const onWishList = useCallback(() => (
+        isWishListed ? dispatch(removeFromFavourites({ id, type })) : dispatch(addToFavourites({ item: showDetails, type }))
+    ), [dispatch, id, isWishListed, showDetails, type]);
 
     const renderOverView = useCallback(() => {
         if (overview?.length > 300) {
@@ -178,6 +192,16 @@ const MovieInfo = memo(() => {
             <h1>No simillar movies/shows Available</h1>
     ), [simillarShowsData?.data?.results, simillarShowsData.isLoading]);
 
+    const renderWishListAndPlay = useCallback(() => {
+
+        return (
+            <StyledFlex>
+                <StyledButton $isSM={isSM} $isMD={isMD} $isWishlisted={isWishListed} onClick={onWishList}><FaHeart />Wishlist</StyledButton>
+                <StyledButton $isSM={isSM} $isMD={isMD} onClick={onPlayClick}> <FaPlay />Play </StyledButton>
+            </StyledFlex>
+        );
+    }, [isMD, isSM, isWishListed, onPlayClick, onWishList]);
+
     return (
         <div className="flex flex-col items-center size-[100%] relative overflow-auto">
             <StyledBackground src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} alt="" />
@@ -194,10 +218,7 @@ const MovieInfo = memo(() => {
                                 <h6 className="flex gap-2 items-center text-[16px]"><BiStar size="25px" />{vote_average}</h6>
                                 <h6 className="flex gap-2 items-center text-[16px]"><BiCalendar size="25px" />{release_date}</h6>
                             </StyledFlex>
-                            <StyledFlex>
-                                <StyledButton $isSM={isSM} $isMD={isMD}><FaHeart />Wishlist</StyledButton>
-                                <StyledButton $isSM={isSM} $isMD={isMD} onClick={onPlayClick}> <FaPlay />Play </StyledButton>
-                            </StyledFlex>
+                            {renderWishListAndPlay()}
                         </div>
                         <div className="flex flex-col gap-5 justify-center">
                             <div className="flex gap-5 flex-wrap">{renderGenres()}</div>

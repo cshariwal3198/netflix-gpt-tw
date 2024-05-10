@@ -2,7 +2,7 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { memo, useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 
-const styles = 'flex cursor-pointer text-center justify-center items-center w-full h-full rounded-xl hover:scale-125  hover:bg-zinc-200 text-black dark:text-white';
+const styles = 'flex cursor-pointer text-center justify-center items-center w-full h-full rounded-xl text-[18px] hover:scale-125  hover:bg-zinc-200 text-black dark:text-white';
 
 export const UserAccount = memo(() => {
 
