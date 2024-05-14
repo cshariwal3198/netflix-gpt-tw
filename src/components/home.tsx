@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { ShimmerUI } from "./shimmer";
 import { IMovie } from "../types";
@@ -39,6 +39,14 @@ export default function Home() {
     const { getIsFavourite } = useGetFavourites();
     const { isSM, isMD } = useDisplaySizeGroup();
 
+    const moviesData = useMemo(() => (
+        [
+            { movieList: topRated, name: 'Top Rated' },
+            { movieList: nowPlaying, name: 'Now Playing' },
+            { movieList: upcoming, name: 'Up Coming' }
+        ]
+    ), [nowPlaying, topRated, upcoming]);
+
     const renderMovies = useCallback(() => (
         <StyledFlexWrap>
             {
@@ -57,21 +65,19 @@ export default function Home() {
                         <CoverMovie movieItem={allMovies[0]} />
                         <StyledSpan $isSM={isSM} $isMD={isMD}>Popular</StyledSpan>
                         {renderMovies()}
-
                         {
-                            [{ movieList: topRated, name: 'Top Rated' }, { movieList: nowPlaying, name: 'Now Playing' }, { movieList: upcoming, name: 'Up Coming' }]
-                                .map(({ movieList, name }) => (
-                                    <>
-                                        <StyledSpan $isSM={isSM} $isMD={isMD}>{name}</StyledSpan>
-                                        <StyledFlexWrap key={name}>
-                                            {
-                                                movieList?.map((item: IMovie) => (
-                                                    <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
-                                                ))
-                                            }
-                                        </StyledFlexWrap>
-                                    </>
-                                ))
+                            moviesData.map(({ movieList, name }) => (
+                                <>
+                                    <StyledSpan $isSM={isSM} $isMD={isMD}>{name}</StyledSpan>
+                                    <StyledFlexWrap key={name}>
+                                        {
+                                            movieList?.map((item: IMovie) => (
+                                                <Card item={item} isFavourite={getIsFavourite(item?.id, 'movie')} key={item.id} canViewSimillar={true} />
+                                            ))
+                                        }
+                                    </StyledFlexWrap>
+                                </>
+                            ))
                         }
                     </StyledWrapper>
             }

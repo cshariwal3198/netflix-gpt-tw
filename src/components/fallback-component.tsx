@@ -10,7 +10,7 @@ export const FallBack = () => {
     return (
         <div className="flex flex-col gap-2 justify-center items-center p-2 h-[100%]">
             <span className="text-2xl font-bold font-sans text-black dark:text-white">Loading, Please Wait...</span>
-            <StyledImage src="/public/images/pn2.jpg" />
+            <StyledImage src="/images/pn2.jpg" />
         </div>
     );
 };
