@@ -28,6 +28,7 @@ const StyledGrid = styled.div<{ $isSM: boolean }>`
     grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '350px auto')};
     column-gap: 30px;
     width: 100%; padding: 20px;
+    row-gap: 20px;
 `;
 
 const StyledInnerGrid = styled.div<{ $isSM: boolean }>`
@@ -203,7 +204,7 @@ const MovieInfo = memo(() => {
     }, [isMD, isSM, isWishListed, onPlayClick, onWishList]);
 
     return (
-        <div className="flex flex-col items-center size-[100%] relative overflow-auto">
+        <div className="flex flex-col items-center">
             <StyledBackground src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} alt="" />
             <div className="flex flex-col gap-4 justify-center relative">
                 <StyledGrid $isSM={isSM}>
