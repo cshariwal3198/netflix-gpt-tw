@@ -115,7 +115,7 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
     ), [theme]);
 
     const renderLogo = useMemo(() => (
-        <img src="/images/neflix_logo.png" alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
+        <img src={`${import.meta.env.VITE_PUBLIC_URL}assets/neflix_logo.png`} alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
     ), [onLogoClick]);
 
     return (
