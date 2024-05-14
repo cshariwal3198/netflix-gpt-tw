@@ -65,7 +65,7 @@ const StyledPara = styled.p <{ $isMD: boolean, $isSM: boolean }>`
 const ButtonWrapper = styled.div<{ $isSM: boolean }>`
     display: ${({ $isSM }) => ($isSM ? 'grid' : 'flex')};
     width: 40%;
-    left: 4%; bottom: ${({ $isSM }) => ($isSM ? '70px' : '30px')};
+    left: 4%; bottom: ${({ $isSM }) => ($isSM ? '50px' : '30px')};
     position: absolute;
     gap: 20px; z-index: 10;
 `;

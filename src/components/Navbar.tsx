@@ -1,4 +1,4 @@
-import { createElement, memo, useCallback, useEffect, useRef, useState } from "react";
+import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoIosSearch } from "react-icons/io";
 import { LuMoonStar } from "react-icons/lu";
@@ -114,13 +114,17 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
         theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
     ), [theme]);
 
+    const renderLogo = useMemo(() => (
+        <img src="/images/neflix_logo.png" alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
+    ), [onLogoClick]);
+
     return (
         <StyledMainWrapper>
             <StyledNavWrapper>
                 {
                     isSM ?
                         <StyledMiniWrapper>
-                            <img src="/images/neflix_logo.png" alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
+                            {renderLogo}
                             {
                                 isCollapsed ? <StyledCloseMenuIcon size="35px" onClick={onMenuClick} /> : <StyledOpenMenuIcon size="35px" onClick={onMenuClick} />
                             }
@@ -128,7 +132,7 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
                         </StyledMiniWrapper> :
                         <>
                             <div className="flex justify-around items-center md:w-[70%] text-2xl">
-                                <img src="/images/neflix_logo.png" alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
+                                {renderLogo}
                                 {renderMenuItems()}
                             </div>
                             <div className="flex items-center justify-around text-xl w-1/4">

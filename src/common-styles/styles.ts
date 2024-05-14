@@ -9,7 +9,7 @@ export const StyledHeart = styled(FaHeart) <{ $isFavourite: boolean }>`
     cursor: pointer;
 `;
 
-export const StyledSpan = styled.span`
+export const StyledSpan = styled.h6`
     width: fit-content;
     padding: 5px;
     font-size: 20px;
