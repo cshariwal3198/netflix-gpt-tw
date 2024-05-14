@@ -15,7 +15,7 @@ const StyledWrapper = styled.div<{ $isSM: boolean }>`
     display: grid;
     grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '1fr 1fr')};
     gap: 10px;
-    padding: 10px 20px;
+    padding: 10px;
     justify-items: center;
 `;
 
@@ -26,7 +26,7 @@ const StyledImage = styled.img`
     opacity: 0.8;
     filter: contrast(90%);
     mask-image: linear-gradient(rgba(0, 0, 0, 527),rgba(0, 0, 0, 5));
-    border: 1px solid black;
+    border: 1px solid white;
     margin-left: 10px;
 `;
 
