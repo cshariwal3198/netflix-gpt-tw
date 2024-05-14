@@ -18,7 +18,7 @@ const Root = memo(() => {
 
     return (
         <div className="font-medium flex flex-col h-full w-full">
-            <StyledImage src="/public/images/nflix-bg.jpg" />
+            <StyledImage src="/images/nflix-bg.jpg" />
             <Navbar onSearch={() => ('')} />
             <div className="flex flex-col overflow-auto h-full">
                 <Outlet />
