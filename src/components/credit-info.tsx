@@ -66,7 +66,7 @@ export const ShowCredit = memo(({ id, type }: { type: string, id: string }) => {
                 isCreditLoading ? (<></>) : (
                     <StyledWrapper $isSM={isSM}>
                         {
-                            credits.cast.slice(0, 10).map(({ id, character, name, profile_path }) => (
+                            credits?.cast?.slice(0, 10).map(({ id, character, name, profile_path }) => (
                                 profile_path ? (
                                     <StyledDiv key={id}>
                                         <StyledImage src={`https://image.tmdb.org/t/p/w500/${profile_path}`} alt="Not found" />
