@@ -15,7 +15,7 @@ const StyledWrapper = styled.div<{ $isSM: boolean, $isMD: boolean }>`
     flex-wrap: wrap;
     justify-content: center;
     column-gap: ${({ $isSM, $isMD }) => ($isSM ? '6px' : getValueBasedOnResolution($isMD, '10px', '13px'))};
-    row-gap: ${({ $isSM, $isMD }) => ($isSM ? '14px' : getValueBasedOnResolution($isMD, '16px', '20px'))};
+    row-gap: ${({ $isSM, $isMD }) => ($isSM ? '12px' : getValueBasedOnResolution($isMD, '18px', '25px'))};
     margin-bottom: 30px;
 `;
 

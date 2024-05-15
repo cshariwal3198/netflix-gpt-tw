@@ -18,9 +18,13 @@ export const favouritesSlice = createSlice({
         removeFromFavourites(store, action) {
             const { type } = action.payload;
             store[type as keyof typeof store]?.splice(store[type as keyof typeof store].findIndex(({ id }: { id: number }) => (id === Number(action.payload.id))), 1);
+        },
+        clearFavourites(store) {
+            store.movie.length = 0;
+            store.tvshow.length = 0;
         }
     }
 });
 
 export const { reducer: favouritesReducer } = favouritesSlice;
-export const { addToFavourites, removeFromFavourites } = favouritesSlice.actions;
+export const { addToFavourites, removeFromFavourites, clearFavourites } = favouritesSlice.actions;

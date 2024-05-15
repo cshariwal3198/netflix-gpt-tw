@@ -22,7 +22,7 @@ const StyledPopup = styled.div<{ $isSM: boolean }>`
     max-width: 1000px;
     border: 1px solid white;
     border-radius: 12px; margin: auto;
-    padding: ${({ $isSM }) => ($isSM ? '10px 5px 0px 5px' : '30px 20px 8px 20px')};
+    padding: ${({ $isSM }) => ($isSM ? '12px 5px 0px 5px' : '30px 20px 8px 20px')};
     align-items: center;
     overflow-y: auto;
     position: relative;
