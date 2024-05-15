@@ -9,7 +9,7 @@ const fetcher = (url: string) => (fetch(url, options).then((res) => (res.json())
 export const useGetTvShowsBasedOnCategory = () => {
 
     const dispatch = useDispatch();
-    const tvShowsCategory = useSelector((state: any) => (state.categories));
+    const tvShowsCategory = useSelector((state: any) => (state.tvShowsCategories));
 
     const popular = useSWR('https://api.themoviedb.org/3/tv/popular?language=en-US&page=2', fetcher);
     const topRated = useSWR('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=2', fetcher);

@@ -1,4 +1,4 @@
-import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createElement, memo, useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { IoIosSearch } from "react-icons/io";
 import { LuMoonStar } from "react-icons/lu";
@@ -9,6 +9,7 @@ import { UserAccount } from "./account";
 import { Link, useNavigate } from "react-router-dom";
 import { useDisplaySizeGroup } from "../hooks";
 import { CgMenu, CgClose } from "react-icons/cg";
+import { SearchPopup } from "./search-popup";
 
 const StyledNavWrapper = styled.div`
     display: flex;
@@ -27,13 +28,6 @@ const StyledInputWrapper = styled.div`
 
 const StyledIcon = styled(IoIosSearch)`
     cursor: pointer;
-`;
-
-const StyledInput = styled.input`
-    /* width: 10vw; */
-    background: none;
-    border: none;
-    display: none;
 `;
 
 const StyledOpenMenuIcon = styled(CgMenu)`
@@ -67,6 +61,15 @@ const StyledMainWrapper = styled.div`
     box-shadow: 0px 20px 20px 0px #4d4b4b;
 `;
 
+const StyledSearchInput = styled.button`
+    background: none;
+    border: 1px solid;
+    text-align: center;
+    height: 40px; width: 100%;
+    border-radius: 5px;
+    opacity: 0.7;
+`;
+
 const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
     const { toggleTheme, theme } = useTheme();
 
@@ -80,11 +83,11 @@ const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
     )
 })
 
-export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
+export const Navbar = memo(() => {
 
-    const inputRef = useRef<HTMLInputElement>(null);
     const { isSM, isMD, isLG } = useDisplaySizeGroup();
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+    const [openPopup, setOpenPopup] = useState<boolean>(false);
 
     const { theme } = useTheme();
     const navigate = useNavigate();
@@ -95,12 +98,17 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
         }
     }, [isLG, isMD]);
 
-    const onclick = useCallback(() => (inputRef.current?.focus), []);
-    onSearch;
+    const onclick = useCallback(() => (setOpenPopup(true)), []);
 
     const onLogoClick = useCallback(() => navigate('/'), [navigate]);
 
-    const onMenuClick = useCallback(() => (setIsCollapsed(!isCollapsed)), [isCollapsed])
+    const onMenuClick = useCallback(() => (setIsCollapsed(!isCollapsed)), [isCollapsed]);
+
+    const renderSearchBlock = useCallback(() => (
+        <StyledInputWrapper>
+            <StyledIcon size='30px' onClick={onclick} />
+        </StyledInputWrapper>
+    ), [onclick]);
 
     const renderMenuItems = useCallback(() => (
         <>
@@ -123,13 +131,17 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
             <StyledNavWrapper>
                 {
                     isSM ?
-                        <StyledMiniWrapper>
-                            {renderLogo}
-                            {
-                                isCollapsed ? <StyledCloseMenuIcon size="35px" onClick={onMenuClick} /> : <StyledOpenMenuIcon size="35px" onClick={onMenuClick} />
-                            }
-                            <UserAccount />
-                        </StyledMiniWrapper> :
+                        <div className="flex flex-col gap-[10px] justify-center">
+                            <StyledMiniWrapper>
+                                {renderLogo}
+                                {
+                                    isCollapsed ? <StyledCloseMenuIcon size="35px" onClick={onMenuClick} /> : <StyledOpenMenuIcon size="35px" onClick={onMenuClick} />
+                                }
+                                <UserAccount />
+                            </StyledMiniWrapper>
+                            <StyledSearchInput onClick={() => (setOpenPopup(true))}>Search A Movie or Show</StyledSearchInput>
+                        </div>
+                        :
                         <>
                             <div className="flex justify-around items-center md:w-[70%] text-2xl">
                                 {renderLogo}
@@ -140,11 +152,7 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
                                     renderThemeIcons()
                                 }
                                 {
-                                    (isSM || isMD) ? null :
-                                        <StyledInputWrapper>
-                                            <StyledIcon size='30px' onClick={onclick} />
-                                            <StyledInput ref={inputRef} />
-                                        </StyledInputWrapper>
+                                    isSM ? null : renderSearchBlock()
                                 }
                                 <UserAccount />
                             </div>
@@ -157,6 +165,9 @@ export const Navbar = memo(({ onSearch }: { onSearch: (e: any) => void }) => {
                         {renderMenuItems()}
                         {renderThemeIcons()}
                     </div> : null
+            }
+            {
+                openPopup ? <SearchPopup setOpenPopup={setOpenPopup} /> : null
             }
         </StyledMainWrapper>
     )
