@@ -13,6 +13,7 @@ import { getValueBasedOnResolution } from "./utils";
 import { ShowCredit } from "./credit-info";
 import { useDispatch } from "react-redux";
 import { addToFavourites, removeFromFavourites } from "../store";
+import { Popup } from "./popup";
 
 const StyledBackground = styled.img`
     position: fixed;
@@ -105,10 +106,13 @@ const StyledPara = styled.p`
     color: #3a76cf;
 `;
 
-const StyledAnchor = styled.a`
+const StyledText = styled.span`
     text-decoration: none;
     color: #3a76cf;
-    font-weight: 400;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 0px;
 `;
 
 const MovieInfo = memo(() => {
@@ -119,6 +123,7 @@ const MovieInfo = memo(() => {
     const isWishListed = useMemo(() => getIsFavourite(Number(id), type as 'movie' | 'tvshow'), [getIsFavourite, id, type]);
     const [keyToPlay, setKeyToPlay] = useState<string>('');
     const [canShowSliced, setCanShowSliced] = useState<boolean>(false);
+    const [hidden, setHidden] = useState<boolean>(true);
     const dispatch = useDispatch();
 
     const [playVideo, setPlayVideo] = useState<boolean>(false);
@@ -203,55 +208,69 @@ const MovieInfo = memo(() => {
         );
     }, [isMD, isSM, isWishListed, onPlayClick, onWishList]);
 
+    const toggleHidden = useCallback(() => (setHidden(!hidden)), [hidden]);
+
+    const onPositiveAction = useCallback(() => {
+        toggleHidden();
+        window.open(homepage);
+    }, [homepage, toggleHidden]);
+
     return (
-        <div className="flex flex-col items-center">
-            <StyledBackground src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} alt="" />
-            <div className="flex flex-col gap-4 justify-center relative">
-                <StyledGrid $isSM={isSM}>
-                    <StyledImage $isSM={isSM} $isMD={isMD} src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
-                    <StyledInnerGrid $isSM={isSM || isMD}>
-                        <div className="flex flex-col gap-y-3 ml-2 sm:justify-center">
-                            <h1 className={`font-sans ${isSM ? 'text-[25px]' : isMD ? 'text-[35px]' : 'text-[45px]'}`}>{original_title || name}</h1>
-                            {
-                                tagline ? <h4 className="shadow-[rgb(21, 21, 21) 0px 0px 5px] text-[18px] italic self-center">{tagline}</h4> : null
-                            }
-                            <StyledFlex>
-                                <h6 className="flex gap-2 items-center text-[16px]"><BiStar size="25px" />{vote_average}</h6>
-                                <h6 className="flex gap-2 items-center text-[16px]"><BiCalendar size="25px" />{release_date}</h6>
-                            </StyledFlex>
-                            {renderWishListAndPlay()}
-                        </div>
-                        <div className="flex flex-col gap-5 justify-center">
-                            <div className="flex gap-5 flex-wrap">{renderGenres()}</div>
-                            <h4 className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'}`}>
-                                {renderOverView()}
-                            </h4>
-                            <h4 className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'}`}>
-                                Go to : <StyledAnchor href={homepage} target="_blank">Official Page</StyledAnchor>
-                            </h4>
-                        </div>
-                    </StyledInnerGrid>
-                </StyledGrid>
-                <div className="flex flex-col gap-1 justify-center font-sans p-2">
-                    <h5 className="text-3xl">Related Videos</h5>
-                    {
-                        renderRelatedVideos()
-                    }
+        <>
+            <div className="flex flex-col items-center">
+                <StyledBackground src={`https://image.tmdb.org/t/p/w500/${backdrop_path}`} alt="" />
+                <div className="flex flex-col gap-4 justify-center relative">
+                    <StyledGrid $isSM={isSM}>
+                        <StyledImage $isSM={isSM} $isMD={isMD} src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" />
+                        <StyledInnerGrid $isSM={isSM || isMD}>
+                            <div className="flex flex-col gap-y-3 ml-2 sm:justify-center">
+                                <h1 className={`font-sans ${isSM ? 'text-[25px]' : isMD ? 'text-[35px]' : 'text-[45px]'}`}>{original_title || name}</h1>
+                                {
+                                    tagline ? <h4 className="shadow-[rgb(21, 21, 21) 0px 0px 5px] text-[18px] italic self-center">{tagline}</h4> : null
+                                }
+                                <StyledFlex>
+                                    <h6 className="flex gap-2 items-center text-[16px]"><BiStar size="25px" />{vote_average}</h6>
+                                    <h6 className="flex gap-2 items-center text-[16px]"><BiCalendar size="25px" />{release_date}</h6>
+                                </StyledFlex>
+                                {renderWishListAndPlay()}
+                            </div>
+                            <div className="flex flex-col gap-5 justify-center">
+                                <div className="flex gap-5 flex-wrap">{renderGenres()}</div>
+                                <h4 className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'}`}>
+                                    {renderOverView()}
+                                </h4>
+                                <h4 className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'}`}>
+                                    Go to : <StyledText onClick={toggleHidden}>Official Page</StyledText>
+                                </h4>
+                            </div>
+                        </StyledInnerGrid>
+                    </StyledGrid>
+                    <div className="flex flex-col gap-1 justify-center font-sans p-2">
+                        <h5 className="text-3xl">Related Videos</h5>
+                        {
+                            renderRelatedVideos()
+                        }
+                    </div>
                 </div>
-            </div>
-            <ShowCredit type={type} id={id!} />
-            <div className="flex flex-col gap-4 justify-start p-3 relative w-full">
-                <h1 className={`font-sans ${isSM || isMD ? 'text-[28px]' : 'text-[35px]'}`}>Simillar {type === 'Movie' ? 'Movies' : 'Shows'}</h1>
-                <StyledSimillarDiv>
-                    {
-                        renderSimillarSuggestion()
-                    }
-                </StyledSimillarDiv>
-            </div>
+                <ShowCredit type={type} id={id!} />
+                <div className="flex flex-col gap-4 justify-start p-3 relative w-full">
+                    <h1 className={`font-sans ${isSM || isMD ? 'text-[28px]' : 'text-[35px]'}`}>Simillar {type === 'Movie' ? 'Movies' : 'Shows'}</h1>
+                    <StyledSimillarDiv>
+                        {
+                            renderSimillarSuggestion()
+                        }
+                    </StyledSimillarDiv>
+                </div>
+                {
+                    playVideo ? <PlayTrailer keyToPlay={keyToPlay} onClick={onPlayClose} /> : null
+                }
+            </div >
             {
-                playVideo ? <PlayTrailer keyToPlay={keyToPlay} onClick={onPlayClose} /> : null
+                hidden ? null :
+                    <Popup message="This Action will take you out of the site. Are you sure want to open?"
+                        onPositiveAction={onPositiveAction} type="info" onNegativeAction={toggleHidden} />
             }
-        </div >
+        </>
     );
 });
 
