@@ -1,0 +1,16 @@
+{
+    "general": {
+        "home": "Accueil",
+        "movies": "Films",
+        "tvShows": "Émissions de télévision",
+        "favourites": "Favoris",
+        "myList": "Ma liste",
+        "account": "Compte",
+        "topRated": "Meilleurs films",
+        "popular": "Populaires",
+        "upComing": "À venir",
+        "nowPlaying": "En cours de diffusion",
+        "cancel": "Annuler",
+        "ok": "D'accord"
+    }
+}

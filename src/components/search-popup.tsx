@@ -1,4 +1,4 @@
-import { SyntheticEvent, memo, useCallback, useMemo, useState } from "react";
+import { ChangeEventHandler, SyntheticEvent, memo, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { Modal } from "@material-ui/core";
 import { IMovie } from "../types";
@@ -112,8 +112,8 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
 
     const closePopup = useCallback(() => (setOpenPopup(false)), [setOpenPopup]);
 
-    const onChange = useCallback((e: SyntheticEvent<HTMLInputElement>) => {
-        const trimmedValue = e.target?.value.trim().toLowerCase();
+    const onChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
+        const trimmedValue = e.target.value.trim().toLowerCase();
         if (trimmedValue) {
             setSearchResult(allShows.filter(({ title, original_title, name }) => (
                 ((title && title.toLowerCase().includes(trimmedValue)) || (original_title && original_title.toLowerCase().includes(trimmedValue))

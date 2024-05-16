@@ -1,0 +1,16 @@
+{
+    "general": {
+        "home": "Home",
+        "movies": "Movies",
+        "tvShows": "Tv Shows",
+        "favourites": "Favourites",
+        "myList": "My List",
+        "account": "Account",
+        "topRated": "Top Rated",
+        "popular": "Popular",
+        "upComing": "Up Coming",
+        "nowPlaying": "Now Playing",
+        "cancel": "Cancel",
+        "ok": "Ok"
+    }
+}
