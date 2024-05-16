@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { memo } from "react";
-import { useDisplaySizeGroup, useGetCreditsDetails } from "../hooks";
+import { useDisplaySizeGroup, useGetCreditsDetails, useTranslator } from "../hooks";
 
 export interface ICredit {
     gender: number;
@@ -56,12 +56,13 @@ const StyledText = styled.h6`
 export const ShowCredit = memo(({ id, type }: { type: string, id: string }) => {
 
     const { isSM } = useDisplaySizeGroup();
+    const { translate } = useTranslator();
 
     const { credits, isLoading: isCreditLoading }: { credits: { cast: ICredit[], crew: ICredit[], id: number }, isLoading: boolean } = useGetCreditsDetails(type, id);
 
     return (
         <div className="flex flex-col gap-[12px] font-sans relative w-full p-3">
-            <h3 className="font-serif text-[30px] px-2">Credits: </h3>
+            <h3 className="font-serif text-[30px] px-2">{translate('credits.credits')}: </h3>
             {
                 isCreditLoading ? (<></>) : (
                     <StyledWrapper $isSM={isSM}>
@@ -72,7 +73,7 @@ export const ShowCredit = memo(({ id, type }: { type: string, id: string }) => {
                                         <StyledImage src={`https://image.tmdb.org/t/p/w500/${profile_path}`} alt="Not found" />
                                         <div className="flex flex-col gap-[6px] justify-center">
                                             <StyledText>{name}</StyledText>
-                                            <StyledText>Character: {character}</StyledText>
+                                            <StyledText>{translate('credits.character')}: {character}</StyledText>
                                         </div>
                                     </StyledDiv>
                                 ) : null

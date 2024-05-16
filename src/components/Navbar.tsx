@@ -105,6 +105,12 @@ export const Navbar = memo(() => {
 
     const onMenuClick = useCallback(() => (setIsCollapsed(!isCollapsed)), [isCollapsed]);
 
+    const onClickLink = useCallback(() => {
+        if (isSM) {
+            setIsCollapsed(false);
+        }
+    }, [isSM]);
+
     const renderSearchBlock = useCallback(() => (
         <StyledInputWrapper>
             <StyledIcon size='30px' onClick={onclick} />
@@ -113,11 +119,11 @@ export const Navbar = memo(() => {
 
     const renderMenuItems = useCallback(() => (
         <>
-            <Link to="/categories">{translate('general.movies')}</Link>
-            <Link to="/tvshows">{translate('general.tvShows')}</Link>
-            <Link to="/favourites">{translate('general.myList')}</Link>
+            <Link to="/categories" onClick={onClickLink}>{translate('general.movies')}</Link>
+            <Link to="/tvshows" onClick={onClickLink}>{translate('general.tvShows')}</Link>
+            <Link to="/favourites" onClick={onClickLink}>{translate('general.myList')}</Link>
         </>
-    ), [translate]);
+    ), [onClickLink, translate]);
 
     const renderThemeIcons = useCallback(() => (
         theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />

@@ -21,7 +21,8 @@
         "shows": "Shows",
         "play": "Play",
         "wishList": "Wishlist",
-        "loadingPleaseWait": "Loading, Please Wait"
+        "loadingPleaseWait": "Loading, Please Wait",
+        "watch": "Watch"
     },
     "favourites": {
         "favouriteMovies": "Favourite Movies",
@@ -68,5 +69,9 @@
         "about": "About",
         "help": "Help",
         "language": "Language"
+    },
+    "credits": {
+        "credits": "Credits",
+        "character": "Character"
     }
 }

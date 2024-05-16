@@ -16,6 +16,7 @@
         "search": "Rechercher",
         "ok": "D'accord",
         "from": "De",
+        "watch": "Regarder",
         "noImage": "Pas d'image",
         "simillar": "Similaire",
         "shows": "Émissions",
@@ -68,5 +69,9 @@
         "about": "À propos",
         "help": "Aide",
         "language": "Langue"
+    },
+    "credits": {
+        "credits": "Crédits",
+        "character": "Personnage"
     }
 }

@@ -1,7 +1,7 @@
 import { memo, useMemo, useState } from "react";
 import styled from "styled-components";
 import { IMovie } from "../types";
-import { useDisplaySizeGroup } from "../hooks";
+import { useDisplaySizeGroup, useTranslator } from "../hooks";
 import { Link } from "react-router-dom";
 import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
 import { getValueBasedOnResolution } from "./utils";
@@ -83,6 +83,7 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
     const [playVideo, setPlayVideo] = useState<boolean>(false);
 
     const { isMD, isSM } = useDisplaySizeGroup();
+    const { translate } = useTranslator();
 
     const onPlayClick = () => (setPlayVideo(true));
 
@@ -105,9 +106,9 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
                 <StyledPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} $isSM={isSM} $isMD={isMD} />
                 <ButtonWrapper $isSM={isSM}>
                     <button className="text-lg p-2 text-black border-[1px] rounded-md bg-[#ffffff]">
-                        <Link to={`/movie/${id}`}>More Info</Link>
+                        <Link to={`/movie/${id}`}>{translate('movieDetails.moreInfo')}</Link>
                     </button>
-                    <button className="text-lg p-2 text-white border-[1px] rounded-md bg-red-600" onClick={onPlayClick}>Watch</button>
+                    <button className="text-lg p-2 text-white border-[1px] rounded-md bg-red-600" onClick={onPlayClick}>{translate('general.watch')}</button>
                 </ButtonWrapper>
                 <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
             </StyledWrapper>

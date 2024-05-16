@@ -15,6 +15,7 @@
         "clear": "Limpiar",
         "search": "Buscar",
         "ok": "Aceptar",
+        "watch": "Ver",
         "from": "De",
         "noImage": "Sin imagen",
         "simillar": "Similares",
@@ -68,5 +69,9 @@
         "about": "Acerca de",
         "help": "Ayuda",
         "language": "Idioma"
+    },
+    "credits": {
+        "credits": "Créditos",
+        "character": "Personaje"
     }
 }
