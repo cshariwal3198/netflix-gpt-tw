@@ -101,8 +101,6 @@ export const Navbar = memo(() => {
 
     const onclick = useCallback(() => (setOpenPopup(true)), []);
 
-    const onLogoClick = useCallback(() => navigate('/'), [navigate]);
-
     const onMenuClick = useCallback(() => (setIsCollapsed(!isCollapsed)), [isCollapsed]);
 
     const onClickLink = useCallback(() => {
@@ -110,6 +108,11 @@ export const Navbar = memo(() => {
             setIsCollapsed(false);
         }
     }, [isSM]);
+
+    const onLogoClick = useCallback(() => {
+        navigate('/');
+        onClickLink();
+    }, [navigate, onClickLink]);
 
     const renderSearchBlock = useCallback(() => (
         <StyledInputWrapper>

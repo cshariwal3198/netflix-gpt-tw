@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { StyledLine, FooterContainer, StyledSpan } from "./styles";
 import { MediaAndLanguage } from "./language-media";
 import { Link } from "react-router-dom";
@@ -8,6 +8,12 @@ export const Footer = memo(() => {
 
     const { isSM } = useDisplaySizeGroup();
     const { translate } = useTranslator();
+
+    const onHomeClick = useCallback(() => (
+        window.scrollTo({
+            top: 0, behavior: 'smooth'
+        })
+    ), []);
 
     return (
         <FooterContainer>
@@ -19,7 +25,7 @@ export const Footer = memo(() => {
             </StyledSpan>
             <div className={`flex justify-around items-center gap-[10px] text-[14px] font-medium ${isSM ? 'flex-wrap' : 'unset'}`}>
                 <h6 className="cursor-pointer">
-                    <Link to='/'>{translate('general.home')}</Link>
+                    <Link to='/' onClick={onHomeClick}>{translate('general.home')}</Link>
                 </h6>
                 <h6 className="cursor-pointer" onClick={() => window.open('https://react.dev/')}>{translate('footer.guide')}</h6>
                 <h6 className="cursor-pointer" onClick={() => window.open('https://react.dev/')}>{translate('footer.documentation')}</h6>
