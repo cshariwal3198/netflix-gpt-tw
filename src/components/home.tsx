@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { ShimmerUI } from "./shimmer";
 import { IMovie } from "../types";
@@ -68,7 +68,7 @@ export default function Home() {
                         {renderMovies()}
                         {
                             moviesData.map(({ movieList, name, title }) => (
-                                <>
+                                <React.Fragment key={name}>
                                     <StyledSpan $isSM={isSM} $isMD={isMD}>{translate(title)}</StyledSpan>
                                     <StyledFlexWrap key={name}>
                                         {
@@ -77,7 +77,7 @@ export default function Home() {
                                             ))
                                         }
                                     </StyledFlexWrap>
-                                </>
+                                </React.Fragment>
                             ))
                         }
                     </StyledWrapper>

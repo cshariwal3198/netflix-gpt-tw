@@ -11,6 +11,8 @@ import { I18nextProvider, initReactI18next } from "react-i18next";
 import i18next from "i18next";
 import enJson from '../public/locale/en/app.json';
 import frJson from '../public/locale/fr/app.json';
+import esJson from '../public/locale/es/app.json';
+import hiJson from '../public/locale/hi/app.json';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -22,7 +24,9 @@ i18next.use(initReactI18next).init({
   lng: localStorage.getItem('locale') || 'en',     // Set the initial language of the App
   resources: {
     en: { app: enJson },
-    fr: { app: frJson }
+    fr: { app: frJson },
+    es: { app: esJson },
+    hi: { app: hiJson }
   }
 });
 

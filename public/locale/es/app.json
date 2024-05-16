@@ -1,0 +1,72 @@
+{
+    "general": {
+        "home": "Inicio",
+        "movies": "Películas",
+        "tvShows": "Programas de TV",
+        "favourites": "Favoritos",
+        "myList": "Mi Lista",
+        "account": "Cuenta",
+        "topRated": "Más valoradas",
+        "popular": "Populares",
+        "upComing": "Próximas",
+        "nowPlaying": "En Cartelera",
+        "trending": "Tendencias",
+        "cancel": "Cancelar",
+        "clear": "Limpiar",
+        "search": "Buscar",
+        "ok": "Aceptar",
+        "from": "De",
+        "noImage": "Sin imagen",
+        "simillar": "Similares",
+        "shows": "Programas",
+        "play": "Reproducir",
+        "wishList": "Lista de deseos",
+        "loadingPleaseWait": "Cargando, Por favor espere"
+    },
+    "favourites": {
+        "favouriteMovies": "Películas Favoritas",
+        "noFavourites": "Sin favoritos",
+        "addMoviesToFavourites": "Agregar película a favoritos",
+        "addShowsToFavourites": "Agregar programas a favoritos",
+        "favShows": "Programas Favoritos",
+        "clearShowsMessage": "Esta acción borrará todas las películas y programas de la lista de favoritos. ¿Seguro que quieres continuar?",
+        "clearShows": "Borrar Favoritos"
+    },
+    "movieDetails": {
+        "status": "Estado",
+        "creators": "Creadores",
+        "viewSimillar": "Ver Similares",
+        "moreInfo": "Más información",
+        "addToFavourites": "Agregar a favoritos",
+        "seeMore": "Ver más",
+        "noVideosFound": "No se encontraron videos",
+        "noSimillarShows": "No hay películas/programas similares disponibles",
+        "goto": "Ir a",
+        "officialPage": "Página oficial",
+        "relatedVideos": "Videos relacionados",
+        "gotoOfficialPageMessage": "Esta acción te llevará fuera del sitio. ¿Estás seguro de que quieres abrirlo?"
+    },
+    "searchPopup": {
+        "searchAShow": "Buscar una película o un programa",
+        "searchResults": "Resultados de la búsqueda",
+        "searchResultsComesHere": "Los resultados de la búsqueda aparecen aquí",
+        "recentlyOpened": "Recientemente abierto",
+        "clickToClose": "Haga clic para cerrar"
+    },
+    "account": {
+        "userprofile": "Perfil de usuario",
+        "profile": "Perfil",
+        "signOut": "Cerrar sesión",
+        "signOutPromptMessage": "¿Estás seguro de que quieres cerrar sesión?"
+    },
+    "footer": {
+        "aboutSiteMessage": "Un proyecto de React desarrollado por CSH, utilizando las API de películas TMDB, Styled Components y Tailwind CSS",
+        "guide": "Guía",
+        "documentation": "Documentación",
+        "contact": "Contacto",
+        "blog": "Blog",
+        "about": "Acerca de",
+        "help": "Ayuda",
+        "language": "Idioma"
+    }
+}

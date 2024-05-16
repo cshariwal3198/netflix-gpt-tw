@@ -1,7 +1,7 @@
 import React, { SyntheticEvent, memo, useCallback } from "react";
 import styled from 'styled-components';
 import { IMovie } from "../types";
-import { useDisplaySizeGroup } from "../hooks";
+import { useDisplaySizeGroup, useTranslator } from "../hooks";
 import { StyledSpan } from "../common-styles";
 import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
 import { useDispatch } from "react-redux";
@@ -86,6 +86,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
     const { showDetails } = useFetchMovieOrShowDetails(id, type);
 
     const dispatch = useDispatch();
+    const { translate } = useTranslator();
 
     const onClick = useCallback((e: SyntheticEvent) => {
         if (e.target === e.currentTarget) {
@@ -140,13 +141,13 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                     <div className="flex flex-wrap gap-4 justify-start">
                         {renderGenres()}
                     </div>
-                    <span className="font-serif text-2xl">Status: {showDetails?.status}</span>
+                    <span className="font-serif text-2xl">{translate('movieDetails.status')}: {showDetails?.status}</span>
                     {
                         showDetails?.belongs_to_collection?.name ?
-                            <span className="font-serif text-lg">From {showDetails?.belongs_to_collection?.name}</span> : null
+                            <span className="font-serif text-lg">{translate('general.from')} {showDetails?.belongs_to_collection?.name}</span> : null
                     }
                     <StyledProd>
-                        <h1 className="text-2xl text-[yellow] mr-5">Creators </h1>
+                        <h1 className="text-2xl text-[yellow] mr-5">{translate('movieDetails.creators')} </h1>
                         {renderProduction()}
                     </StyledProd>
                     <div className="flex gap-5 p-4 overflow-auto min-h-[200px]">
@@ -155,12 +156,12 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                     {
                         canViewSimillar ?
                             <div className="flex justify-around items-center">
-                                <Link className="font-bold text-xl justify-center text-blue-700" to={`/simillar/${type}/${id}`}>View Simillar</Link>
-                                <StyledLabel onClick={onRouteClick}>More Info</StyledLabel>
+                                <Link className="font-bold text-xl justify-center text-blue-700" to={`/simillar/${type}/${id}`}>{translate('movieDetails.viewSimillar')}</Link>
+                                <StyledLabel onClick={onRouteClick}>{translate('movieDetails.moreInfo')}</StyledLabel>
                             </div> : null
                     }
                     <div className="flex md:h-[80px] h-[40px] w-full items-center justify-center">
-                        <StyledFav $isFavourite={isFavourite} size={isSM ? '60px' : '80px'} onClick={onFavouriteClick} title="Add to Favourites" />
+                        <StyledFav $isFavourite={isFavourite} size={isSM ? '60px' : '80px'} onClick={onFavouriteClick} title={translate('movieDetails.addToFavourites')} />
                     </div>
                 </StyledContent>
             </Wrapper>

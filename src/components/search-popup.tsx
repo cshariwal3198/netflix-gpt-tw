@@ -2,7 +2,7 @@ import { ChangeEventHandler, SyntheticEvent, memo, useCallback, useMemo, useStat
 import styled from "styled-components";
 import { Modal } from "@material-ui/core";
 import { IMovie } from "../types";
-import { useDisplaySizeGroup, useGetMoviesBasedOnCategory, useGetTvShowsBasedOnCategory } from "../hooks";
+import { useDisplaySizeGroup, useGetMoviesBasedOnCategory, useGetTvShowsBasedOnCategory, useTranslator } from "../hooks";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addRecentlyOpenedShows, clearRecentlyOpenedShows } from "../store/recently-opened-slice";
@@ -105,6 +105,7 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
     const dispatch = useDispatch();
     const recentlyOpened: { recentlyOpenedShows: IMovie[] } = useSelector((state: any) => (state.recentlyOpened));
     const { isSM } = useDisplaySizeGroup();
+    const { translate } = useTranslator();
 
     const allShows = useMemo(() => (
         [...popularShows, ...topRatedShows, ...popularMovies, ...topRatedMovies, ...upComingMovies]
@@ -140,15 +141,15 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
             searchResult.map((item) => (
                 <Link to={`/movie/${item.id}`} key={item.id}>
                     <MovieWrapper onClick={() => onMovieClick(item)}>
-                        <StyledImage src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`} alt="No image" />
+                        <StyledImage src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`} alt={translate('general.noImage')} />
                         <h6 className="font-mono text-[16px]">{item.title || item.name}</h6>
                     </MovieWrapper>
                 </Link>
             )) :
             <h6>
-                Search Results comes here
+                {translate('searchPopup.searchResultsComesHere')}
             </h6>
-    ), [onMovieClick, searchResult]);
+    ), [onMovieClick, searchResult, translate]);
 
     const renderRecentlyOpened = useCallback(() => (
         <RecentlyOpenedWrapper>
@@ -164,26 +165,27 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
     ), [closePopup, recentlyOpened.recentlyOpenedShows]);
 
     const clearSearch = useCallback(() => (dispatch(clearRecentlyOpenedShows())), [dispatch]);
+    const clearText = useMemo(() => (translate('general.clear')), [translate]);
 
     return (
         <StyledModal open={true}>
             <div className="flex flex-col justify-center items-center w-full h-full text-white" onClick={onModalClick}>
                 <StyledPopup $isSM={isSM}>
-                    <StyledInput placeholder="Search..." onChange={onChange} />
+                    <StyledInput placeholder={`${translate('general.search')}...`} onChange={onChange} />
                     <ContainerWrapper $isSM={isSM}>
-                        <h5 className="font-serif font-normal text-[22px]">Search Results</h5>
+                        <h5 className="font-serif font-normal text-[22px]">{translate('searchPopup.searchResults')}</h5>
                         <ResultContainer $alignCenter={false}>
                             {renderSearchResult()}
                         </ResultContainer>
                     </ContainerWrapper>
                     <ContainerWrapper $isSM={isSM}>
                         <div className="flex w-full justify-between items-center">
-                            <h6 className="font-serif font-normal text-[22px]">Recently Opened</h6>
+                            <h6 className="font-serif font-normal text-[22px]">{translate('searchPopup.recentlyOpened')}</h6>
                             {
                                 recentlyOpened.recentlyOpenedShows.length ? (
                                     <div className="flex gap-[2px] items-center cursor-pointer border rounded-md p-[3px] max-h-[30px] bg-white text-black hover:text-red-600" onClick={clearSearch}>
                                         <IoCloseOutline size="22px" />
-                                        <h6>{isSM ? 'Clear' : 'Clear Search'}</h6>
+                                        <h6>{isSM ? `${clearText}` : `${clearText} ${translate('general.search')}`}</h6>
                                     </div>
                                 ) : null
                             }
@@ -191,7 +193,7 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
                         {renderRecentlyOpened()}
                     </ContainerWrapper>
                     <CloseButton onClick={closePopup}>
-                        Click to Close
+                        {translate('searchPopup.clickToClose')}
                     </CloseButton>
                 </StyledPopup>
             </div>

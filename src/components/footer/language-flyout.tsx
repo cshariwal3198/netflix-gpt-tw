@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useCallback, useMemo } from "react";
+import { ChangeEvent, memo, useCallback } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 

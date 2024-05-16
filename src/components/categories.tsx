@@ -4,7 +4,7 @@ import { Card } from "./movie-card";
 import { RingLoader } from "react-spinners";
 import { useGetFavourites } from "../hooks/use-get-favourites";
 import { IMovie } from "../types";
-import { useDisplaySizeGroup, useGetMoviesBasedOnCategory } from "../hooks";
+import { useDisplaySizeGroup, useGetMoviesBasedOnCategory, useTranslator } from "../hooks";
 import { getValueBasedOnResolution } from "./utils";
 
 const StyledWrapper = styled.div<{ $isSM: boolean, $isMD: boolean }>`
@@ -31,17 +31,20 @@ const Categories = memo(() => {
     const { getIsFavourite } = useGetFavourites();
     const { popular, topRated, upcoming } = useGetMoviesBasedOnCategory();
     const { isMD, isSM } = useDisplaySizeGroup();
+    const { translate } = useTranslator();
 
-    const moviesToRender: { name: string, moviesData: IMovie[] }[] = useMemo(() => ([
-        { name: 'Popular', moviesData: popular }, { name: 'Top Rated', moviesData: topRated }, { name: 'UpComing', moviesData: upcoming }
+    const moviesToRender: { name: string, moviesData: IMovie[], title: string }[] = useMemo(() => ([
+        { name: 'Popular', moviesData: popular, title: 'general.popular' },
+        { name: 'Top Rated', moviesData: topRated, title: 'general.topRated' },
+        { name: 'UpComing', moviesData: upcoming, title: 'general.upComing' }
     ]), [popular, topRated, upcoming]);
 
     return (
         <div className="flex flex-col">
             {
-                moviesToRender.map(({ moviesData, name }) => (
+                moviesToRender.map(({ moviesData, name, title }) => (
                     <React.Fragment key={name}>
-                        <StyledSpan $isSM={isSM} $isMD={isMD}>{name}</StyledSpan>
+                        <StyledSpan $isSM={isSM} $isMD={isMD}>{translate(title)}</StyledSpan>
                         <StyledWrapper $isSM={isSM} $isMD={isMD}>
                             {
                                 !moviesData?.length ?

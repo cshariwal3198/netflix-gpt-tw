@@ -124,8 +124,8 @@ export const Navbar = memo(() => {
     ), [theme]);
 
     const renderLogo = useMemo(() => (
-        <img src={`${import.meta.env.VITE_PUBLIC_URL}assets/neflix_logo.png`} alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
-    ), [onLogoClick]);
+        <img src={`${import.meta.env.VITE_PUBLIC_URL}assets/neflix_logo.png`} alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title={translate('general.home')} />
+    ), [onLogoClick, translate]);
 
     return (
         <StyledMainWrapper>
@@ -140,7 +140,7 @@ export const Navbar = memo(() => {
                                 }
                                 <UserAccount />
                             </StyledMiniWrapper>
-                            <StyledSearchInput onClick={() => (setOpenPopup(true))}>Search A Movie or Show</StyledSearchInput>
+                            <StyledSearchInput onClick={() => (setOpenPopup(true))}>{translate('searchPopup.searchAShow')}</StyledSearchInput>
                         </div>
                         :
                         <>

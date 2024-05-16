@@ -7,7 +7,7 @@ import { IMovie } from "../types";
 import { IoCloseOutline } from "react-icons/io5";
 import { clearFavourites } from "../store";
 import { useDispatch } from "react-redux";
-import { useDisplaySizeGroup } from "../hooks";
+import { useDisplaySizeGroup, useTranslator } from "../hooks";
 import { Popup } from "./popup";
 
 const StyledFlex = styled.div<{ $isData: boolean }>`
@@ -50,6 +50,7 @@ const Favourites = memo(() => {
     const [hidden, setHidden] = useState<boolean>(true);
 
     const { isSM } = useDisplaySizeGroup();
+    const { translate } = useTranslator();
 
     const renderContent = useCallback((shows: IMovie[], type: 'movie' | 'tvshow') => (
         shows.map((item) => (
@@ -86,36 +87,36 @@ const Favourites = memo(() => {
                        ${canClear && 'hover:text-red-600'} ${canClear ? 'opacity-[1]' : 'opacity-[0.6]'}`}
                     onClick={onClear}>
                     <IoCloseOutline size="22px" />
-                    <h6>Clear Favourites</h6>
+                    <h6>{translate('favourites.clearShows')}</h6>
                 </div>
                 <div className="flex flex-col p-[10px 0px] gap-[12px]">
-                    <h1 className="ml-[4%] font-serif text-2xl">Favourite Movies</h1>
+                    <h1 className="ml-[4%] font-serif text-2xl">{translate('favourites.favouriteMovies')}</h1>
                     <StyledFlex $isData={!!favMovies.length}>
                         {
                             favMovies.length ? renderContent(favMovies, 'movie') :
                                 <StyledSpan $isSM={isSM}>
-                                    No favourites
-                                    <StyledLink to="/categories">Add Movie To Favourites</StyledLink>
+                                    {translate('favourites.noFavourites')}
+                                    <StyledLink to="/categories">{translate('favourites.addMoviesToFavourites')}</StyledLink>
                                 </StyledSpan>
                         }
                     </StyledFlex>
                 </div>
                 <hr />
                 <div className="flex flex-col p-[10px 0px] gap-[12px]">
-                    <h1 className="ml-[4%] font-serif text-2xl">Favourite Shows</h1>
+                    <h1 className="ml-[4%] font-serif text-2xl">{translate('favourites.favShows')}</h1>
                     <StyledFlex $isData={!!favShows.length}>
                         {
                             favShows.length ? renderContent(favShows, 'tvshow') :
                                 <StyledSpan $isSM={isSM}>
-                                    No favourites
-                                    <StyledLink to="/tvshows">Add Shows To Favourites</StyledLink>
+                                    {translate('favourites.noFavouritess')}
+                                    <StyledLink to="/tvshows">{translate('favourites.addShowsToFavourites')}</StyledLink>
                                 </StyledSpan>
                         }
                     </StyledFlex>
                 </div>
             </StyledWrapper>
             {
-                hidden ? null : <Popup message="Action will erase all the movies and shows from Favourites list. Are you sure want to continue?"
+                hidden ? null : <Popup message={translate('favourites.clearShowsMessage')}
                     onPositiveAction={onPositiveAction} type="warning" onNegativeAction={toggleHidden} />
             }
         </>
