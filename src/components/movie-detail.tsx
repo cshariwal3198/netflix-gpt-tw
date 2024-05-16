@@ -114,11 +114,17 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
     ), [showDetails?.production_companies]);
 
     const renderVideos = useCallback(() => (
-        showDetails?.videos?.results?.slice(0, 5).map(({ id, key, name }) => (
-            <div className="h-40 w-60 mr-14" key={id}>
-                <iframe src={`https://www.youtube.com/embed/${key}`} title={name}></iframe>
+        showDetails?.videos?.results.length ? (
+            <div className="flex gap-5 p-4 overflow-auto min-h-[200px]">
+                {
+                    showDetails.videos.results?.slice(0, 5).map(({ id, key, name }) => (
+                        <div className="h-40 w-60 mr-14" key={id}>
+                            <iframe src={`https://www.youtube.com/embed/${key}`} title={name}></iframe>
+                        </div>
+                    ))
+                }
             </div>
-        ))
+        ) : null
     ), [showDetails?.videos?.results]);
 
     const onRouteClick = useCallback(() => (
@@ -136,7 +142,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                     isLG ? <img src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="" /> : null
                 }
                 <StyledContent>
-                    <span className="flex font-extrabold font-serif sm:text-2xl text-xl h-[50px] self-center items-center">{original_title || name}</span>
+                    <span className="flex font-extrabold font-serif text-3xl h-[50px] self-center items-center">{original_title || name}</span>
                     <h3 className="font-thin font-serif text-base py-2">{overview}</h3>
                     <div className="flex flex-wrap gap-4 justify-start">
                         {renderGenres()}
@@ -150,9 +156,9 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                         <h1 className="text-2xl text-[yellow] mr-5">{translate('movieDetails.creators')} </h1>
                         {renderProduction()}
                     </StyledProd>
-                    <div className="flex gap-5 p-4 overflow-auto min-h-[200px]">
-                        {renderVideos()}
-                    </div>
+                    {
+                        renderVideos()
+                    }
                     {
                         canViewSimillar ?
                             <div className="flex justify-around items-center">

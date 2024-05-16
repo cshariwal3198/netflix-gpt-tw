@@ -187,7 +187,7 @@ const MovieInfo = memo(() => {
                         </StyledVideoItem>
                     ))
                 }
-            </VideosWrapper> : <h6 className="text-xl">{translate('movieDetails.noVideosFounds')}</h6>
+            </VideosWrapper> : <h6 className="text-xl">{translate('movieDetails.noVideosFound')}</h6>
     ), [isSM, onPlayVideo, translate, videos?.results]);
 
     const renderSimillarSuggestion = useCallback(() => (

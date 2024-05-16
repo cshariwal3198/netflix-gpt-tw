@@ -40,7 +40,7 @@ const StyledDiv = styled.div`
     justify-items: center;
     align-items: center;
     overflow: hidden;
-    border: 1px solid;
+    border: 1px solid #697e90;
     border-radius: 7px;
     max-width: 500px;
 `;
@@ -62,24 +62,28 @@ export const ShowCredit = memo(({ id, type }: { type: string, id: string }) => {
 
     return (
         <div className="flex flex-col gap-[12px] font-sans relative w-full p-3">
-            <h3 className="font-serif text-[30px] px-2">{translate('credits.credits')}: </h3>
             {
                 isCreditLoading ? (<></>) : (
-                    <StyledWrapper $isSM={isSM}>
-                        {
-                            credits?.cast?.slice(0, 10).map(({ id, character, name, profile_path }) => (
-                                profile_path ? (
-                                    <StyledDiv key={id}>
-                                        <StyledImage src={`https://image.tmdb.org/t/p/w500/${profile_path}`} alt="Not found" />
-                                        <div className="flex flex-col gap-[6px] justify-center">
-                                            <StyledText>{name}</StyledText>
-                                            <StyledText>{translate('credits.character')}: {character}</StyledText>
-                                        </div>
-                                    </StyledDiv>
-                                ) : null
-                            ))
-                        }
-                    </StyledWrapper>
+                    credits?.cast.length ? (
+                        <>
+                            <h3 className="font-serif text-[30px] px-2">{translate('credits.credits')}: </h3>
+                            <StyledWrapper $isSM={isSM}>
+                                {
+                                    credits?.cast?.slice(0, 10).map(({ id, character, name, profile_path }) => (
+                                        profile_path ? (
+                                            <StyledDiv key={id}>
+                                                <StyledImage src={`https://image.tmdb.org/t/p/w500/${profile_path}`} alt="Not found" />
+                                                <div className="flex flex-col gap-[6px] justify-center">
+                                                    <StyledText>{name}</StyledText>
+                                                    <StyledText>{translate('credits.character')}: {character}</StyledText>
+                                                </div>
+                                            </StyledDiv>
+                                        ) : null
+                                    ))
+                                }
+                            </StyledWrapper>
+                        </>
+                    ) : null
                 )
             }
         </div>
