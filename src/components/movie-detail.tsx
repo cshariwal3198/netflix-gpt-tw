@@ -25,7 +25,21 @@ const Wrapper = styled.div<{ $isSM: boolean, $backdrop: string }>`
     display: grid;
     grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '1fr 2fr')};
     column-gap: 30px;
-    border: 1px solid white;
+    border: 1px solid #687594;
+    background: ${({ $backdrop }) => `url(${`https://image.tmdb.org/t/p/w500/${$backdrop}`}) no-repeat top center`};
+    background-size: 100% 100%;
+    color: white;
+
+        &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(3, 3, 3, 0.5);
+        z-index: 0;
+        }   
 `;
 
 const StyledContent = styled.div`

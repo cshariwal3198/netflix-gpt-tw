@@ -49,9 +49,10 @@ const StyledSpan = styled.span`
 const StyledOverview = styled(StyledSpan) <{ $hover: boolean, $isSM: boolean }>`
     bottom: 30px;
     top: unset;
-    opacity: ${({ $hover }) => ($hover ? '0.7' : '0.2')};
+    opacity: ${({ $hover }) => ($hover ? '0.7' : '0.1')};
     margin-left: 0px;
     font-weight: ${({ $isSM }) => ($isSM ? 400 : 500)};
+    cursor: default;
 `;
 
 export const Card = memo(({ item, isFavourite, canViewSimillar, type, canShowDetails, canShowWishlist = true }: ICardProps) => {

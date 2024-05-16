@@ -19,7 +19,8 @@ export const StyledDiv = styled.div<{ $isSM: boolean }>`
     grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : 'auto auto')};
     gap: 20px;
     align-items: center;
-    justify-content: ${({ $isSM }) => ($isSM ? 'flex-end' : 'unset')};
+    justify-content: center;
+    width: 100%;
 `;
 
 export const StyledLine = styled.hr`
@@ -33,6 +34,7 @@ export const LanguageWrapper = styled.div`
     gap: 20px;
     font-size: 18px;
     justify-content: center;
+    align-items: center;
 `;
 
 export const FlyoutWrapper = styled.div`
