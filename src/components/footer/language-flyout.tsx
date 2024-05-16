@@ -6,6 +6,7 @@ const FlyoutWrapper = styled.div`
     flex-direction: column;
     width: fit-content;
     background-color: aliceblue;
+    color: black;
     transition: all 0.5s ease;
     position: relative;
     overflow: hidden;

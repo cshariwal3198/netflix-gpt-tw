@@ -146,7 +146,7 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
                             <span className="font-serif text-lg">From {showDetails?.belongs_to_collection?.name}</span> : null
                     }
                     <StyledProd>
-                        <h1 className="text-2xl text-sky-800 mr-5">Creators </h1>
+                        <h1 className="text-2xl text-[yellow] mr-5">Creators </h1>
                         {renderProduction()}
                     </StyledProd>
                     <div className="flex gap-5 p-4 overflow-auto min-h-[200px]">
