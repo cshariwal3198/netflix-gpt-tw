@@ -26,11 +26,11 @@ const StyledImage = styled.img`
     opacity: 0.8;
     filter: contrast(90%);
     mask-image: linear-gradient(rgba(0, 0, 0, 527),rgba(0, 0, 0, 5));
-    border: 1px solid white;
+    border: 1px solid ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     margin-left: 10px;
 `;
 
-const StyledDiv = styled.div`
+const CreditWrapper = styled.div`
     display: grid;
     grid-template-columns: auto 1fr;
     width: 100%;
@@ -40,7 +40,7 @@ const StyledDiv = styled.div`
     justify-items: center;
     align-items: center;
     overflow: hidden;
-    border: 1px solid #697e90;
+    border: 1px solid ${({ theme: { semanticColors: { creditWrapperBorderColor } } }) => (creditWrapperBorderColor)};;
     border-radius: 7px;
     max-width: 500px;
 `;
@@ -71,13 +71,13 @@ export const ShowCredit = memo(({ id, type }: { type: string, id: string }) => {
                                 {
                                     credits?.cast?.slice(0, 10).map(({ id, character, name, profile_path }) => (
                                         profile_path ? (
-                                            <StyledDiv key={id}>
+                                            <CreditWrapper key={id}>
                                                 <StyledImage src={`https://image.tmdb.org/t/p/w500/${profile_path}`} alt="Not found" />
                                                 <div className="flex flex-col gap-[6px] justify-center">
                                                     <StyledText>{name}</StyledText>
                                                     <StyledText>{translate('credits.character')}: {character}</StyledText>
                                                 </div>
-                                            </StyledDiv>
+                                            </CreditWrapper>
                                         ) : null
                                     ))
                                 }

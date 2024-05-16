@@ -44,7 +44,7 @@ const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
     max-height: ${({ $isSM, $isMD }) => ($isSM ? '30vh' : getValueBasedOnResolution($isMD, '40Vh', '50vh'))};
     min-width: ${({ $isSM, $isMD }) => ($isSM ? '180px' : getValueBasedOnResolution($isMD, '220px', '260px'))};;
     border-radius: 10px;
-    box-shadow: 5px 0px 30px white;
+    box-shadow: 5px 0px 30px ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     justify-self: center;
     padding: 10px;
 `;
@@ -103,12 +103,12 @@ const VideosWrapper = styled.div<{ $isSM: boolean }>`
 const StyledPara = styled.p`
     text-decoration: dashed;
     cursor: pointer;
-    color: #3a76cf;
+    color: ${({ theme: { semanticColors: { extendedTextColor } } }) => (extendedTextColor)};;
 `;
 
 const StyledText = styled.span`
     text-decoration: none;
-    color: #3a76cf;
+    color: ${({ theme: { semanticColors: { extendedTextColor } } }) => (extendedTextColor)};;
     font-weight: 500;
     cursor: pointer;
     font-size: 18px;

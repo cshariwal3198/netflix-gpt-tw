@@ -20,7 +20,7 @@ const StyledPopup = styled.div<{ $isSM: boolean }>`
     height: 75%;
     width: 80%;
     max-width: 1000px;
-    border: 1px solid white;
+    border: 1px solid ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     border-radius: 8px; margin: auto;
     padding: ${({ $isSM }) => ($isSM ? '12px 5px 0px 5px' : '30px 20px 8px 20px')};
     align-items: center;
@@ -30,12 +30,12 @@ const StyledPopup = styled.div<{ $isSM: boolean }>`
 
 const StyledInput = styled.input`
     background: none;
-    border: 1px solid white;
+    border: 1px solid ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     border-radius: 9px;
     font-size: 20px;
     padding: 10px;
     width: 85%;
-    color: white;
+    color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     padding-left: 5%;
 `;
 
@@ -69,8 +69,8 @@ const RecentlyOpenedWrapper = styled.div`
 const CloseButton = styled.button`
     background: #dbdbdb;
     width: fit-content;
-    border: 1px solid black;
-    color: black;
+    border: 1px solid ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
+    color: ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
     border-radius: 8px;
     padding: 5px 20px;
     font-size: 18px;

@@ -25,10 +25,10 @@ const Wrapper = styled.div<{ $isSM: boolean, $backdrop: string }>`
     display: grid;
     grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '1fr 2fr')};
     column-gap: 30px;
-    border: 1px solid #687594;
+    border: 1px solid ${({ theme: { semanticColors: { movieDetailsWrapperBorder } } }) => (movieDetailsWrapperBorder)};;
     background: ${({ $backdrop }) => `url(${`https://image.tmdb.org/t/p/w500/${$backdrop}`}) no-repeat top center`};
     background-size: 100% 100%;
-    color: white;
+    color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
 
         &::before {
         content: '';

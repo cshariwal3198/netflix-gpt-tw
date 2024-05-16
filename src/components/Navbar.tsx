@@ -58,7 +58,7 @@ const StyledMainWrapper = styled.div`
     width: 100%;
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
-    box-shadow: 0px 20px 20px 0px #4d4b4b;
+    box-shadow: 0px 20px 20px 0px ${({ theme: { semanticColors: { navbarShadowColor } } }) => (navbarShadowColor)};;
 `;
 
 const StyledSearchInput = styled.button`

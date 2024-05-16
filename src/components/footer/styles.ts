@@ -24,7 +24,7 @@ export const StyledDiv = styled.div<{ $isSM: boolean }>`
 `;
 
 export const StyledLine = styled.hr`
-    border: 1px solid black;
+    border: 1px solid ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
 `;
 
 export const LanguageWrapper = styled.div`

@@ -14,7 +14,7 @@ const StyledWrapper = styled.div<{ $isSM: boolean, $isMD: boolean }>`
     height: ${({ $isSM, $isMD }) => ($isSM ? '40vh' : getValueBasedOnResolution($isMD, '60vh', '75vh'))};
     text-align: center;
     margin-top: 8px;
-    border: 1px solid white;
+    border: 1px solid ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     border-radius: 10px;
 `;
 
@@ -25,7 +25,7 @@ const StyledPoster = styled.img<{ $isSM: boolean, $isMD: boolean }>`
     bottom: -30px;
     right: ${({ $isSM }) => ($isSM ? '5%' : '8%')};
     border-radius: 20px;
-    box-shadow: 10px 12px 10px 0px black;
+    box-shadow: 10px 12px 10px 0px ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
 `;
 
 const StyledSpan = styled.span`
@@ -50,7 +50,7 @@ const ReleaseDateWrapper = styled(StyledSpan)`
     left: unset;
     top: 30px;
     right: 3%;
-    color: white;
+    color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     font-size: 24px;
 `;
 

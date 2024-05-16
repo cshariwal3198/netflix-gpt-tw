@@ -24,15 +24,15 @@ const StyledPopup = styled.div`
     min-width: 400px; margin: auto;
     align-items: center;
     position: relative;
-    background-color: white;
+    background-color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     border-radius: 10px;
-    color: black;
+    color: ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
 `;
 
 const MessageWrapper = styled.span`
     display: flex;
     height: 60%;
-    color: black;
+    color: ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
     font-size: 20px;
     text-align: center;
 `;
@@ -51,7 +51,7 @@ const ActionWrapper = styled.div`
 `;
 
 const ActionButton = styled.button<{ $bgColor: string, $disabled: boolean }>`
-    background-color: #078ceb;
+    background-color: ${({ theme: { semanticColors: { popupActionButtonBackgroundColor } } }) => (popupActionButtonBackgroundColor)};
     border: none;
     border-radius: 5px;
     padding: 6px;
