@@ -42,7 +42,7 @@ const StyledSpan = styled.span`
     top: 15px;
     font-weight: 500;
     padding: 10px;
-    color: white;
+    color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     transform: none;
 `;
 

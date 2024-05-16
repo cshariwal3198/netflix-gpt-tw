@@ -20,8 +20,8 @@ const StyledPopup = styled.div<{ $isSM: boolean }>`
     height: 75%;
     width: 80%;
     max-width: 1000px;
-    border: 1px solid white;
-    border-radius: 12px; margin: auto;
+    border: 1px solid ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
+    border-radius: 8px; margin: auto;
     padding: ${({ $isSM }) => ($isSM ? '12px 5px 0px 5px' : '30px 20px 8px 20px')};
     align-items: center;
     overflow-y: auto;
@@ -30,12 +30,12 @@ const StyledPopup = styled.div<{ $isSM: boolean }>`
 
 const StyledInput = styled.input`
     background: none;
-    border: 1px solid white;
+    border: 1px solid ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     border-radius: 9px;
     font-size: 20px;
     padding: 10px;
     width: 85%;
-    color: white;
+    color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     padding-left: 5%;
 `;
 
@@ -57,7 +57,7 @@ const ResultContainer = styled.div<{ $alignCenter: boolean }>`
     align-items:${({ $alignCenter }) => ($alignCenter ? 'center' : 'unset')};
     padding: 20px;
     border-radius: 6px;
-    box-shadow: inset -10px -8px 20px 0px;
+    box-shadow: inset -10px -8px 20px 0px #4b4b4d;
 `;
 
 const RecentlyOpenedWrapper = styled.div`
@@ -69,8 +69,8 @@ const RecentlyOpenedWrapper = styled.div`
 const CloseButton = styled.button`
     background: #dbdbdb;
     width: fit-content;
-    border: 1px solid black;
-    color: black;
+    border: 1px solid ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
+    color: ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
     border-radius: 8px;
     padding: 5px 20px;
     font-size: 18px;
@@ -96,20 +96,38 @@ const StyledImage = styled.img`
     border-radius: 8px;
 `;
 
+type IAllShow = IMovie & { showType: string };
+
 export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
 
-    const [searchResult, setSearchResult] = useState<IMovie[]>([]);
-    const { topRated: topRatedMovies, popular: popularMovies, upcoming: upComingMovies } = useGetMoviesBasedOnCategory();
-    const { popular: popularShows, topRated: topRatedShows } = useGetTvShowsBasedOnCategory();
+    const [searchResult, setSearchResult] = useState<IAllShow[]>([]);
+    const { topRated: topRatedMovies, popular: popularMovies, upcoming: upComingMovies, nowPlaying: nowPlayingMovies } = useGetMoviesBasedOnCategory();
+    const { popular: popularShows, topRated: topRatedShows, trending: trendingShows, upcoming: upcomingShows } = useGetTvShowsBasedOnCategory();
 
     const dispatch = useDispatch();
     const recentlyOpened: { recentlyOpenedShows: IMovie[] } = useSelector((state: any) => (state.recentlyOpened));
     const { isSM } = useDisplaySizeGroup();
     const { translate } = useTranslator();
 
-    const allShows = useMemo(() => (
-        [...popularShows, ...topRatedShows, ...popularMovies, ...topRatedMovies, ...upComingMovies]
-    ), [popularMovies, popularShows, topRatedMovies, topRatedShows, upComingMovies]);
+    const allShows: IAllShow[] = useMemo(() => {
+
+        const filteredMovies: IAllShow[] = [];
+        const filteredTvShows: IAllShow[] = [];
+
+        [...topRatedMovies, ...popularMovies, ...upComingMovies, ...nowPlayingMovies].forEach((item) => {
+            if (!filteredMovies.find(({ id: movieId }) => (movieId === item.id))) {
+                filteredMovies.push({ ...item, showType: 'movie' });
+            }
+        });
+
+        [...popularShows, ...topRatedShows, ...trendingShows, ...upcomingShows].forEach((item) => {
+            if (!filteredTvShows.find(({ id }) => (id === item.id))) {
+                filteredTvShows.push({ ...item, showType: 'tvshow' });
+            }
+        });
+
+        return [...filteredMovies, ...filteredTvShows]
+    }, [popularMovies, popularShows, topRatedMovies, topRatedShows, trendingShows, upComingMovies, upcomingShows, nowPlayingMovies]);
 
     const closePopup = useCallback(() => (setOpenPopup(false)), [setOpenPopup]);
 
@@ -139,7 +157,7 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
     const renderSearchResult = useCallback(() => (
         searchResult.length ?
             searchResult.map((item) => (
-                <Link to={`/movie/${item.id}`} key={item.id}>
+                <Link to={`/${item.showType}/${item.id}`} key={`${item.id} ${item.name}`}>
                     <MovieWrapper onClick={() => onMovieClick(item)}>
                         <StyledImage src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`} alt={translate('general.noImage')} />
                         <h6 className="font-mono text-[16px]">{item.title || item.name}</h6>

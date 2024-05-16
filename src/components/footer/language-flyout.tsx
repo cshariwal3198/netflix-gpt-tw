@@ -7,7 +7,7 @@ const FlyoutWrapper = styled.div`
     flex-direction: column;
     width: fit-content;
     background-color: aliceblue;
-    color: black;
+    color: ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
     transition: all 0.5s ease;
     position: relative;
     overflow: hidden;
@@ -16,7 +16,7 @@ const FlyoutWrapper = styled.div`
 const StyledSelect = styled.select`
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
+    border: 1px solid ${({ theme: { commonColors: { normalBlack } } }) => (normalBlack)};
     padding: 0px 10px;
     cursor: pointer;
 `;

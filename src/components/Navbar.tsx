@@ -58,7 +58,7 @@ const StyledMainWrapper = styled.div`
     width: 100%;
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
-    box-shadow: 0px 20px 20px 0px #4d4b4b;
+    box-shadow: 0px 20px 20px 0px ${({ theme: { semanticColors: { navbarShadowColor } } }) => (navbarShadowColor)};;
 `;
 
 const StyledSearchInput = styled.button`
@@ -141,7 +141,7 @@ export const Navbar = memo(() => {
             <StyledNavWrapper>
                 {
                     isSM ?
-                        <div className="flex flex-col gap-[10px] justify-center">
+                        <div className="flex flex-col gap-[10px] justify-center w-full">
                             <StyledMiniWrapper>
                                 {renderLogo}
                                 {
@@ -153,7 +153,7 @@ export const Navbar = memo(() => {
                         </div>
                         :
                         <>
-                            <div className="flex justify-around items-center md:w-[70%] text-2xl">
+                            <div className="flex justify-around items-center md:w-[70%] text-2xl gap-[5px]">
                                 {renderLogo}
                                 {renderMenuItems()}
                             </div>

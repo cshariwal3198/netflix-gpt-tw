@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState, useEffect } from "react"
+import { Fragment, useRef, useState } from "react"
 import { Popover, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/solid"
 

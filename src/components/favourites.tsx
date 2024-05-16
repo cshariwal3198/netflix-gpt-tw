@@ -39,7 +39,7 @@ const StyledSpan = styled.span<{ $isSM: boolean }>`
 
 const StyledLink = styled(Link)`
     font-weight: 700;
-    color: #118bf7;
+    color: ${({ theme: { semanticColors: { linkTextColor } } }) => (linkTextColor)};;
 `;
 
 const Favourites = memo(() => {

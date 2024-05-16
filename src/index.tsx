@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { ThemeProvider } from './contexts/theme-context.tsx'
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-react'
 import { Provider } from 'react-redux'
 import { store } from './store/index.ts'
@@ -13,6 +14,7 @@ import enJson from '../public/locale/en/app.json';
 import frJson from '../public/locale/fr/app.json';
 import esJson from '../public/locale/es/app.json';
 import hiJson from '../public/locale/hi/app.json';
+import { defaultThemes } from './common-styles'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -33,18 +35,20 @@ i18next.use(initReactI18next).init({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>
-      <ThemeProvider>
-        <Provider store={store}>
-          <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-            <SignedOut>
-              <SignInContainer />
-            </SignedOut>
-            <SignedIn>
-              <App />
-            </SignedIn>
-          </ClerkProvider>
-        </Provider>
-      </ThemeProvider>
+      <StyledThemeProvider theme={defaultThemes}>
+        <ThemeProvider>
+          <Provider store={store}>
+            <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+              <SignedOut>
+                <SignInContainer />
+              </SignedOut>
+              <SignedIn>
+                <App />
+              </SignedIn>
+            </ClerkProvider>
+          </Provider>
+        </ThemeProvider>
+      </StyledThemeProvider>
     </I18nextProvider>
   </React.StrictMode>,
 )
