@@ -1,0 +1,72 @@
+{
+    "general": {
+        "home": "होम",
+        "movies": "फिल्में",
+        "tvShows": "टीवी शो",
+        "favourites": "पसंदीदा",
+        "myList": "मेरी सूची",
+        "account": "खाता",
+        "topRated": "शीर्ष रेटेड",
+        "popular": "लोकप्रिय",
+        "upComing": "आगामी",
+        "nowPlaying": "अभी चल रही है",
+        "trending": "ट्रेंडिंग",
+        "cancel": "रद्द करें",
+        "clear": "साफ करें",
+        "search": "खोजें",
+        "ok": "ठीक है",
+        "from": "से",
+        "noImage": "कोई छवि नहीं",
+        "simillar": "समान",
+        "shows": "शो",
+        "play": "चलाएं",
+        "wishList": "इच्छा सूची",
+        "loadingPleaseWait": "लोड हो रहा है, कृपया प्रतीक्षा करें"
+    },
+    "favourites": {
+        "favouriteMovies": "पसंदीदा फिल्में",
+        "noFavourites": "कोई पसंदीदा नहीं",
+        "addMoviesToFavourites": "फिल्म को पसंदीदा में जोड़ें",
+        "addShowsToFavourites": "शो को पसंदीदा में जोड़ें",
+        "favShows": "पसंदीदा शो",
+        "clearShowsMessage": "यह क्रिया सभी फिल्में और शो को पसंदीदा सूची से हटा देगी। क्या आप वाकई जारी रखना चाहते हैं?",
+        "clearShows": "पसंदीदा हटाएं"
+    },
+    "movieDetails": {
+        "status": "स्थिति",
+        "creators": "निर्माता",
+        "viewSimillar": "समान देखें",
+        "moreInfo": "अधिक जानकारी",
+        "addToFavourites": "पसंदीदा में जोड़ें",
+        "seeMore": "और देखें",
+        "noVideosFound": "कोई वीडियो नहीं मिला",
+        "noSimillarShows": "कोई समान फिल्म/शो उपलब्ध नहीं है",
+        "goto": "जाएं",
+        "officialPage": "आधिकारिक पेज",
+        "relatedVideos": "संबंधित वीडियो",
+        "gotoOfficialPageMessage": "यह क्रिया आपको साइट से बाहर ले जाएगी। क्या आप वाकई इसे खोलना चाहते हैं?"
+    },
+    "searchPopup": {
+        "searchAShow": "एक फिल्म या शो खोजें",
+        "searchResults": "खोज के परिणाम",
+        "searchResultsComesHere": "खोज के परिणाम यहाँ आते हैं",
+        "recentlyOpened": "हाल ही में खोला गया",
+        "clickToClose": "बंद करने के लिए क्लिक करें"
+    },
+    "account": {
+        "userprofile": "उपयोगकर्ता प्रोफ़ाइल",
+        "profile": "प्रोफ़ाइल",
+        "signOut": "लॉग आउट करें",
+        "signOutPromptMessage": "क्या आप वाकई लॉग आउट करना चाहते हैं?"
+    },
+    "footer": {
+        "aboutSiteMessage": "एक रिएक्ट परियोजना जिसे CSH ने विकसित किया, जो TMDB मूवी API, स्टाइल्ड कंपोनेंट्स और टेलविंड CSS का उपयोग करता है",
+        "guide": "गाइड",
+        "documentation": "दस्तावेज़ीकरण",
+        "contact": "संपर्क करें",
+        "blog": "ब्लॉग",
+        "about": "के बारे में",
+        "help": "सहायता",
+        "language": "भाषा"
+    }
+}

@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { RingLoader } from "react-spinners";
 import { IMovie } from "../types";
 import { useTheme } from "../contexts/theme-context";
-import { useDisplaySizeGroup, useGetFavourites } from "../hooks";
+import { useDisplaySizeGroup, useGetFavourites, useTranslator } from "../hooks";
 import { getValueBasedOnResolution } from "./utils";
 
 const StyledWrapper = styled.div<{ $isSM: boolean, $isMD: boolean }>`
@@ -44,9 +44,12 @@ const TvShows = memo(() => {
     const { theme } = useTheme();
     const { getIsFavourite } = useGetFavourites();
     const { isMD, isSM } = useDisplaySizeGroup();
+    const { translate } = useTranslator();
 
     const tvShowsToRender = useMemo(() => ([
-        { name: 'Popular', showsData: popular }, { name: 'Top Rated', showsData: topRated }, { name: 'Trending', showsData: trending }
+        { name: 'Popular', showsData: popular, title: 'general.popular' },
+        { name: 'Top Rated', showsData: topRated, title: 'general.topRated' },
+        { name: 'Trending', showsData: trending, title: 'general.trending' }
     ]), [popular, topRated, trending]);
 
     const handleChange = useCallback((e: React.SyntheticEvent, newValue: number) => {
@@ -55,7 +58,7 @@ const TvShows = memo(() => {
 
     const renderShows = useCallback((index: number) => (
         <>
-            <StyledSpan $isSM={isSM} $isMD={isMD}>{tvShowsToRender[index].name}</StyledSpan>
+            <StyledSpan $isSM={isSM} $isMD={isMD}>{translate(tvShowsToRender[index].title)}</StyledSpan>
             <StyledWrapper $isSM={isSM} $isMD={isMD}>
                 {
                     tvShowsToRender[index].showsData.isLoading ?
@@ -68,7 +71,7 @@ const TvShows = memo(() => {
                 }
             </StyledWrapper>
         </>
-    ), [getIsFavourite, isMD, isSM, tvShowsToRender]);
+    ), [getIsFavourite, isMD, isSM, translate, tvShowsToRender]);
 
     const showContent = useMemo(() => renderShows(value), [renderShows, value]);
 

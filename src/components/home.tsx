@@ -1,10 +1,10 @@
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { ShimmerUI } from "./shimmer";
 import { IMovie } from "../types";
 import { Card } from "./movie-card";
 import { CoverMovie } from "./cover-movie";
-import { useDisplaySizeGroup, useGetMoviesBasedOnCategory } from "../hooks";
+import { useDisplaySizeGroup, useGetMoviesBasedOnCategory, useTranslator } from "../hooks";
 import { useGetFavourites } from "../hooks/use-get-favourites";
 import { getValueBasedOnResolution } from "./utils";
 
@@ -38,12 +38,13 @@ export default function Home() {
     const { allMovies, topRated, nowPlaying, upcoming } = useGetMoviesBasedOnCategory();
     const { getIsFavourite } = useGetFavourites();
     const { isSM, isMD } = useDisplaySizeGroup();
+    const { translate } = useTranslator();
 
     const moviesData = useMemo(() => (
         [
-            { movieList: topRated, name: 'Top Rated' },
-            { movieList: nowPlaying, name: 'Now Playing' },
-            { movieList: upcoming, name: 'Up Coming' }
+            { movieList: topRated, name: 'Top Rated', title: 'general.topRated' },
+            { movieList: nowPlaying, name: 'Now Playing', title: 'general.nowPlaying' },
+            { movieList: upcoming, name: 'Up Coming', title: 'general.upComing' }
         ]
     ), [nowPlaying, topRated, upcoming]);
 
@@ -63,12 +64,12 @@ export default function Home() {
                 !allMovies?.length ? <ShimmerUI /> :
                     <StyledWrapper>
                         <CoverMovie movieItem={allMovies[0]} />
-                        <StyledSpan $isSM={isSM} $isMD={isMD}>Popular</StyledSpan>
+                        <StyledSpan $isSM={isSM} $isMD={isMD}>{translate('general.popular')}</StyledSpan>
                         {renderMovies()}
                         {
-                            moviesData.map(({ movieList, name }) => (
-                                <>
-                                    <StyledSpan $isSM={isSM} $isMD={isMD}>{name}</StyledSpan>
+                            moviesData.map(({ movieList, name, title }) => (
+                                <React.Fragment key={name}>
+                                    <StyledSpan $isSM={isSM} $isMD={isMD}>{translate(title)}</StyledSpan>
                                     <StyledFlexWrap key={name}>
                                         {
                                             movieList?.map((item: IMovie) => (
@@ -76,7 +77,7 @@ export default function Home() {
                                             ))
                                         }
                                     </StyledFlexWrap>
-                                </>
+                                </React.Fragment>
                             ))
                         }
                     </StyledWrapper>

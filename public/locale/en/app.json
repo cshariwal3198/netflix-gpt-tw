@@ -1,0 +1,72 @@
+{
+    "general": {
+        "home": "Home",
+        "movies": "Movies",
+        "tvShows": "Tv Shows",
+        "favourites": "Favourites",
+        "myList": "My List",
+        "account": "Account",
+        "topRated": "Top Rated",
+        "popular": "Popular",
+        "upComing": "Up Coming",
+        "nowPlaying": "Now Playing",
+        "trending": "Trending",
+        "cancel": "Cancel",
+        "clear": "Clear",
+        "search": "Search",
+        "ok": "Ok",
+        "from": "From",
+        "noImage": "No Image",
+        "simillar": "Simillar",
+        "shows": "Shows",
+        "play": "Play",
+        "wishList": "Wishlist",
+        "loadingPleaseWait": "Loading, Please Wait"
+    },
+    "favourites": {
+        "favouriteMovies": "Favourite Movies",
+        "noFavourites": "No favourites",
+        "addMoviesToFavourites": "Add Movie To Favourites",
+        "addShowsToFavourites": "Add Shows To Favourites",
+        "favShows": "Favourite Shows",
+        "clearShowsMessage": "Action will erase all the movies and shows from Favourites list. Are you sure want to continue?",
+        "clearShows": "Clear Favourites"
+    },
+    "movieDetails": {
+        "status": "Status",
+        "creators": "Creators",
+        "viewSimillar": "View Simillar",
+        "moreInfo": "More Info",
+        "addToFavourites": "Add to Favourites",
+        "seeMore": "See More",
+        "noVideosFound": "No Videos Found",
+        "noSimillarShows": "No simillar movies/shows Available",
+        "goto": "Go to",
+        "officialPage": "Official Page",
+        "relatedVideos": "Related Videos",
+        "gotoOfficialPageMessage": "This Action will take you out of the site. Are you sure want to open?"
+    },
+    "searchPopup": {
+        "searchAShow": "Search A Movie or Show",
+        "searchResults": "Search Results",
+        "searchResultsComesHere": "Search Results comes here",
+        "recentlyOpened": "Recently Opened",
+        "clickToClose": "Click to Close"
+    },
+    "account": {
+        "userprofile": "User Profile",
+        "profile": "Profile",
+        "signOut": "Sign Out",
+        "signOutPromptMessage": "Are you sure want to Sign Out?"
+    },
+    "footer": {
+        "aboutSiteMessage": "A React project Developed by CSH, using TMDB movie APIs, Styled Components and Tailwind CSS",
+        "guide": "Guide",
+        "documentation": "Documentation",
+        "contact": "Contact",
+        "blog": "Blog",
+        "about": "About",
+        "help": "Help",
+        "language": "Language"
+    }
+}

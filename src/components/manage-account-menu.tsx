@@ -15,7 +15,7 @@ const ManageAccount = memo(() => {
 
     return (
         <div className="flex w-full justify-center items-center gap-5 p-5 shadow-lg">
-            <UserProfile appearance={{ baseTheme: baseTheme }} />
+            <UserProfile appearance={{ baseTheme: baseTheme }} i18nIsDynamicList={true} />
         </div>
     );
 });

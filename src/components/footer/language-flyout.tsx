@@ -1,5 +1,6 @@
-import { memo, useCallback } from "react";
+import { ChangeEvent, memo, useCallback } from "react";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const FlyoutWrapper = styled.div`
     display: flex;
@@ -25,17 +26,25 @@ const StyledOption = styled.option`
     transition: 0.5s;
 `;
 
-export const LanguageFlyout = memo(({ languages }: { languages: string[] }) => {
+export const LanguageFlyout = memo(({ languages, defaulSelectedLanguage }: { languages: { name: string, code: string }[], defaulSelectedLanguage: string }) => {
+
+    const { i18n } = useTranslation('app');
+
+    const onLocaleChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+        const { code } = languages.find(({ name }) => (e.target.value === name))!;
+        localStorage.setItem('locale', code);
+        i18n.changeLanguage(code);
+    }, [i18n, languages]);
 
     const renderLanguageDropdown = useCallback(() => (
-        languages.map((language) => (
-            <StyledOption key={language} value={language}>{language}</StyledOption>
+        languages.map(({ name }) => (
+            <StyledOption key={name} value={name}>{name}</StyledOption>
         ))
     ), [languages]);
 
     return (
         <FlyoutWrapper>
-            <StyledSelect name="languages" id="languages">
+            <StyledSelect name="languages" id="languages" onChange={onLocaleChange} defaultValue={defaulSelectedLanguage}>
                 {renderLanguageDropdown()}
             </StyledSelect>
         </FlyoutWrapper>

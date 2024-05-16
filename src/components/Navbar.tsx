@@ -7,7 +7,7 @@ import { useTheme } from "../contexts/theme-context";
 import { IconType } from "react-icons";
 import { UserAccount } from "./account";
 import { Link, useNavigate } from "react-router-dom";
-import { useDisplaySizeGroup } from "../hooks";
+import { useDisplaySizeGroup, useTranslator } from "../hooks";
 import { CgMenu, CgClose } from "react-icons/cg";
 import { SearchPopup } from "./search-popup";
 
@@ -88,6 +88,7 @@ export const Navbar = memo(() => {
     const { isSM, isMD, isLG } = useDisplaySizeGroup();
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
     const [openPopup, setOpenPopup] = useState<boolean>(false);
+    const { translate } = useTranslator();
 
     const { theme } = useTheme();
     const navigate = useNavigate();
@@ -112,19 +113,19 @@ export const Navbar = memo(() => {
 
     const renderMenuItems = useCallback(() => (
         <>
-            <Link to="/categories">Movies</Link>
-            <Link to="/tvshows">TV Shows</Link>
-            <Link to="/favourites">My List</Link>
+            <Link to="/categories">{translate('general.movies')}</Link>
+            <Link to="/tvshows">{translate('general.tvShows')}</Link>
+            <Link to="/favourites">{translate('general.myList')}</Link>
         </>
-    ), []);
+    ), [translate]);
 
     const renderThemeIcons = useCallback(() => (
         theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
     ), [theme]);
 
     const renderLogo = useMemo(() => (
-        <img src={`${import.meta.env.VITE_PUBLIC_URL}assets/neflix_logo.png`} alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title="Home" />
-    ), [onLogoClick]);
+        <img src={`${import.meta.env.VITE_PUBLIC_URL}assets/neflix_logo.png`} alt="Logo" className="w-40 cursor-pointer" onClick={onLogoClick} title={translate('general.home')} />
+    ), [onLogoClick, translate]);
 
     return (
         <StyledMainWrapper>
@@ -139,7 +140,7 @@ export const Navbar = memo(() => {
                                 }
                                 <UserAccount />
                             </StyledMiniWrapper>
-                            <StyledSearchInput onClick={() => (setOpenPopup(true))}>Search A Movie or Show</StyledSearchInput>
+                            <StyledSearchInput onClick={() => (setOpenPopup(true))}>{translate('searchPopup.searchAShow')}</StyledSearchInput>
                         </div>
                         :
                         <>
