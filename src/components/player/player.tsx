@@ -1,13 +1,9 @@
 import "./control.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
     makeStyles,
     Slider,
-    withStyles,
-    Button,
-    Tooltip,
-    Popover,
-    Grid, Container
+    withStyles, Container
 } from "@material-ui/core";
 import {
     FastForward,
@@ -19,6 +15,20 @@ import {
     VolumeOff
 } from "@material-ui/icons";
 import ReactPlayer from 'react-player';
+import styled from "styled-components";
+
+const StyledControlContainer = styled.div<{ $canShow: boolean }>`
+    background-color: ${({ $canShow }) => ($canShow ? 'rgba(0, 0, 0, 0.6)' : 'unset')};
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+`;
 
 export const formatTime = (time) => {
     //formarting duration of video
@@ -106,39 +116,58 @@ const Control = ({
 }: any) => {
     const classes = useStyles();
 
+    const [canShowControls, setCanShowControls] = useState<boolean>(true);
+
+    const onMouseEnter = useCallback(() => (setCanShowControls(true)), []);
+
+    const onMouseLeave = useCallback(() => (setCanShowControls(false)), []);
+
+    const toggleCanShowControls = useCallback(() => (setCanShowControls(!canShowControls)), [canShowControls]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setCanShowControls(false)
+        }, 3000)
+    }, []);
 
     return (
-        <div className="control_Container" ref={controlRef}>
+        <StyledControlContainer $canShow={canShowControls} ref={controlRef} onClick={toggleCanShowControls} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <div className="top_container">
-                <h2></h2>
             </div>
             <div className="mid__container">
-                <div className="icon__btn" onDoubleClick={onRewind}>
-                    <FastRewind fontSize="medium" />
-                </div>
+                {
+                    canShowControls ? (
+                        <>
+                            <div className="icon__btn" onDoubleClick={onRewind}>
+                                <FastRewind fontSize="medium" />
+                            </div>
 
-                <div className="icon__btn" onClick={onPlayPause}>
-                    {playing ? (
-                        <Pause fontSize="medium" />
-                    ) : (
-                        <PlayArrow fontSize="medium" />
-                    )}{" "}
-                </div>
-
-                <div className="icon__btn">
-                    <FastForward fontSize="medium" onDoubleClick={onForward} />
-                </div>
+                            <div className="icon__btn" onClick={onPlayPause}>
+                                {playing ? (
+                                    <Pause fontSize="medium" />
+                                ) : (
+                                    <PlayArrow fontSize="medium" />
+                                )}{" "}
+                            </div>
+                            <div className="icon__btn">
+                                <FastForward fontSize="medium" onDoubleClick={onForward} />
+                            </div>
+                        </>
+                    ) : null
+                }
             </div>
             <div className="bottom__container">
                 <div className="slider__container">
-                    <PrettoSlider
-                        min={0}
-                        max={100}
-                        value={played * 100}
-                        onChange={onSeek}
-                        onChangeCommitted={onSeekMouseUp}
-                        onMouseDown={onMouseSeekDown}
-                    />
+                    {
+                        canShowControls ? <PrettoSlider
+                            min={0}
+                            max={100}
+                            value={played * 100}
+                            onChange={onSeek}
+                            onChangeCommitted={onSeekMouseUp}
+                            onMouseDown={onMouseSeekDown}
+                        /> : null
+                    }
                 </div>
                 <div className="control__box">
                     <div className="inner__controls">
@@ -174,7 +203,7 @@ const Control = ({
 
                 </div>
             </div>
-        </div>
+        </StyledControlContainer>
     );
 };
 
