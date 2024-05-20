@@ -1,119 +1,19 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
-import { IMovie, ITvShowDeatils } from "../types";
-import styled from "styled-components";
-import { useDisplaySizeGroup, useGetFavourites, useTranslator } from "../hooks";
+import { useFetchMovieOrShowDetails } from "../../hooks/get-movie-details";
+import { IMovie, ITvShowDeatils } from "../../types";
+import { useDisplaySizeGroup, useGetFavourites, useTranslator } from "../../hooks";
 import { BiStar, BiCalendar } from "react-icons/bi";
 import { FaHeart, FaPlay } from "react-icons/fa";
-import { StyledSpan } from "../common-styles";
-import { Card } from "./movie-card";
-import { PlayTrailer } from "./play-trialer";
-import { getValueBasedOnResolution } from "./utils";
-import { ShowCredit } from "./credit-info";
+import { StyledSpan } from "../../common-styles";
+import { Card } from "../card/movie-card";
+import { PlayTrailer } from "../play-trialer";
+import { getValueBasedOnResolution } from "../utils";
+import { ShowCredit } from "../credits/credit-info";
 import { useDispatch } from "react-redux";
-import { addToFavourites, removeFromFavourites } from "../store";
-import { Popup } from "./popup";
-
-const StyledBackground = styled.img`
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    filter: blur(20px);
-    z-index: -1;
-    mask-image: linear-gradient(180deg, #0e0d0d 20%, #0000 100%);
-`;
-
-const StyledGrid = styled.div<{ $isSM: boolean }>`
-    display: grid;
-    grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '350px auto')};
-    column-gap: 30px;
-    width: 100%; padding: 20px;
-    row-gap: 20px;
-`;
-
-const StyledInnerGrid = styled.div<{ $isSM: boolean }>`
-    display: grid;
-    grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '0.6fr 1fr')};
-    column-gap: 30px;
-    row-gap: 20px;
-    width: 100%;
-`;
-
-const StyledImage = styled.img<{ $isSM: boolean, $isMD: boolean }>`
-    max-height: ${({ $isSM, $isMD }) => ($isSM ? '30vh' : getValueBasedOnResolution($isMD, '40Vh', '50vh'))};
-    min-width: ${({ $isSM, $isMD }) => ($isSM ? '180px' : getValueBasedOnResolution($isMD, '220px', '260px'))};;
-    border-radius: 10px;
-    box-shadow: 5px 0px 30px ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
-    justify-self: center;
-    padding: 10px;
-`;
-
-const StyledButton = styled.button<{ $isSM: boolean, $isMD: boolean, $isWishlisted?: boolean }>`
-    display: grid;
-    grid-template-columns: 20px auto;
-    column-gap: 8px;
-    min-width: ${({ $isSM, $isMD }) => ($isSM ? '80px' : getValueBasedOnResolution($isMD, '110px', '150px'))};
-    max-width: fit-content; align-items: center;
-    padding: 8px; border: 1px solid;
-    font-size: ${({ $isSM, $isMD }) => ($isSM ? '20px' : getValueBasedOnResolution($isMD, 'large', 'x-large'))};
-    border-radius: 7px;
-    color: ${({ $isWishlisted }) => ($isWishlisted ? 'red' : 'auto')};
-
-    > svg{
-        fill: ${({ $isWishlisted }) => ($isWishlisted ? 'red' : 'auto')};
-    }
-`;
-
-const StyledFlex = styled.div`
-    display: flex;
-    column-gap: 20px;
-    justify-content: start;
-`;
-
-const StyledSimillarDiv = styled.div`
-    display: flex;
-    flex-wrap: nowrap;
-    column-gap: 6px;
-    overflow-x: auto;
-    padding-left: 10px;
-    overflow-y: hidden;
-    min-height: 260px;
-`;
-
-const StyledVideoItem = styled.div<{ $isSM: boolean }>`
-    display: grid;
-    grid-template-columns: 1fr 40px;
-    justify-content: space-around;
-    width: 100%;
-    padding: 12px;
-    border: 1px solid;
-    border-radius: 6px;
-    margin-left: ${({ $isSM }) => ($isSM ? 0 : '10px')};
-`;
-
-const VideosWrapper = styled.div<{ $isSM: boolean }>`
-    display: grid;
-    grid-template-columns: ${({ $isSM }) => ($isSM ? '1fr' : '1fr 1fr')};
-    row-gap: 20px;
-    column-gap: 40px;
-    padding: 10px;
-`;
-
-const StyledPara = styled.p`
-    text-decoration: dashed;
-    cursor: pointer;
-    color: ${({ theme: { semanticColors: { extendedTextColor } } }) => (extendedTextColor)};;
-`;
-
-const StyledText = styled.span`
-    text-decoration: none;
-    color: ${({ theme: { semanticColors: { extendedTextColor } } }) => (extendedTextColor)};;
-    font-weight: 500;
-    cursor: pointer;
-    font-size: 18px;
-    margin-left: 0px;
-`;
+import { addToFavourites, removeFromFavourites } from "../../store";
+import { Popup } from "../popup";
+import { StyledBackground, StyledButton, StyledFlex, StyledGrid, StyledImage, StyledInnerGrid, StyledPara, StyledSimillarDiv, StyledText, StyledVideoItem, VideosWrapper } from "./styles";
 
 const MovieInfo = memo(() => {
 
@@ -225,7 +125,7 @@ const MovieInfo = memo(() => {
                         <StyledImage $isSM={isSM} $isMD={isMD} src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt={translate('general.noImage')} />
                         <StyledInnerGrid $isSM={isSM || isMD}>
                             <div className="flex flex-col gap-y-3 ml-2 sm:justify-center">
-                                <h1 className={`font-sans ${isSM ? 'text-[25px]' : isMD ? 'text-[35px]' : 'text-[45px]'}`}>{original_title || name}</h1>
+                                <h1 className={`font-sans ${isSM ? 'text-[25px]' : getValueBasedOnResolution(isMD, 'text-[35px]', 'text-[45px]')}`}>{original_title || name}</h1>
                                 {
                                     tagline ? <h4 className="shadow-[rgb(21, 21, 21) 0px 0px 5px] text-[18px] italic self-center">{tagline}</h4> : null
                                 }
@@ -237,10 +137,10 @@ const MovieInfo = memo(() => {
                             </div>
                             <div className="flex flex-col gap-5 justify-center">
                                 <div className="flex gap-5 flex-wrap">{renderGenres()}</div>
-                                <h4 className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'}`}>
+                                <h4 className={`font-light ${isSM ? 'text-lg' : getValueBasedOnResolution(isMD, 'text-lg', 'text-xl')}`}>
                                     {renderOverView()}
                                 </h4>
-                                <h4 className={`font-light ${isSM ? 'text-lg' : isMD ? 'text-lg' : 'text-xl'}`}>
+                                <h4 className={`font-light ${isSM ? 'text-lg' : getValueBasedOnResolution(isMD, 'text-lg', 'text-xl')}`}>
                                     {translate('movieDetails.goto')} : <StyledText onClick={toggleHidden}>{translate('movieDetails.officialPage')}</StyledText>
                                 </h4>
                             </div>

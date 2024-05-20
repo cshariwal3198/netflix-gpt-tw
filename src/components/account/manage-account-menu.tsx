@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
 import { UserProfile } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
-import { useTheme } from "../contexts/theme-context";
+import { useTheme } from "../../contexts/theme-context";
 
 const ManageAccount = memo(() => {
 

@@ -1,46 +1,15 @@
 import { memo, useCallback, useMemo, useState } from "react";
-import { useGetFavourites } from "../hooks/use-get-favourites";
-import { Card } from "./movie-card";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { IMovie } from "../types";
+import { useGetFavourites } from "../../hooks/use-get-favourites";
+import { Card } from "../card/movie-card";
+import { IMovie } from "../../types";
 import { IoCloseOutline } from "react-icons/io5";
-import { clearFavourites } from "../store";
+import { clearFavourites } from "../../store";
 import { useDispatch } from "react-redux";
-import { useDisplaySizeGroup, useTranslator } from "../hooks";
-import { Popup } from "./popup";
+import { useDisplaySizeGroup, useTranslator } from "../../hooks";
+import { Popup } from "../popup";
+import { StyledFlex, StyledLink, StyledSpan, StyledWrapper } from "./fav-styles";
 
-const StyledFlex = styled.div<{ $isData: boolean }>`
-    display: flex;
-    overflow-x: auto;
-    overflow-y: visible;
-    justify-content: ${({ $isData }) => ($isData ? 'unset' : 'center')};
-    padding-bottom: 30px;
-`;
 
-const StyledWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    height: 100%;
-`;
-
-const StyledSpan = styled.span<{ $isSM: boolean }>`
-    font-family: sans-serif;
-    font-size: ${({ $isSM }) => ($isSM ? '18px' : '25px')};
-    font-weight: 600;
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: ${({ $isSM }) => ($isSM ? '10px' : '20px')};
-    position: relative;
-`;
-
-const StyledLink = styled(Link)`
-    font-weight: 700;
-    color: ${({ theme: { semanticColors: { linkTextColor } } }) => (linkTextColor)};;
-`;
 
 const Favourites = memo(() => {
 

@@ -1,81 +1,12 @@
 import React, { SyntheticEvent, memo, useCallback } from "react";
-import styled from 'styled-components';
-import { IMovie } from "../types";
-import { useDisplaySizeGroup, useTranslator } from "../hooks";
-import { StyledSpan } from "../common-styles";
-import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
+import { useDisplaySizeGroup, useTranslator } from "../../hooks";
+import { StyledSpan } from "../../common-styles";
+import { addToFavourites, removeFromFavourites } from "../../store/favourites-slice";
 import { useDispatch } from "react-redux";
-import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
+import { useFetchMovieOrShowDetails } from "../../hooks/get-movie-details";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHeart } from "react-icons/fa";
-
-interface IMovieDetailProps {
-    movieItem: IMovie, isFavourite: boolean, setShowInfo: (arg: boolean) => void, canViewSimillar: boolean, type?: 'movie' | 'tvshow'
-}
-
-const StyledFav = styled(FaHeart) <{ $isFavourite: boolean }>`
-    /* position: absolute;
-    bottom: 20px;
-    right: 30px; */
-    fill: ${({ $isFavourite }) => ($isFavourite ? 'red' : 'white')};
-    cursor: pointer;
-`;
-
-const Wrapper = styled.div<{ $isSM: boolean, $backdrop: string }>`
-    display: grid;
-    grid-template-columns: ${({ $isSM }) => ($isSM ? 'auto' : '1fr 2fr')};
-    column-gap: 30px;
-    border: 1px solid ${({ theme: { semanticColors: { movieDetailsWrapperBorder } } }) => (movieDetailsWrapperBorder)};;
-    background: ${({ $backdrop }) => `url(${`https://image.tmdb.org/t/p/w500/${$backdrop}`}) no-repeat top center`};
-    background-size: 100% 100%;
-    color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
-
-        &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(3, 3, 3, 0.5);
-        z-index: 0;
-        }   
-`;
-
-const StyledContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: 100%; width: 100%;
-    padding: 15px;
-    row-gap: 20px;
-    position: relative;
-    overflow: auto;
-    margin-top: 10px;
-    margin-bottom: 15px;
-`;
-
-const StyledProd = styled.div`
-    display: flex;
-    min-height: 70px;
-    justify-content: space-center;
-    align-items: center;
-    width: 100%;
-    padding: 8px;
-    column-gap: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
-`;
-
-const StyledProdImage = styled.img`
-    height: 35px;
-`;
-
-const StyledLabel = styled.label`
-    font-size: 20px;
-    cursor: pointer;
-    color: rgb(29 78 216);
-    font-weight: 700;
-`;
+import { StyledContent, StyledFav, StyledLabel, StyledProd, StyledProdImage, Wrapper } from "./styles";
+import { IMovieDetailProps } from "./types";
 
 export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewSimillar, type = 'movie' }: IMovieDetailProps) => {
 

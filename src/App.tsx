@@ -5,14 +5,14 @@ import {
 } from "react-router-dom";
 import { FallBack } from "./components";
 
-const Home = React.lazy(() => import('./components/home'));
+const Home = React.lazy(() => import('./components/home/home'));
 const Root = React.lazy(() => import('./components/root'));
-const Favourites = React.lazy(() => import('./components/favourites'));
-const ViewSimillar = React.lazy(() => import('./components/simillar-movies'));
-const ManageAccount = React.lazy(() => import('./components/manage-account-menu'));
-const Categories = React.lazy(() => import('./components/categories'));
-const MovieInfo = React.lazy(() => import('./components/movie-info'));
-const TvShows = React.lazy(() => import('./components/tv-shows'));
+const Favourites = React.lazy(() => import('./components/favourites/favourites'));
+const ViewSimillar = React.lazy(() => import('./components/simillar-movies/simillar-movies'));
+const ManageAccount = React.lazy(() => import('./components/account/manage-account-menu'));
+const Categories = React.lazy(() => import('./components/movie-categories/categories'));
+const MovieInfo = React.lazy(() => import('./components/movie-detailed-info/movie-info'));
+const TvShows = React.lazy(() => import('./components/tv-shows/tv-shows'));
 
 export default function App() {
 

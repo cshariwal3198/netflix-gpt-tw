@@ -1,8 +1,8 @@
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { memo, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Popup } from "./popup/popup";
-import { useTranslator } from "../hooks";
+import { Popup } from "../popup/popup";
+import { useTranslator } from "../../hooks";
 
 const styles = 'flex cursor-pointer text-center justify-center items-center w-full h-full rounded-xl text-[18px] hover:scale-125  hover:bg-zinc-200 text-black dark:text-white';
 

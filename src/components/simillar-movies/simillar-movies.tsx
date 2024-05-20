@@ -1,20 +1,10 @@
 import { memo } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { useFetchMovieOrShowDetails } from "../hooks/get-movie-details";
-import { Card } from "./movie-card";
-import { useDisplaySizeGroup } from "../hooks";
-import { IMovie } from "../types";
-
-const StyledDiv = styled.div<{ $isSM: boolean }>`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: ${({ $isSM }) => ($isSM ? 'center' : 'start')};
-    column-gap: 20px;
-    row-gap: 30px;
-    width: 100%; height: 100%;
-    align-items: center;
-`;
+import { useFetchMovieOrShowDetails } from "../../hooks/get-movie-details";
+import { Card } from "../card/movie-card";
+import { useDisplaySizeGroup } from "../../hooks";
+import { IMovie } from "../../types";
+import { StyledDiv } from "./styles";
 
 const ViewSimillar = memo(() => {
 

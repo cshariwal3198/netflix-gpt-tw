@@ -11,7 +11,7 @@ const StyledWrapper = styled.div`
     justify-content: center;
     position: fixed;
     z-index: 10;
-    background-color: #000000B3;
+    background-color: ${({ theme: { semanticColors: { modalBackgroundColor } } }) => (modalBackgroundColor)};
 `;
 
 const VideoWrapper = styled.div`
@@ -27,12 +27,10 @@ const StyledClose = styled(Close)`
     position: fixed;
     right: 10%;
     top: 5vh; cursor: pointer;
-    color: #fffffe;
+    color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
 `;
 
-export const PlayTrailer = memo(({ keyToPlay, onClick }: {
-    keyToPlay: string, onClick: () => void
-}) => {
+export const PlayTrailer = memo(({ keyToPlay, onClick }: { keyToPlay: string, onClick: () => void }) => {
 
     return (
         <StyledWrapper>
