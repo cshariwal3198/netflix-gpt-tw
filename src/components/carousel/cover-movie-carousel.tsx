@@ -1,7 +1,7 @@
 import React, { ReactNode, memo, useEffect, useRef, useState } from "react";
 import "./carousel.css";
 import { IMovie } from "../../types";
-import { CoverMovie } from "../cover-movie";
+import { CoverMovie } from "../cover-movie/cover-movie";
 
 export const CarouselItem = ({ children, width }: { children: ReactNode, width?: string }) => {
   return (

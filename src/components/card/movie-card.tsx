@@ -1,59 +1,11 @@
 import { SyntheticEvent, memo, useCallback, useMemo, useState } from "react";
-import styled from "styled-components";
-import { IMovie } from "../types";
-import { addToFavourites, removeFromFavourites } from "../store/favourites-slice";
+import { addToFavourites, removeFromFavourites } from "../../store/favourites-slice";
 import { useDispatch } from "react-redux";
-import { StyledHeart } from "../common-styles";
-import { MovieDetail } from "./movie-detail";
-import { useDisplaySizeGroup } from "../hooks";
-import { getValueBasedOnResolution } from "./utils";
-
-interface ICardProps {
-    item: IMovie, isFavourite: boolean, canViewSimillar: boolean, type?: 'movie' | 'tvshow', canShowDetails?: boolean,
-    canShowWishlist?: boolean
-}
-
-const StyledMovieCard = styled.div<{ $isSM: boolean, $isMD: boolean }>`
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    max-height: ${({ $isSM, $isMD }) => ($isSM ? '225px' : getValueBasedOnResolution($isMD, '250px', '280px'))};
-    max-width: ${({ $isSM, $isMD }) => ($isSM ? '160px' : getValueBasedOnResolution($isMD, '175px', '210px'))};
-    min-width: 160px;
-    position: relative;
-    text-align: center;
-
-    &:hover{
-        transform: scale(1.1);
-        transition: cubic-bezier(0.39, 0.575, 0.565, 1) 1.2s;
-    }
-`;
-
-const StyledImage = styled.img`
-    height: 420px;
-    opacity: 0.8;
-    filter: contrast(0.8);
-    -webkit-filter: brightness(0.8);
-    border-radius: 8px;
-`;
-
-const StyledSpan = styled.span`
-    position: absolute;
-    top: 15px;
-    font-weight: 500;
-    padding: 10px;
-    color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
-    transform: none;
-`;
-
-const StyledOverview = styled(StyledSpan) <{ $hover: boolean, $isSM: boolean }>`
-    bottom: 30px;
-    top: unset;
-    opacity: ${({ $hover }) => ($hover ? '0.7' : '0.1')};
-    margin-left: 0px;
-    font-weight: ${({ $isSM }) => ($isSM ? 400 : 500)};
-    cursor: default;
-`;
+import { StyledHeart } from "../../common-styles";
+import { MovieDetail } from "../movie-details/movie-detail";
+import { useDisplaySizeGroup } from "../../hooks";
+import { ICardProps } from "./types";
+import { StyledImage, StyledMovieCard, StyledOverview, StyledSpan } from "./card-styles";
 
 export const Card = memo(({ item, isFavourite, canViewSimillar, type, canShowDetails, canShowWishlist = true }: ICardProps) => {
 

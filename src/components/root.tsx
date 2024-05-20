@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Outlet } from "react-router-dom";
 import { Footer } from "./footer/footer";
 import styled from "styled-components";
-import { Navbar } from "./Navbar";
+import { Navbar } from "./navbar/Navbar";
 
 const StyledImage = styled.img`
     display: flex;

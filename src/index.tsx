@@ -7,7 +7,7 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-react'
 import { Provider } from 'react-redux'
 import { store } from './store/index.ts'
-import { SignInContainer } from './components/sign-in-component.tsx'
+import { SignInContainer } from './components/account/sign-in-component.tsx'
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import i18next from "i18next";
 import enJson from '../public/locale/en/app.json';

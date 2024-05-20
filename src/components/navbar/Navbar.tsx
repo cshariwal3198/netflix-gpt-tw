@@ -1,74 +1,13 @@
 import { createElement, memo, useCallback, useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-import { IoIosSearch } from "react-icons/io";
 import { LuMoonStar } from "react-icons/lu";
 import { FiSun } from "react-icons/fi";
-import { useTheme } from "../contexts/theme-context";
+import { useTheme } from "../../contexts/theme-context";
 import { IconType } from "react-icons";
-import { UserAccount } from "./account";
+import { UserAccount } from "../account/account";
 import { Link, useNavigate } from "react-router-dom";
-import { useDisplaySizeGroup, useTranslator } from "../hooks";
-import { CgMenu, CgClose } from "react-icons/cg";
-import { SearchPopup } from "./search-popup";
-
-const StyledNavWrapper = styled.div`
-    display: flex;
-    justify-content: space-around;
-    padding-right: 10px; padding-left: 10px;
-    padding-top: 5px; padding-bottom: 5px;
-    align-items: center;
-    width: 100%;
-`;
-
-const StyledInputWrapper = styled.div`
-    display: flex;
-    column-gap: 5px;
-    justify-content: center;
-`;
-
-const StyledIcon = styled(IoIosSearch)`
-    cursor: pointer;
-`;
-
-const StyledOpenMenuIcon = styled(CgMenu)`
-    cursor: pointer;
-`;
-
-const StyledCloseMenuIcon = styled(CgClose)`
-    cursor: pointer;
-`;
-
-const StyledMiniWrapper = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    padding: 10px;
-    row-gap: 10px;
-    justify-content: space-around;
-    justify-items: center;
-    align-items: center;
-    width: 100%;
-`;
-
-const StyledMainWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    box-shadow: 0px 20px 20px 0px ${({ theme: { semanticColors: { navbarShadowColor } } }) => (navbarShadowColor)};;
-`;
-
-const StyledSearchInput = styled.button`
-    background: none;
-    border: 1px solid;
-    text-align: center;
-    height: 40px; width: 100%;
-    border-radius: 5px;
-    opacity: 0.7;
-`;
+import { useDisplaySizeGroup, useTranslator } from "../../hooks";
+import { SearchPopup } from "../search-popup/search-popup";
+import { StyledCloseMenuIcon, StyledIcon, StyledInputWrapper, StyledMainWrapper, StyledMiniWrapper, StyledNavWrapper, StyledOpenMenuIcon, StyledSearchInput } from "./navbar-styles";
 
 const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
     const { toggleTheme, theme } = useTheme();
