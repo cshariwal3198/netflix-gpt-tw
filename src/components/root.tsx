@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Footer } from "./footer/footer";
 import styled from "styled-components";
 import { Navbar } from "./navbar/Navbar";
+import { useUpdateMoviesToStoreBasedOnCategory, useUpdateTvShowsToStoreBasedOnCategory } from "../hooks";
 
 const StyledImage = styled.img`
     display: flex;
@@ -14,11 +15,20 @@ const StyledImage = styled.img`
     z-index: -1;
 `;
 
+const UpdateStore = memo(() => {
+
+    useUpdateMoviesToStoreBasedOnCategory();
+    useUpdateTvShowsToStoreBasedOnCategory();
+
+    return null;
+});
+
 const Root = memo(() => {
 
     return (
         <div className="font-medium flex flex-col h-full w-full">
             <StyledImage src={`${import.meta.env.VITE_PUBLIC_URL}assets/nflix-bg.jpg`} />
+            <UpdateStore />
             <Navbar />
             <div className="flex flex-col overflow-auto h-full">
                 <Outlet />

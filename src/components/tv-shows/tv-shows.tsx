@@ -4,13 +4,15 @@ import { Card } from "../card/movie-card";
 import { RingLoader } from "react-spinners";
 import { IMovie } from "../../types";
 import { useTheme } from "../../contexts/theme-context";
-import { useDisplaySizeGroup, useGetFavourites, useGetTvShowsBasedOnCategory, useTranslator } from "../../hooks";
+import { useDisplaySizeGroup, useGetFavourites, useTranslator } from "../../hooks";
 import { StyledSpan, StyledTab, StyledWrapper } from "./tvshow-styles";
+import { useStoreSelectors } from "../../store";
 
 
 const TvShows = memo(() => {
 
-    const { popular, topRated, upcoming, trending } = useGetTvShowsBasedOnCategory();
+    const { selectTvShowsBasedOnCategory } = useStoreSelectors();
+    const { popular, topRated, upcoming, trending } = selectTvShowsBasedOnCategory;
     const [value, setValue] = useState(0);
     const { theme } = useTheme();
     const { getIsFavourite } = useGetFavourites();

@@ -1,24 +1,27 @@
 import { ChangeEventHandler, SyntheticEvent, memo, useCallback, useMemo, useState } from "react";
 import { IMovie } from "../../types";
-import { useDisplaySizeGroup, useGetMoviesBasedOnCategory, useGetTvShowsBasedOnCategory, useTranslator } from "../../hooks";
+import { useDisplaySizeGroup, useTranslator } from "../../hooks";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addRecentlyOpenedShows, clearRecentlyOpenedShows } from "../../store/recently-opened-slice";
 import { IoCloseOutline } from "react-icons/io5";
 import { CloseButton, ContainerWrapper, MovieWrapper, RecentlyOpenedWrapper, ResultContainer, StyledImage, StyledInput, StyledModal, StyledPopup } from "./search-styles";
+import { useStoreSelectors } from "../../store";
 
 type IAllShow = IMovie & { showType: string };
 
 export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
 
-    const [searchResult, setSearchResult] = useState<IAllShow[]>([]);
-    const { topRated: topRatedMovies, popular: popularMovies, upcoming: upComingMovies, nowPlaying: nowPlayingMovies } = useGetMoviesBasedOnCategory();
-    const { popular: popularShows, topRated: topRatedShows, trending: trendingShows, upcoming: upcomingShows } = useGetTvShowsBasedOnCategory();
-
     const dispatch = useDispatch();
-    const recentlyOpened: { recentlyOpenedShows: IMovie[] } = useSelector((state: any) => (state.recentlyOpened));
+    const { selectRecentlyOpenedShows, selectMoviesBasedOnCategory, selectTvShowsBasedOnCategory } = useStoreSelectors();
     const { isSM } = useDisplaySizeGroup();
     const { translate } = useTranslator();
+    const [searchResult, setSearchResult] = useState<IAllShow[]>([]);
+
+    const { topRated: topRatedMovies, popular: popularMovies, upcoming: upComingMovies, nowPlaying: nowPlayingMovies } = selectMoviesBasedOnCategory;
+    const { popular: popularShows, topRated: topRatedShows, trending: trendingShows, upcoming: upcomingShows } = selectTvShowsBasedOnCategory;
+
+    const { recentlyOpenedShows } = selectRecentlyOpenedShows;
 
     const allShows: IAllShow[] = useMemo(() => {
 
@@ -82,7 +85,7 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
 
     const renderRecentlyOpened = useCallback(() => (
         <RecentlyOpenedWrapper>
-            {recentlyOpened.recentlyOpenedShows.map(({ poster_path, title, id, name }) => (
+            {recentlyOpenedShows.map(({ poster_path, title, id, name }) => (
                 <Link to={`/movie/${id}`} key={id}>
                     <div className="flex flex-col gap-[3px] w-[65px] overflow-hidden" onClick={closePopup}>
                         <img key={id} src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt="no image" height="75px" width="62px" style={{ borderRadius: '9px' }} />
@@ -91,14 +94,14 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
                 </Link>
             ))}
         </RecentlyOpenedWrapper>
-    ), [closePopup, recentlyOpened.recentlyOpenedShows]);
+    ), [closePopup, recentlyOpenedShows]);
 
     const clearSearch = useCallback(() => (dispatch(clearRecentlyOpenedShows())), [dispatch]);
     const clearText = useMemo(() => (translate('general.clear')), [translate]);
 
     return (
         <StyledModal open={true}>
-            <div className="flex flex-col justify-center items-center w-full h-full text-white" onClick={onModalClick}>
+            <div role="none" className="flex flex-col justify-center items-center w-full h-full text-white" onClick={onModalClick}>
                 <StyledPopup $isSM={isSM}>
                     <StyledInput placeholder={`${translate('general.search')}...`} onChange={onChange} />
                     <ContainerWrapper $isSM={isSM}>
@@ -111,8 +114,8 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
                         <div className="flex w-full justify-between items-center">
                             <h6 className="font-serif font-normal text-[22px]">{translate('searchPopup.recentlyOpened')}</h6>
                             {
-                                recentlyOpened.recentlyOpenedShows.length ? (
-                                    <div className="flex gap-[2px] items-center cursor-pointer border rounded-md p-[3px] max-h-[30px] bg-white text-black hover:text-red-600" onClick={clearSearch}>
+                                recentlyOpenedShows.length ? (
+                                    <div role="none" className="flex gap-[2px] items-center cursor-pointer border rounded-md p-[3px] max-h-[30px] bg-white text-black hover:text-red-600" onClick={clearSearch}>
                                         <IoCloseOutline size="22px" />
                                         <h6>{isSM ? `${clearText}` : `${clearText} ${translate('general.search')}`}</h6>
                                     </div>

@@ -1,15 +1,14 @@
 import useSWR from "swr";
 import { options } from "./utils";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addTopRatedMovies, addPopularMovies, addUpcomingMovies, addAllMovies, addNowPlayingMovies } from "../store/movies-category-slice";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 const fetcher = (url: string) => (fetch(url, options).then((res) => (res.json())));
 
-export const useGetMoviesBasedOnCategory = () => {
+export const useUpdateMoviesToStoreBasedOnCategory = () => {
 
     const dispatch = useDispatch();
-    const moviesCategory = useSelector((state: any) => (state.categories));
 
     const allMovies = useSWR('https://api.themoviedb.org/3/discover/movie?language=en-US&page=2', fetcher);
     const popular = useSWR('https://api.themoviedb.org/3/movie/popular?language=en-US&page=2', fetcher);
@@ -35,12 +34,6 @@ export const useGetMoviesBasedOnCategory = () => {
         }
     }, [allMovies?.data?.results, allMovies?.isLoading, dispatch, nowPlaying?.data?.results, nowPlaying?.isLoading, popular?.data?.results, popular?.isLoading, topRated?.data?.results, topRated?.isLoading, upcoming?.data?.results, upcoming?.isLoading]);
 
-    return useMemo(() => ({
-        popular: moviesCategory?.popular,
-        topRated: moviesCategory?.topRated,
-        upcoming: moviesCategory?.upcoming,
-        allMovies: moviesCategory?.allMovies,
-        nowPlaying: moviesCategory?.nowPlaying
-    }), [moviesCategory?.allMovies, moviesCategory?.nowPlaying, moviesCategory?.popular, moviesCategory?.topRated, moviesCategory?.upcoming]);
+    return null;
 
 }

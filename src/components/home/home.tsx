@@ -1,15 +1,18 @@
 import React, { useCallback, useMemo } from "react";
-import { useDisplaySizeGroup, useGetMoviesBasedOnCategory, useTranslator } from "../../hooks";
+import { useDisplaySizeGroup, useTranslator } from "../../hooks";
 import { useGetFavourites } from "../../hooks/use-get-favourites";
 import { IMovie } from "../../types";
 import { CoverMovie } from "../cover-movie/cover-movie";
 import { Card } from "../card/movie-card";
 import { ShimmerUI } from "../shimmer";
 import { StyledFlexWrap, StyledSpan, StyledWrapper } from "./home-styles";
+import { useStoreSelectors } from "../../store";
 
 export default function Home() {
 
-    const { allMovies, topRated, nowPlaying, upcoming } = useGetMoviesBasedOnCategory();
+    const { selectMoviesBasedOnCategory } = useStoreSelectors();
+    const { allMovies, topRated, nowPlaying, upcoming } = selectMoviesBasedOnCategory;
+
     const { getIsFavourite } = useGetFavourites();
     const { isSM, isMD } = useDisplaySizeGroup();
     const { translate } = useTranslator();
