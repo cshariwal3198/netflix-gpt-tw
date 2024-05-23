@@ -8,8 +8,7 @@ import { useDispatch } from "react-redux";
 import { useDisplaySizeGroup, useTranslator } from "../../hooks";
 import { Popup } from "../popup";
 import { StyledFlex, StyledLink, StyledSpan, StyledWrapper } from "./fav-styles";
-
-
+import { getClassNames } from "../utils";
 
 const Favourites = memo(() => {
 
@@ -51,10 +50,16 @@ const Favourites = memo(() => {
     return (
         <>
             <StyledWrapper>
-                <div className={`flex gap-[2px] self-end items-center ${canClear ? 'cursor-pointer' : 'cursor-not-allowed'}
-                     mr-[20px] mt-[10px] border rounded-md p-[3px] max-h-[30px] bg-white text-black
-                       ${canClear && 'hover:text-red-600'} ${canClear ? 'opacity-[1]' : 'opacity-[0.6]'}`}
-                    onClick={onClear}>
+                <div
+                    role="none"
+                    className={getClassNames([
+                        "flex gap-[2px] self-end items-center",
+                        "mr-[20px] mt-[10px] border rounded-md p-[3px] max-h-[30px] bg-white text-black",
+                        `${canClear ? 'cursor-pointer' : 'cursor-not-allowed'}`,
+                        `${canClear && 'hover:text-red-600'} ${canClear ? 'opacity-[1]' : 'opacity-[0.6]'}`
+                    ])}
+                    onClick={onClear}
+                >
                     <IoCloseOutline size="22px" />
                     <h6>{translate('favourites.clearShows')}</h6>
                 </div>

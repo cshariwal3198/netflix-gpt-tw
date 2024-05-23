@@ -2,6 +2,7 @@ import { memo } from "react";
 import { FaInfo } from "react-icons/fa6";
 import { IoWarningOutline } from "react-icons/io5";
 import { ActionButton, ActionWrapper, IconWrapper, MessageWrapper, StyledPopup } from "./popup-styles";
+import { getClassNames } from "../utils";
 
 interface IPopupProps {
     message: string;
@@ -17,7 +18,10 @@ export const Popup = memo(({ message, type, onPositiveAction, positiveActionType
     disablePositiveAction = false, disableNegativeAction = false }: IPopupProps) => {
 
     return (
-        <div className="flex flex-col justify-center items-center absolute top-0 right-0 bottom-0 left-0 z-[100] bg-[#000000B3] h-[100vh] w-[100vw]">
+        <div className={getClassNames([
+            "flex flex-col justify-center items-center", "absolute top-0 right-0 bottom-0 left-0",
+            "z-[100] bg-[#000000B3] h-[100vh] w-[100vw]"
+        ])}>
             <StyledPopup>
                 <IconWrapper>
                     {

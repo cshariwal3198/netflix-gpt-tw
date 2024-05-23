@@ -7,6 +7,7 @@ import { addRecentlyOpenedShows, clearRecentlyOpenedShows } from "../../store/re
 import { IoCloseOutline } from "react-icons/io5";
 import { CloseButton, ContainerWrapper, MovieWrapper, RecentlyOpenedWrapper, ResultContainer, StyledImage, StyledInput, StyledModal, StyledPopup } from "./search-styles";
 import { useStoreSelectors } from "../../store";
+import { getClassNames } from "../utils";
 
 type IAllShow = IMovie & { showType: string };
 
@@ -115,7 +116,10 @@ export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
                             <h6 className="font-serif font-normal text-[22px]">{translate('searchPopup.recentlyOpened')}</h6>
                             {
                                 recentlyOpenedShows.length ? (
-                                    <div role="none" className="flex gap-[2px] items-center cursor-pointer border rounded-md p-[3px] max-h-[30px] bg-white text-black hover:text-red-600" onClick={clearSearch}>
+                                    <div role="none" className={getClassNames([
+                                        "flex gap-[2px] items-center cursor-pointer border rounded-md",
+                                        "p-[3px] max-h-[30px] bg-white text-black hover:text-red-600"
+                                    ])} onClick={clearSearch}>
                                         <IoCloseOutline size="22px" />
                                         <h6>{isSM ? `${clearText}` : `${clearText} ${translate('general.search')}`}</h6>
                                     </div>

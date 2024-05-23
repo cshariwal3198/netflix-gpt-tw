@@ -5,6 +5,7 @@ import { useFetchMovieOrShowDetails } from "../../hooks/get-movie-details";
 import { IMovie } from "../../types";
 import { ButtonWrapper, ReleaseDateWrapper, StyledIframe, StyledPara, StyledPoster, StyledWrapper, TitleWrapper } from "./cover-styles";
 import { PlayTrailer } from "../play-trialer";
+import { getClassNames } from "../utils";
 
 export const CoverMovie = memo(({ movieItem }: { movieItem: IMovie }) => {
 
@@ -26,7 +27,10 @@ export const CoverMovie = memo(({ movieItem }: { movieItem: IMovie }) => {
     return (
         <>
             <StyledWrapper $isSM={isSM} $isMD={isMD}>
-                <div className="flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%] bg-gradient-to-r dark:from-black from-[#ffffffce]">
+                <div className={getClassNames([
+                    "flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%]",
+                    "bg-gradient-to-r dark:from-black from-[#ffffffce]"
+                ])}>
                     <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
                     <StyledPara $isMD={isMD} $isSM={isSM}>{trimmedOverview}</StyledPara>
                 </div>

@@ -56,7 +56,7 @@
         "clickToClose": "Click to Close"
     },
     "account": {
-        "userprofile": "User Profile",
+        "userProfile": "User Profile",
         "profile": "Profile",
         "signOut": "Sign Out",
         "signOutPromptMessage": "Are you sure want to Sign Out?"

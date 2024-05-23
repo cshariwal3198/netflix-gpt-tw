@@ -8,7 +8,7 @@ import { StyledDiv } from "./styles";
 
 const ViewSimillar = memo(() => {
 
-    const { type, id } = useParams();
+    const { type = 'movie', id } = useParams();
     const { isMD, isSM } = useDisplaySizeGroup();
 
     const { simillarShowsData } = useFetchMovieOrShowDetails(Number(id), type);

@@ -56,7 +56,7 @@
         "clickToClose": "बंद करने के लिए क्लिक करें"
     },
     "account": {
-        "userprofile": "उपयोगकर्ता प्रोफ़ाइल",
+        "userProfile": "उपयोगकर्ता प्रोफ़ाइल",
         "profile": "प्रोफ़ाइल",
         "signOut": "लॉग आउट करें",
         "signOutPromptMessage": "क्या आप वाकई लॉग आउट करना चाहते हैं?"
