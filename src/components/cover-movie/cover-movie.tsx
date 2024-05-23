@@ -5,9 +5,9 @@ import { useFetchMovieOrShowDetails } from "../../hooks/get-movie-details";
 import { IMovie } from "../../types";
 import { ButtonWrapper, ReleaseDateWrapper, StyledIframe, StyledPara, StyledPoster, StyledWrapper, TitleWrapper } from "./cover-styles";
 
-export const CoverMovie = memo((props: { movieItem: IMovie }) => {
+export const CoverMovie = memo(({ movieItem }: { movieItem: IMovie }) => {
 
-    const { original_title, overview, release_date, poster_path, id } = props.movieItem;
+    const { original_title, overview, release_date, poster_path, id } = movieItem;
     const { showDetails: { videos } } = useFetchMovieOrShowDetails(id, 'movie');
     const [playVideo, setPlayVideo] = useState<boolean>(false);
 

@@ -14,13 +14,16 @@ export default function Home() {
     const { isSM, isMD } = useDisplaySizeGroup();
     const { translate } = useTranslator();
 
+    const recommended = ([...topRated, ...nowPlaying, ...upcoming] as IMovie[]).filter(({ vote_average }) => vote_average > 8).reverse();
+
     const moviesData = useMemo(() => (
         [
+            { movieList: recommended, name: 'Recommended', title: 'general.recommended' },
             { movieList: topRated, name: 'Top Rated', title: 'general.topRated' },
             { movieList: nowPlaying, name: 'Now Playing', title: 'general.nowPlaying' },
             { movieList: upcoming, name: 'Up Coming', title: 'general.upComing' }
         ]
-    ), [nowPlaying, topRated, upcoming]);
+    ), [nowPlaying, recommended, topRated, upcoming]);
 
     const renderMovies = useCallback(() => (
         <StyledFlexWrap>
