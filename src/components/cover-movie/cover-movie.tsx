@@ -4,6 +4,7 @@ import { useDisplaySizeGroup, useTranslator } from "../../hooks";
 import { useFetchMovieOrShowDetails } from "../../hooks/get-movie-details";
 import { IMovie } from "../../types";
 import { ButtonWrapper, ReleaseDateWrapper, StyledIframe, StyledPara, StyledPoster, StyledWrapper, TitleWrapper } from "./cover-styles";
+import { PlayTrailer } from "../play-trialer";
 
 export const CoverMovie = memo(({ movieItem }: { movieItem: IMovie }) => {
 
@@ -43,9 +44,7 @@ export const CoverMovie = memo(({ movieItem }: { movieItem: IMovie }) => {
             </StyledWrapper>
             {
                 playVideo ?
-                    <>
-                        {/* <PlayTrailer onClick={() => (setPlayVideo(false))} videos={videos} /> */}
-                    </>
+                    <PlayTrailer onClick={() => (setPlayVideo(false))} keyToPlay={trailerKey} />
                     : null
             }
         </>
