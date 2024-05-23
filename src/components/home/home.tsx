@@ -1,26 +1,32 @@
 import React, { useCallback, useMemo } from "react";
-import { useDisplaySizeGroup, useGetMoviesBasedOnCategory, useTranslator } from "../../hooks";
+import { useDisplaySizeGroup, useTranslator } from "../../hooks";
 import { useGetFavourites } from "../../hooks/use-get-favourites";
 import { IMovie } from "../../types";
 import { CoverMovie } from "../cover-movie/cover-movie";
 import { Card } from "../card/movie-card";
 import { ShimmerUI } from "../shimmer";
 import { StyledFlexWrap, StyledSpan, StyledWrapper } from "./home-styles";
+import { useStoreSelectors } from "../../store";
 
 export default function Home() {
 
-    const { allMovies, topRated, nowPlaying, upcoming } = useGetMoviesBasedOnCategory();
+    const { selectMoviesBasedOnCategory } = useStoreSelectors();
+    const { allMovies, topRated, nowPlaying, upcoming } = selectMoviesBasedOnCategory;
+
     const { getIsFavourite } = useGetFavourites();
     const { isSM, isMD } = useDisplaySizeGroup();
     const { translate } = useTranslator();
 
+    const recommended = ([...topRated, ...nowPlaying, ...upcoming] as IMovie[]).filter(({ vote_average }) => vote_average > 8).reverse();
+
     const moviesData = useMemo(() => (
         [
+            { movieList: recommended, name: 'Recommended', title: 'general.recommended' },
             { movieList: topRated, name: 'Top Rated', title: 'general.topRated' },
             { movieList: nowPlaying, name: 'Now Playing', title: 'general.nowPlaying' },
             { movieList: upcoming, name: 'Up Coming', title: 'general.upComing' }
         ]
-    ), [nowPlaying, topRated, upcoming]);
+    ), [nowPlaying, recommended, topRated, upcoming]);
 
     const renderMovies = useCallback(() => (
         <StyledFlexWrap>

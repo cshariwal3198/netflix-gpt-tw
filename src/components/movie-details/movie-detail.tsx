@@ -7,6 +7,7 @@ import { useFetchMovieOrShowDetails } from "../../hooks/get-movie-details";
 import { Link, useNavigate } from "react-router-dom";
 import { StyledContent, StyledFav, StyledLabel, StyledProd, StyledProdImage, Wrapper } from "./styles";
 import { IMovieDetailProps } from "./types";
+import { getClassNames } from "../utils";
 
 export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewSimillar, type = 'movie' }: IMovieDetailProps) => {
 
@@ -63,9 +64,14 @@ export const MovieDetail = memo(({ movieItem, isFavourite, setShowInfo, canViewS
     ), [id, navigate, type]);
 
     return (
-        <div className="flex flex-col justify-center items-center absolute top-0 right-0 bottom-0 left-0 z-10 bg-[#000000B3] h-[100vh] w-[100vw]" onClick={onClick}>
+        <div role="none" className={getClassNames([
+            "flex flex-col justify-center items-center", "absolute top-0 right-0 bottom-0 left-0 z-10",
+            "bg-[#000000B3] h-[100vh] w-[100vw]"
+        ])} onClick={onClick}>
             <Wrapper
-                className="h-[80%] w-[90%] relative justify-center items-center bg-[#ffffffbe] border-slate-800 rounded-lg overflow-hidden dark:bg-zinc-700"
+                className={getClassNames([
+                    "h-[80%] w-[90%] relative justify-center items-center",
+                    "bg-[#ffffffbe] border-slate-800 rounded-lg overflow-hidden dark:bg-zinc-700"])}
                 $isSM={isSM || isMD}
                 $backdrop={backdrop_path}
             >

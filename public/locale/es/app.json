@@ -10,6 +10,7 @@
         "popular": "Populares",
         "upComing": "Próximas",
         "nowPlaying": "En Cartelera",
+        "recommended": "Recommended",
         "trending": "Tendencias",
         "cancel": "Cancelar",
         "clear": "Limpiar",
@@ -55,7 +56,7 @@
         "clickToClose": "Haga clic para cerrar"
     },
     "account": {
-        "userprofile": "Perfil de usuario",
+        "userProfile": "Perfil de usuario",
         "profile": "Perfil",
         "signOut": "Cerrar sesión",
         "signOutPromptMessage": "¿Estás seguro de que quieres cerrar sesión?"

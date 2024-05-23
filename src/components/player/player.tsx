@@ -1,5 +1,5 @@
 import "./control.css";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, ChangeEvent } from "react";
 import {
     makeStyles,
     Slider,
@@ -131,7 +131,7 @@ const Control = ({
     }, []);
 
     return (
-        <StyledControlContainer $canShow={canShowControls} ref={controlRef} onClick={toggleCanShowControls} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <StyledControlContainer $canShow={canShowControls} ref={controlRef} onDoubleClick={onPlayPause} onClick={toggleCanShowControls} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <div className="top_container">
             </div>
             <div className="mid__container">
@@ -224,15 +224,10 @@ export const Player = ({ videoSource }: { videoSource: string }) => {
     });
 
     //Destructuring the properties from the videoState
-    const { playing, muted, volume, playbackRate, played, seeking, buffer } =
-        videoState;
+    const { playing, muted, volume, playbackRate, played, seeking, buffer } = videoState;
 
-    const currentTime = videoPlayerRef.current
-        ? videoPlayerRef.current.getCurrentTime()
-        : "00:00";
-    const duration = videoPlayerRef.current
-        ? videoPlayerRef.current.getDuration()
-        : "00:00";
+    const currentTime = videoPlayerRef.current ? videoPlayerRef.current.getCurrentTime() : "00:00";
+    const duration = videoPlayerRef.current ? videoPlayerRef.current.getDuration() : "00:00";
 
     const formatCurrentTime = formatTime(currentTime);
     const formatDuration = formatTime(duration);
@@ -280,17 +275,17 @@ export const Player = ({ videoSource }: { videoSource: string }) => {
         setVideoState({
             ...videoState,
             volume: newVolume,
-            muted: Number(newVolume) === 0 ? true : false, // volume === 0 then muted
+            muted: Number(newVolume) === 0 // volume === 0 then muted
         });
     };
 
-    const volumeSeekUpHandler = (e, value) => {
-        const newVolume = parseFloat(value) / 100;
+    const volumeSeekUpHandler = (event: ChangeEvent<object>, value: string | number | number[]) => {
+        const newVolume = parseFloat(value as string) / 100;
 
         setVideoState({
             ...videoState,
             volume: newVolume,
-            muted: newVolume === 0 ? true : false,
+            muted: newVolume === 0,
         });
     };
 

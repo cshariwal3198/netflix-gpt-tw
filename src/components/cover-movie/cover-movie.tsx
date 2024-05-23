@@ -4,10 +4,12 @@ import { useDisplaySizeGroup, useTranslator } from "../../hooks";
 import { useFetchMovieOrShowDetails } from "../../hooks/get-movie-details";
 import { IMovie } from "../../types";
 import { ButtonWrapper, ReleaseDateWrapper, StyledIframe, StyledPara, StyledPoster, StyledWrapper, TitleWrapper } from "./cover-styles";
+import { PlayTrailer } from "../play-trialer";
+import { getClassNames } from "../utils";
 
-export const CoverMovie = memo((props: { movieItem: IMovie }) => {
+export const CoverMovie = memo(({ movieItem }: { movieItem: IMovie }) => {
 
-    const { original_title, overview, release_date, poster_path, id } = props.movieItem;
+    const { original_title, overview, release_date, poster_path, id } = movieItem;
     const { showDetails: { videos } } = useFetchMovieOrShowDetails(id, 'movie');
     const [playVideo, setPlayVideo] = useState<boolean>(false);
 
@@ -25,7 +27,10 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
     return (
         <>
             <StyledWrapper $isSM={isSM} $isMD={isMD}>
-                <div className="flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%] bg-gradient-to-r dark:from-black from-[#ffffffce]">
+                <div className={getClassNames([
+                    "flex flex-col absolute text-start rounded-lg h-[100%] p-5 pl-[3%] sm:w-[70%] w-[100%]",
+                    "bg-gradient-to-r dark:from-black from-[#ffffffce]"
+                ])}>
                     <TitleWrapper $isMD={isMD} $isSM={isSM}>{original_title}</TitleWrapper>
                     <StyledPara $isMD={isMD} $isSM={isSM}>{trimmedOverview}</StyledPara>
                 </div>
@@ -43,9 +48,7 @@ export const CoverMovie = memo((props: { movieItem: IMovie }) => {
             </StyledWrapper>
             {
                 playVideo ?
-                    <>
-                        {/* <PlayTrailer onClick={() => (setPlayVideo(false))} videos={videos} /> */}
-                    </>
+                    <PlayTrailer onClick={() => (setPlayVideo(false))} keyToPlay={trailerKey} />
                     : null
             }
         </>

@@ -3,13 +3,15 @@ import { Card } from "../card/movie-card";
 import { RingLoader } from "react-spinners";
 import { useGetFavourites } from "../../hooks/use-get-favourites";
 import { IMovie } from "../../types";
-import { useDisplaySizeGroup, useGetMoviesBasedOnCategory, useTranslator } from "../../hooks";
+import { useDisplaySizeGroup, useTranslator } from "../../hooks";
 import { StyledSpan, StyledWrapper } from "./category-styles";
+import { useStoreSelectors } from "../../store";
 
 const Categories = memo(() => {
 
     const { getIsFavourite } = useGetFavourites();
-    const { popular, topRated, upcoming } = useGetMoviesBasedOnCategory();
+    const { selectMoviesBasedOnCategory } = useStoreSelectors();
+    const { popular, topRated, upcoming } = selectMoviesBasedOnCategory;
     const { isMD, isSM } = useDisplaySizeGroup();
     const { translate } = useTranslator();
 

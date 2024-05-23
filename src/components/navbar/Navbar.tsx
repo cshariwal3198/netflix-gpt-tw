@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDisplaySizeGroup, useTranslator } from "../../hooks";
 import { SearchPopup } from "../search-popup/search-popup";
 import { StyledCloseMenuIcon, StyledIcon, StyledInputWrapper, StyledMainWrapper, StyledMiniWrapper, StyledNavWrapper, StyledOpenMenuIcon, StyledSearchInput } from "./navbar-styles";
+import { getClassNames } from "../utils";
 
 const ThemeIcon = memo(({ iconName }: { iconName: IconType }) => {
     const { toggleTheme, theme } = useTheme();
@@ -110,7 +111,8 @@ export const Navbar = memo(() => {
             </StyledNavWrapper>
             {
                 isCollapsed ?
-                    <div className="grid grid-cols-2 gap-[18px] justify-center items-center text-xl transition-all w-[100%] justify-items-center">
+                    <div className={getClassNames(["grid grid-cols-2 gap-[18px] justify-center items-",
+                        "text-xl transition-all w-[100%] justify-items-center"])}>
                         {renderMenuItems()}
                         {renderThemeIcons()}
                     </div> : null

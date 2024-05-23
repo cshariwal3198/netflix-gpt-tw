@@ -64,13 +64,15 @@ const MovieInfo = memo(() => {
     const renderOverView = useCallback(() => {
         if (overview?.length > 300) {
             return (
-                !canShowSliced ?
-                    (<>
+                !canShowSliced ? (
+                    <>
                         {overview?.slice(0, 320)}... <StyledPara onClick={alterShowMore}>{translate('movieDetails.seeMore')}</StyledPara>
-                    </>)
-                    : (<>
+                    </>
+                ) : (
+                    <>
                         {overview}... <StyledPara onClick={alterShowMore}>see less</StyledPara>
-                    </>)
+                    </>
+                )
             )
         }
         return overview;

@@ -3,15 +3,19 @@ import { LanguageWrapper, StyledDiv } from "./styles";
 import { TfiWorld } from "react-icons/tfi";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagramSquare, FaYoutube, FaLinkedin, FaGithub } from "react-icons/fa";
-import { useDisplaySizeGroup, useTranslator } from "../../hooks";
+import { useDisplaySizeGroup } from "../../hooks";
 import { LanguageFlyout } from "./language-flyout";
 
-const languages = [{ name: "English", code: 'en' }, { name: "Hindi", code: 'hi' }, { name: "French", code: 'fr' }, { name: "Spanish", code: 'es' }];
+const languages = [
+    { name: "English", code: 'en' },
+    { name: "Hindi", code: 'hi' },
+    { name: "French", code: 'fr' },
+    { name: "Spanish", code: 'es' }
+];
 
 export const MediaAndLanguage = memo(() => {
 
     const { isSM } = useDisplaySizeGroup();
-    const { translate } = useTranslator();
 
     const defaulSelectedLanguage = useMemo(() => (
         languages.find(({ code }) => (code === localStorage.getItem('locale')))?.name || 'English'
@@ -31,11 +35,11 @@ export const MediaAndLanguage = memo(() => {
         <LanguageWrapper>
             <div className="flex gap-[8px] items-center">
                 <TfiWorld />
-                <h4>{translate('footer.language')}:</h4>
+                <h4>Language: </h4>
             </div>
             <LanguageFlyout languages={languages} defaulSelectedLanguage={defaulSelectedLanguage} />
         </LanguageWrapper>
-    ), [defaulSelectedLanguage, translate]);
+    ), [defaulSelectedLanguage]);
 
     return (
         <StyledDiv $isSM={isSM}>
