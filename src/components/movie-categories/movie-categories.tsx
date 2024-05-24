@@ -4,7 +4,7 @@ import { RingLoader } from "react-spinners";
 import { useGetFavourites } from "../../hooks/use-get-favourites";
 import { IMovie } from "../../types";
 import { useDisplaySizeGroup, useTranslator } from "../../hooks";
-import { StyledSpan, StyledWrapper } from "./category-styles";
+import { StyledSpan, StyledWrapper } from "./movie-category-styles";
 import { useStoreSelectors } from "../../store";
 
 const Categories = memo(() => {

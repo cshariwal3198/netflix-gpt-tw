@@ -2,6 +2,7 @@ export interface IMovie {
     id: number;
     original_title: string;
     origial_language: string;
+    genre_ids: number[];
     overview: string;
     popularity: number;
     poster_path: string;

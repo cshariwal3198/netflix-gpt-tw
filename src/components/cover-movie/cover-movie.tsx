@@ -44,12 +44,12 @@ export const CoverMovie = memo(({ movieItem }: { movieItem: IMovie }) => {
                     </button>
                     <button className="text-lg p-2 text-white border-[1px] rounded-md bg-red-600" onClick={onPlayClick}>{translate('general.watch')}</button>
                 </ButtonWrapper>
-                <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
+                {
+                    isSM ? null : <ReleaseDateWrapper>{release_date}</ReleaseDateWrapper>
+                }
             </StyledWrapper>
             {
-                playVideo ?
-                    <PlayTrailer onClick={() => (setPlayVideo(false))} keyToPlay={trailerKey} />
-                    : null
+                playVideo ? <PlayTrailer onClick={() => (setPlayVideo(false))} keyToPlay={trailerKey} /> : null
             }
         </>
     );

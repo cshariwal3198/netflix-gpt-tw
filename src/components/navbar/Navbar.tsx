@@ -62,14 +62,16 @@ export const Navbar = memo(() => {
 
     const renderMenuItems = useCallback(() => (
         <>
-            <Link to="/categories" onClick={onClickLink}>{translate('general.movies')}</Link>
+            <Link to="/" onClick={onClickLink}>{translate('general.home')}</Link>
+            <Link to="/movies" onClick={onClickLink}>{translate('general.movies')}</Link>
             <Link to="/tvshows" onClick={onClickLink}>{translate('general.tvShows')}</Link>
             <Link to="/favourites" onClick={onClickLink}>{translate('general.myList')}</Link>
+            <Link to="/categories" onClick={onClickLink}>{translate('Categories')}</Link>
         </>
     ), [onClickLink, translate]);
 
     const renderThemeIcons = useCallback(() => (
-        theme === 'dark' ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
+        (theme === 'dark') ? <ThemeIcon iconName={FiSun} /> : <ThemeIcon iconName={LuMoonStar} />
     ), [theme]);
 
     const renderLogo = useMemo(() => (
