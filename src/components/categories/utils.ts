@@ -1,3 +1,7 @@
+export interface ICategoryListContainer {
+    categoryList: { id: number, name: string }[], onClick: (showId: number) => void, activeId: number
+}
+
 export const categoryList = [
     {
         "id": 28,
