@@ -42,9 +42,7 @@ export const TitleWrapper = styled.p <{ $isMD: boolean, $isSM: boolean }>`
 `;
 
 export const ReleaseDateWrapper = styled(StyledSpan)`
-    left: unset;
-    top: 30px;
-    right: 3%;
+    left: unset; top: 30px; right: 3%;
     color: ${({ theme: { commonColors: { normalWhite } } }) => (normalWhite)};
     font-size: 24px;
 `;
@@ -54,15 +52,15 @@ export const StyledPara = styled.p <{ $isMD: boolean, $isSM: boolean }>`
     font-weight: 300;
     font-size: ${({ $isMD, $isSM }) => ($isSM ? '18px' : getValueBasedOnResolution($isMD, '21px', '24px'))};
     z-index: 3;
-    width: ${({ $isMD, $isSM }) => ($isSM ? '60%' : getValueBasedOnResolution($isMD, '70%', '70%'))};
+    width: ${({ $isMD, $isSM }) => ($isSM ? '85%' : getValueBasedOnResolution($isMD, '70%', '70%'))};
 `;
 
 export const ButtonWrapper = styled.div<{ $isSM: boolean }>`
     display: ${({ $isSM }) => ($isSM ? 'grid' : 'flex')};
-    width: 40%;
-    left: 4%; bottom: ${({ $isSM }) => ($isSM ? '50px' : '30px')};
     position: absolute;
-    gap: 20px; z-index: 10;
+    width: 40%; z-index: 10;
+    left: 4%; bottom: ${({ $isSM }) => ($isSM ? '40px' : '30px')};
+    gap: ${({ $isSM }) => ($isSM ? '10px' : '20px')};
 `;
 
 export const StyledIframe = styled.iframe`

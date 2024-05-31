@@ -70,7 +70,7 @@ const Favourites = memo(() => {
                             favMovies.length ? renderContent(favMovies, 'movie') :
                                 <StyledSpan $isSM={isSM}>
                                     {translate('favourites.noFavourites')}
-                                    <StyledLink to="/categories">{translate('favourites.addMoviesToFavourites')}</StyledLink>
+                                    <StyledLink to="/movies">{translate('favourites.addMoviesToFavourites')}</StyledLink>
                                 </StyledSpan>
                         }
                     </StyledFlex>

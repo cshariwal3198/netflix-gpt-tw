@@ -8,7 +8,8 @@ export const defaultThemes = {
         popupActionButtonBackgroundColor: '#078ceb',
         creditWrapperBorderColor: '#697e90',
         movieDetailsWrapperBorder: '#687594',
-        navbarShadowColor: '#4d4b4b'
+        navbarShadowColor: '#4d4b4b',
+        categoryListBackgroundColor: '#2c2c2c'
     },
     commonColors: {
         powderWhite: "#FFFDF9",

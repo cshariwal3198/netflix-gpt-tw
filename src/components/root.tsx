@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { Footer } from "./footer/footer";
 import styled from "styled-components";
 import { Navbar } from "./navbar/Navbar";
@@ -25,6 +25,8 @@ const UpdateStore = memo(() => {
 
 const Root = memo(() => {
 
+    const location = useLocation();
+
     return (
         <div className="font-medium flex flex-col h-full w-full">
             <StyledImage src={`${import.meta.env.VITE_PUBLIC_URL}assets/nflix-bg.jpg`} />
@@ -32,7 +34,9 @@ const Root = memo(() => {
             <Navbar />
             <div className="flex flex-col overflow-auto h-full">
                 <Outlet />
-                <Footer />
+                {
+                    location.pathname === '/categories' ? null : <Footer />
+                }
             </div>
         </div>
     )

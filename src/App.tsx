@@ -10,9 +10,10 @@ const Root = React.lazy(() => import('./components/root'));
 const Favourites = React.lazy(() => import('./components/favourites/favourites'));
 const ViewSimillar = React.lazy(() => import('./components/simillar-movies/simillar-movies'));
 const ManageAccount = React.lazy(() => import('./components/account/manage-account-menu'));
-const Categories = React.lazy(() => import('./components/movie-categories/categories'));
+const Movies = React.lazy(() => import('./components/movie-categories/movie-categories'));
 const MovieInfo = React.lazy(() => import('./components/movie-detailed-info/movie-info'));
 const TvShows = React.lazy(() => import('./components/tv-shows/tv-shows'));
+const Categories = React.lazy(() => (import('./components/categories/categories')))
 
 export default function App() {
 
@@ -38,8 +39,8 @@ export default function App() {
           element: <ManageAccount />
         },
         {
-          path: '/categories',
-          element: <Categories />
+          path: '/movies',
+          element: <Movies />
         },
         {
           path: '/:type/:id',
@@ -52,6 +53,10 @@ export default function App() {
         {
           path: '/:type/:id',
           element: <MovieInfo />
+        },
+        {
+          path: '/categories',
+          element: <Categories />
         }
       ]
     }

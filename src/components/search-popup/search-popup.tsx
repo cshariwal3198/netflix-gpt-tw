@@ -1,6 +1,6 @@
 import { ChangeEventHandler, SyntheticEvent, memo, useCallback, useMemo, useState } from "react";
 import { IMovie } from "../../types";
-import { useDisplaySizeGroup, useTranslator } from "../../hooks";
+import { useDisplaySizeGroup, useGetAllShows, useTranslator } from "../../hooks";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addRecentlyOpenedShows, clearRecentlyOpenedShows } from "../../store/recently-opened-slice";
@@ -14,35 +14,13 @@ type IAllShow = IMovie & { showType: string };
 export const SearchPopup = memo(({ setOpenPopup }: { setOpenPopup: any }) => {
 
     const dispatch = useDispatch();
-    const { selectRecentlyOpenedShows, selectMoviesBasedOnCategory, selectTvShowsBasedOnCategory } = useStoreSelectors();
+    const { selectRecentlyOpenedShows } = useStoreSelectors();
+    const { allShows } = useGetAllShows();
     const { isSM } = useDisplaySizeGroup();
     const { translate } = useTranslator();
     const [searchResult, setSearchResult] = useState<IAllShow[]>([]);
 
-    const { topRated: topRatedMovies, popular: popularMovies, upcoming: upComingMovies, nowPlaying: nowPlayingMovies } = selectMoviesBasedOnCategory;
-    const { popular: popularShows, topRated: topRatedShows, trending: trendingShows, upcoming: upcomingShows } = selectTvShowsBasedOnCategory;
-
     const { recentlyOpenedShows } = selectRecentlyOpenedShows;
-
-    const allShows: IAllShow[] = useMemo(() => {
-
-        const filteredMovies: IAllShow[] = [];
-        const filteredTvShows: IAllShow[] = [];
-
-        [...topRatedMovies, ...popularMovies, ...upComingMovies, ...nowPlayingMovies].forEach((item) => {
-            if (!filteredMovies.find(({ id: movieId }) => (movieId === item.id))) {
-                filteredMovies.push({ ...item, showType: 'movie' });
-            }
-        });
-
-        [...popularShows, ...topRatedShows, ...trendingShows, ...upcomingShows].forEach((item) => {
-            if (!filteredTvShows.find(({ id }) => (id === item.id))) {
-                filteredTvShows.push({ ...item, showType: 'tvshow' });
-            }
-        });
-
-        return [...filteredMovies, ...filteredTvShows]
-    }, [popularMovies, popularShows, topRatedMovies, topRatedShows, trendingShows, upComingMovies, upcomingShows, nowPlayingMovies]);
 
     const closePopup = useCallback(() => (setOpenPopup(false)), [setOpenPopup]);
 
